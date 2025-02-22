@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity"
+    android:background="@color/welcome_yellow">
+
+    <LinearLayout
+        android:id="@+id/profile_shortcut"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <ImageSwitcher
+            android:id="@+id/imageSwitcher"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp" />
+
+        <LinearLayout
+            android:id="@+id/change_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <!--Placeholder info; Add code to display registered name and email-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_gravity="center_vertical"
+                android:textSize="20sp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Ervin Louis Villas"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_gravity="center_vertical"
+                android:textSize="12sp"
+                android:fontFamily="@font/rdh_semi_bold"
+                android:text="ervinlouis.villas@cit.edu"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/view_separator"
+        android:layout_below="@id/profile_shortcut"
+        android:layout_width="330dp"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"/>
+
+    <!--Account Settings-->
+    <LinearLayout
+        android:id="@+id/info_edit"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_below="@id/profile_shortcut"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_settings"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/profile_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="3dp"
+            android:text="@string/profile_info"
+            android:fontFamily="@font/rdh_semi_bold"
+            android:textSize="13sp"/>
+
+        <include layout="@layout/view_separator"/>
+
+        <TextView
+            android:id="@+id/change_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="3dp"
+            android:text="@string/change_pass"
+            android:fontFamily="@font/rdh_semi_bold"
+            android:textSize="13sp"/>
+
+        <include layout="@layout/view_separator"/>
+
+        <TextView
+            android:id="@+id/manage_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="3dp"
+            android:text="@string/manage_store_details"
+            android:fontFamily="@font/rdh_semi_bold"
+            android:textSize="13sp"/>
+
+        <include layout="@layout/view_separator"/>
+    </LinearLayout>
+
+    <!--Store Settings-->
+    <LinearLayout
+        android:id="@+id/store_settings"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:layout_below="@id/info_edit"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/store_inventory"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/product_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="3dp"
+            android:text="@string/product_categories"
+            android:fontFamily="@font/rdh_semi_bold"
+            android:textSize="13sp"/>
+
+        <include layout="@layout/view_separator"/>
+
+        <TextView
+            android:id="@+id/stock_notif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="3dp"
+            android:text="@string/stock_alerts"
+            android:fontFamily="@font/rdh_semi_bold"
+            android:textSize="13sp"/>
+
+        <include layout="@layout/view_separator"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/about"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:layout_below="@id/store_settings"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/about_info"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/about_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="3dp"
+            android:text="@string/about_app"
+            android:fontFamily="@font/rdh_semi_bold"
+            android:textSize="13sp"/>
+
+        <include layout="@layout/view_separator"/>
+
+        <TextView
+            android:id="@+id/about_dev"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="3dp"
+            android:text="@string/developers"
+            android:fontFamily="@font/rdh_semi_bold"
+            android:textSize="13sp"/>
+
+        <include layout="@layout/view_separator"/>
+    </LinearLayout>
+
+    <!--I'm thinking we should use fragment for nav bar cause its reusable-->
+    <LinearLayout
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#80FFFFFF"
+        android:orientation="horizontal"
+        android:elevation="8dp">
+
+        <!-- Home Button -->
+        <LinearLayout
+            android:id="@+id/nav_home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/home_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav_home"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Products Button -->
+        <LinearLayout
+            android:id="@+id/nav_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/list_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav_products"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!--  Notification Button -->
+        <LinearLayout
+            android:id="@+id/nav_notif"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/notification_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav_notif"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Profile Button -->
+        <LinearLayout
+            android:id="@+id/nav_account"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/account_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav_acc"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
