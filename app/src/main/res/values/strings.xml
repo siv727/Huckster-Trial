@@ -37,4 +37,5 @@
     <string name="about_app">About Huckster</string>
     <string name="developers">About The Developers</string>
     <string name="save">Save</string>
+    <string name="space"> </string>
 </resources>
