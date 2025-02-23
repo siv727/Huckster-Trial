@@ -18,14 +18,14 @@ The `labs` branch serves as a development environment where all code changes mad
 
 ### Important Guidelines:
 1. **Do NOT modify, delete, or override files in the backup branch unless absolutely necessary.**
-2. The backup branch should only be updated when everything in the `master` branch is confirmed to be working properly.
+2. The backup branch should only be updated when everything in the `main` branch is confirmed to be working properly.
 3. Before updating the backup, perform thorough testing to ensure no broken or unstable code is pushed.
 4. If you need to update the backup, make sure you document the changes clearly.
 5. Any unauthorized changes to this branch may cause data loss or rollback issues.
 
 ### How to Update the Backup:
-1. Verify that the `master` branch is stable and has passed all necessary tests.
-2. Merge the `master` branch into the backup branch following the correct versioning and documentation standards.
+1. Verify that the `main` branch is stable and has passed all necessary tests.
+2. Merge the `main` branch into the backup branch following the correct versioning and documentation standards.
 3. Double-check the integrity of the backup after merging.
 4. Inform the team about the update to prevent conflicts.
 
