@@ -55,7 +55,11 @@
                 android:autofillHints="emailAddress"
                 android:background="@drawable/inner_shadow"
                 android:inputType="textEmailAddress"
-                android:labelFor="@id/edittext_email" />
+                android:labelFor="@id/edittext_email"
+                android:fontFamily="@font/montserrat_semi_bold"
+                android:textSize="12sp"
+                android:paddingHorizontal="2sp"
+                android:textColor="@color/trade_blue"/>
 
         </LinearLayout>
 
@@ -83,7 +87,11 @@
                 android:autofillHints="emailAddress"
                 android:background="@drawable/inner_shadow"
                 android:inputType="textEmailAddress"
-                android:labelFor="@id/edittext_email" />
+                android:labelFor="@id/edittext_email"
+                android:fontFamily="@font/montserrat_semi_bold"
+                android:textSize="12sp"
+                android:paddingHorizontal="2sp"
+                android:textColor="@color/trade_blue"/>
 
         </LinearLayout>
 
@@ -112,7 +120,11 @@
         android:autofillHints="emailAddress"
         android:background="@drawable/inner_shadow"
         android:inputType="textEmailAddress"
-        android:labelFor="@id/edittext_email" />
+        android:labelFor="@id/edittext_email"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:textSize="12sp"
+        android:paddingHorizontal="2sp"
+        android:textColor="@color/trade_blue"/>
 
     <Button
         android:id="@+id/button_save"

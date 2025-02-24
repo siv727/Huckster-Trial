@@ -2,7 +2,11 @@ package com.android.huckster
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.os.Bundle
+import android.text.TextPaint
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -20,6 +24,27 @@ class RegisterActivity : Activity() {
         val edittext_fname = findViewById<EditText>(R.id.edittext_firstname)
         val edittext_lname = findViewById<EditText>(R.id.edittext_lastname)
         val edittext_checkpass = findViewById<EditText>(R.id.edittext_confirm_password)
+        val textViewLogin: TextView = findViewById(R.id.textview_login)
+
+
+
+        textViewLogin.text = " Login!"
+
+        // Apply gradient text color
+        val paint: TextPaint = textViewLogin.paint
+        val width: Float = paint.measureText(textViewLogin.text.toString())
+
+        val textShader: Shader = LinearGradient(
+            0f, 0f, width, textViewLogin.textSize,
+            intArrayOf(
+                Color.parseColor("#FFA500"),
+                Color.parseColor("#FFA500"),
+                Color.parseColor("#C24733"),
+
+                ),
+            null, Shader.TileMode.CLAMP
+        )
+        textViewLogin.paint.shader = textShader
 
         val text_login = findViewById<LinearLayout>(R.id.layout_login)
         text_login.setOnClickListener {
