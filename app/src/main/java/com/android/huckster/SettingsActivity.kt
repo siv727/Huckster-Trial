@@ -37,8 +37,9 @@ class SettingsActivity : Activity() {
             Log.e("Home", "Moved to home!")
             Toast.makeText(this, "Home Page", Toast.LENGTH_LONG).show()
 
-            val home_intent = Intent(this, HomeActivity::class.java)
-            startActivity(home_intent)
+            startActivity(
+                Intent(this, HomeActivity::class.java)
+            )
         }
 
         val profile_button = findViewById<TextView>(R.id.profile_info)
@@ -46,8 +47,9 @@ class SettingsActivity : Activity() {
             Log.e("Profile", "Moved to profile!")
             Toast.makeText(this, "Profile Page", Toast.LENGTH_LONG).show()
 
-            val profile_intent = Intent(this, ProfileActivity::class.java)
-            startActivity(profile_intent)
+            startActivity(
+                Intent(this, ProfileActivity::class.java)
+            )
         }
 
         /*      Developer Page

@@ -36,8 +36,9 @@ class ProfileActivity : Activity() {
             Log.e("Settings", "Back to settings")
             Toast.makeText(this, "Settings", Toast.LENGTH_LONG).show()
 
-            val settings_intent = Intent(this, SettingsActivity::class.java)
-            startActivity(settings_intent)
+            startActivity(
+                Intent(this, SettingsActivity::class.java)
+            )
         }
     }
 }

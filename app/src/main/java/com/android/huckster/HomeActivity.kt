@@ -15,6 +15,7 @@ class HomeActivity : Activity() {
         setContentView(R.layout.activity_home)
 
         val textview_greeting = findViewById<TextView>(R.id.greeting)
+
         intent?.let{
             it.getStringExtra("fname")?.let{ fname ->
                 textview_greeting.setText("Hello $fname!")
@@ -27,17 +28,20 @@ class HomeActivity : Activity() {
             Log.e("Landing", "Successful Registration!")
             Toast.makeText(this, "Log in!", Toast.LENGTH_LONG).show()
 
-            val login_intent = Intent(this, LoginActivity::class.java)
-            startActivity(login_intent)
+            startActivity(
+                Intent(this, LoginActivity::class.java)
+            )
         }
+
 
         val acc_button = findViewById<LinearLayout>(R.id.nav_account)
         acc_button.setOnClickListener {
             Log.e("Account", "Moved to account profile!")
             Toast.makeText(this, "Account Settings", Toast.LENGTH_LONG).show()
 
-            val acc_intent = Intent(this, SettingsActivity::class.java)
-            startActivity(acc_intent)
+            startActivity(
+                Intent(this, SettingsActivity::class.java)
+            )
         }
 
 /*      Idk if this is needed honestly
