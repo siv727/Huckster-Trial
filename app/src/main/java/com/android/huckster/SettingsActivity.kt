@@ -32,6 +32,23 @@ class SettingsActivity : Activity() {
 
         imageSwitcher.setImageResource(R.drawable.profile_default)
 
+        val textview_name = findViewById<TextView>(R.id.name)
+        val textview_email = findViewById<TextView>(R.id.email)
+
+        intent?.let{
+            it.getStringExtra("fname")?.let{ fname->
+                textview_name.setText("$fname ")
+            }
+
+            it.getStringExtra("lname")?.let{ lname->
+                textview_name.append("$lname")
+            }
+
+            it.getStringExtra("email")?.let{ email ->
+                textview_email.setText("$email")
+            }
+        }
+
         val home_button = findViewById<LinearLayout>(R.id.nav_home)
         home_button.setOnClickListener {
             Log.e("Home", "Moved to home!")

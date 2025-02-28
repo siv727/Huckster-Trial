@@ -31,22 +31,22 @@
 
             <!--Placeholder info; Add code to display registered name and email-->
             <TextView
+                android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_gravity="center_vertical"
                 android:textSize="20sp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="Ervin Louis Villas"/>
+                android:fontFamily="@font/montserrat_bold"/>
 
             <TextView
+                android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_gravity="center_vertical"
                 android:textSize="12sp"
-                android:fontFamily="@font/rdh_semi_bold"
-                android:text="ervinlouis.villas@cit.edu"/>
+                android:fontFamily="@font/rdh_semi_bold" />
         </LinearLayout>
     </LinearLayout>
 

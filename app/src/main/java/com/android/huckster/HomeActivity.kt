@@ -16,9 +16,21 @@ class HomeActivity : Activity() {
 
         val textview_greeting = findViewById<TextView>(R.id.greeting)
 
+        var first_name = "";
+        var last_name = "";
+        var email_holder = ""
         intent?.let{
+            it.getStringExtra("email")?.let{ email ->
+                email_holder = email
+            }
+
             it.getStringExtra("fname")?.let{ fname ->
                 textview_greeting.setText("Hello $fname!")
+                first_name = fname
+            }
+
+            it.getStringExtra("lname")?.let{ lname ->
+                last_name = lname
             }
         }
 
@@ -40,7 +52,11 @@ class HomeActivity : Activity() {
             Toast.makeText(this, "Account Settings", Toast.LENGTH_LONG).show()
 
             startActivity(
-                Intent(this, SettingsActivity::class.java)
+                Intent(this, SettingsActivity::class.java).apply{
+                    putExtra("fname", first_name)
+                    putExtra("lname", last_name)
+                    putExtra("email", email_holder)
+                }
             )
         }
 
