@@ -6,12 +6,20 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 
 class HomeActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        val textview_greeting = findViewById<TextView>(R.id.greeting)
+        intent?.let{
+            it.getStringExtra("fname")?.let{ fname ->
+                textview_greeting.setText("Hello $fname!")
+            }
+        }
 
         val back_button = findViewById<ImageView>(R.id.back_login)
 

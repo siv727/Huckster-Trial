@@ -42,6 +42,27 @@ class LoginActivity : Activity() {
             null, Shader.TileMode.CLAMP
         )
         textViewRegister.paint.shader = textShader
+
+        var first_name = "";
+        var last_name = "";
+        intent?.let{
+            it.getStringExtra("email")?.let{ email ->
+                edittext_email.setText(email)
+            }
+
+            it.getStringExtra("password")?.let{ password ->
+                edittext_password.setText(password)
+            }
+
+            it.getStringExtra("fname")?.let{ fname ->
+                first_name = fname
+            }
+
+            it.getStringExtra("lname")?.let{ lname ->
+                last_name = lname
+            }
+        }
+
         val text_register = findViewById<LinearLayout>(R.id.layout_register)
         text_register.setOnClickListener {
             Log.e("Register", "Moved to Register Page")
@@ -67,7 +88,12 @@ class LoginActivity : Activity() {
             Log.e("Log In", "Successful Log in!")
             Toast.makeText(this, "Welcome to Huckster!", Toast.LENGTH_LONG).show()
             startActivity(
-                Intent(this, HomeActivity::class.java)
+                Intent(this, HomeActivity::class.java).apply{
+                    putExtra("email", edittext_email.text.toString())
+                    putExtra("password", edittext_password.text.toString())
+                    putExtra("fname", first_name)
+                    putExtra("lname", last_name)
+                }
             )
         }
 

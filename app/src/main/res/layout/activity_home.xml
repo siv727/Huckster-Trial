@@ -62,6 +62,7 @@
 
         <!--Here we can add like Hello [First name] para personalized-->
         <TextView
+            android:id="@+id/greeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome"

@@ -68,6 +68,11 @@ class RegisterActivity : Activity() {
                 Toast.makeText(this, "Fill out everything with your details to sign up!", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
+
+            if(!password.toString().equals(checkpass.toString())){
+                Toast.makeText(this, "Password Mismatch!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             // put another condition for both email (proper email format) and password (no slashes, dashes, underscores, punctuation marks)
 
             Log.e("Log in", "Successful Registration!")
@@ -75,8 +80,10 @@ class RegisterActivity : Activity() {
 
             startActivity(
                 Intent(this, LoginActivity::class.java).apply{
-                    putExtra("email", email)
-                    putExtra("password", password)
+                    putExtra("email", email.toString())
+                    putExtra("password", password.toString())
+                    putExtra("fname", fname.toString())
+                    putExtra("lname", lname.toString())
                 }
             )
         }
