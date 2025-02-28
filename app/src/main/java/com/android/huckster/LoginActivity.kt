@@ -47,18 +47,16 @@ class LoginActivity : Activity() {
             Log.e("Register", "Moved to Register Page")
             Toast.makeText(this, "Make an account!", Toast.LENGTH_LONG).show()
 
-            val register_intent = Intent(this, RegisterActivity::class.java)
-            startActivity(register_intent)
+            startActivity(
+                Intent(this, RegisterActivity::class.java)
+            )
         }
 
         val button_login = findViewById<Button>(R.id.button_login)
         button_login.setOnClickListener {
             Log.e("Log In", "Logging in!")
 
-            val email = edittext_email.text
-            val password = edittext_password.text
-
-            if(email.isNullOrEmpty() || password.isNullOrEmpty()) {
+            if(edittext_email.text.isNullOrEmpty() || edittext_password.text.isNullOrEmpty()) {
                 Toast.makeText(this, "Email and Password cannot be empty", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
@@ -68,8 +66,9 @@ class LoginActivity : Activity() {
 
             Log.e("Log In", "Successful Log in!")
             Toast.makeText(this, "Welcome to Huckster!", Toast.LENGTH_LONG).show()
-            val home_intent = Intent(this, HomeActivity::class.java)
-            startActivity(home_intent)
+            startActivity(
+                Intent(this, HomeActivity::class.java)
+            )
         }
 
 

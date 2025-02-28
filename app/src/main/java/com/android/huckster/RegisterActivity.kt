@@ -26,8 +26,6 @@ class RegisterActivity : Activity() {
         val edittext_checkpass = findViewById<EditText>(R.id.edittext_confirm_password)
         val textViewLogin: TextView = findViewById(R.id.textview_login)
 
-
-
         textViewLogin.text = " Login!"
 
         // Apply gradient text color
@@ -51,8 +49,9 @@ class RegisterActivity : Activity() {
             Log.e("Log in", "Moved to Login Page")
             Toast.makeText(this, "Sign in!", Toast.LENGTH_LONG).show()
 
-            val login_intent = Intent(this, LoginActivity::class.java)
-            startActivity(login_intent)
+            startActivity(
+                Intent(this, LoginActivity::class.java)
+            )
         }
 
         val button_landing = findViewById<Button>(R.id.button_to_login)
@@ -74,8 +73,12 @@ class RegisterActivity : Activity() {
             Log.e("Log in", "Successful Registration!")
             Toast.makeText(this, "Log in!", Toast.LENGTH_LONG).show()
 
-            val login_intent = Intent(this, LoginActivity::class.java)
-            startActivity(login_intent)
+            startActivity(
+                Intent(this, LoginActivity::class.java).apply{
+                    putExtra("email", email)
+                    putExtra("password", password)
+                }
+            )
         }
     }
 }
