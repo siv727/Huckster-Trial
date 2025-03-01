@@ -1,11 +1,13 @@
 package com.android.huckster
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageSwitcher
 import android.widget.ImageView
@@ -69,5 +71,36 @@ class SettingsActivity : Activity() {
             Toast.makeText(this, "Profile Page", Toast.LENGTH_LONG).show()
             startActivity(Intent(this, ProfileActivity::class.java))
         }
+
+        val logout_button = findViewById<Button>(R.id.button_to_logout)
+
+        logout_button.setOnClickListener {
+            showLogoutConfirmation()
+        }
+    }
+
+    private fun showLogoutConfirmation() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_layout, null)
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val btnCancel = dialogView.findViewById<Button>(R.id.btn_cancel)
+        val btnConfirm = dialogView.findViewById<Button>(R.id.btn_confirm)
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss() // Close the dialog
+        }
+
+        btnConfirm.setOnClickListener {
+            UserData.loggedInUser = null
+            dialog.dismiss()
+            this.startActivity(
+                Intent(this, LoginActivity::class.java)
+            )
+        }
+        dialog.show()
     }
 }

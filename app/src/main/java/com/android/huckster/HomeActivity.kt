@@ -50,14 +50,6 @@ class HomeActivity : Activity() {
             }
         }
 */
-
-        val back_button = findViewById<ImageView>(R.id.back_login)
-
-        back_button.setOnClickListener {
-            showLogoutConfirmation()
-        }
-
-
         val acc_button = findViewById<LinearLayout>(R.id.nav_account)
         acc_button.setOnClickListener {
             Log.e("Account", "Moved to account profile!")
@@ -104,30 +96,4 @@ class HomeActivity : Activity() {
 */
 
     }
-
-    private fun showLogoutConfirmation() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_layout, null)
-        val dialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .create()
-
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        val btnCancel = dialogView.findViewById<Button>(R.id.btn_cancel)
-        val btnConfirm = dialogView.findViewById<Button>(R.id.btn_confirm)
-
-        btnCancel.setOnClickListener {
-            dialog.dismiss() // Close the dialog
-        }
-
-        btnConfirm.setOnClickListener {
-            UserData.loggedInUser = null
-            dialog.dismiss()
-            this.startActivity(
-                Intent(this, LoginActivity::class.java)
-            )
-        }
-        dialog.show()
-    }
-
 }
