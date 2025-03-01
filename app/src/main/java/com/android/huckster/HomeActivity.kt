@@ -2,12 +2,17 @@ package com.android.huckster
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 
@@ -117,11 +122,11 @@ class HomeActivity : Activity() {
 
         btnConfirm.setOnClickListener {
             UserData.loggedInUser = null
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
             dialog.dismiss()
+            this.startActivity(
+                Intent(this, LoginActivity::class.java)
+            )
         }
-
         dialog.show()
     }
 
