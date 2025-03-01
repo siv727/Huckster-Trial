@@ -20,6 +20,9 @@ object UserData {
         loggedInUser = user // Store the logged-in user
         return user != null
     }
+    fun isEmailRegistered(email: String): Boolean {
+        return users.any { it.email == email }
+    }
 
     fun getUsers(): List<User> = users.toList() // Returns a copy of the user list
 }

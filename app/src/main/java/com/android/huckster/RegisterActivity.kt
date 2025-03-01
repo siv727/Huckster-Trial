@@ -69,18 +69,24 @@ class RegisterActivity : Activity() {
                 Toast.makeText(this, "Fill out everything with your details to sign up!", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
+            // put another condition for both email (proper email format) and password (no slashes, dashes, underscores, punctuation marks)
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Enter a valid email address!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
 
+            //validation for registeredEmails
+            if (UserData.isEmailRegistered(email.toString())) {
+                Toast.makeText(this, "Email is already registered. Please log in!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
 
 
             if(!password.toString().equals(checkpass.toString())){
                 Toast.makeText(this, "Password Mismatch!", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            // put another condition for both email (proper email format) and password (no slashes, dashes, underscores, punctuation marks)
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(this, "Enter a valid email address!", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
+
 
             UserData.registerUser(fname.toString(), lname.toString(), email.toString(), password.toString())
             Log.e("Log in", "Successful Registration!")
