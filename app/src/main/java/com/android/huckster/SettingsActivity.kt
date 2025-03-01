@@ -1,7 +1,9 @@
 package com.android.huckster
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.FrameLayout
@@ -13,12 +15,13 @@ import android.widget.Toast
 
 class SettingsActivity : Activity() {
     private lateinit var imageSwitcher: ImageSwitcher
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        imageSwitcher = findViewById(R.id.imageSwitcher) // Initialized inside onCreate()
+        imageSwitcher = findViewById(R.id.imageSwitcher)
 
         imageSwitcher.setFactory {
             ImageView(applicationContext).apply {
@@ -32,52 +35,39 @@ class SettingsActivity : Activity() {
 
         imageSwitcher.setImageResource(R.drawable.profile_default)
 
-        val textview_name = findViewById<TextView>(R.id.name)
-        val textview_email = findViewById<TextView>(R.id.email)
+        val textViewName = findViewById<TextView>(R.id.name)
+        val textViewEmail = findViewById<TextView>(R.id.email)
 
-        intent?.let{
-            it.getStringExtra("fname")?.let{ fname->
-                textview_name.setText("$fname ")
-            }
+        // Retrieve user data
+        val user = UserData.loggedInUser
 
-            it.getStringExtra("lname")?.let{ lname->
-                textview_name.append("$lname")
-            }
+        if (user != null) {
+            // If user is logged in, display details from UserData
+            textViewName.text = "${user.firstName} ${user.lastName}"
+            textViewEmail.text = user.email
+        } else {
+            // Fallback to SharedPreferences if UserData is null
+            sharedPreferences = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+            val firstName = sharedPreferences.getString("firstName", "Unknown")
+            val lastName = sharedPreferences.getString("lastName", "User")
+            val email = sharedPreferences.getString("email", "No Email")
 
-            it.getStringExtra("email")?.let{ email ->
-                textview_email.setText("$email")
-            }
+            textViewName.text = "$firstName $lastName"
+            textViewEmail.text = email
         }
 
-        val home_button = findViewById<LinearLayout>(R.id.nav_home)
-        home_button.setOnClickListener {
+        val homeButton = findViewById<LinearLayout>(R.id.nav_home)
+        homeButton.setOnClickListener {
             Log.e("Home", "Moved to home!")
             Toast.makeText(this, "Home Page", Toast.LENGTH_LONG).show()
-
-            startActivity(
-                Intent(this, HomeActivity::class.java)
-            )
+            startActivity(Intent(this, HomeActivity::class.java))
         }
 
-        val profile_button = findViewById<TextView>(R.id.profile_info)
-        profile_button.setOnClickListener {
+        val profileButton = findViewById<TextView>(R.id.profile_info)
+        profileButton.setOnClickListener {
             Log.e("Profile", "Moved to profile!")
             Toast.makeText(this, "Profile Page", Toast.LENGTH_LONG).show()
-
-            startActivity(
-                Intent(this, ProfileActivity::class.java)
-            )
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
-
-        /*      Developer Page
-                val dev_button = findViewById<TextView>(R.id.about_dev)
-                dev_button.setOnClickListener {
-                    Log.e("Developer", "Moved to developer info!")
-                    Toast.makeText(this, "About us", Toast.LENGTH_LONG).show()
-
-                    val dev_intent = Intent(this, DeveloperActivity::class.java)
-                    startActivity(dev_intent)
-                }
-        */
     }
 }

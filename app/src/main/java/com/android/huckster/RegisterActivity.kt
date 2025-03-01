@@ -8,6 +8,7 @@ import android.graphics.Shader
 import android.os.Bundle
 import android.text.TextPaint
 import android.util.Log
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -69,12 +70,19 @@ class RegisterActivity : Activity() {
                 return@setOnClickListener
             }
 
+
+
             if(!password.toString().equals(checkpass.toString())){
                 Toast.makeText(this, "Password Mismatch!", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             // put another condition for both email (proper email format) and password (no slashes, dashes, underscores, punctuation marks)
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Enter a valid email address!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
 
+            UserData.registerUser(fname.toString(), lname.toString(), email.toString(), password.toString())
             Log.e("Log in", "Successful Registration!")
             Toast.makeText(this, "Log in!", Toast.LENGTH_LONG).show()
 
@@ -88,4 +96,5 @@ class RegisterActivity : Activity() {
             )
         }
     }
+
 }
