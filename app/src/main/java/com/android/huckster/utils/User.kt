@@ -1,4 +1,4 @@
-package com.android.huckster
+package com.android.huckster.utils
 
 data class User(val firstName: String, val lastName: String, val email: String, val password: String)
 

@@ -6,7 +6,7 @@
     <string name="email">E-mail</string>
     <string name="password">Password</string>
     <string name="logo">logo</string>
-    <string name="dont_have_account">Don\'t have an account yet? </string>
+    <string name="dont_have_account">Don\'t have an account yet?</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="signup">Sign up</string>
     <string name="already_have_account">Already have an account?</string>
@@ -37,7 +37,7 @@
     <string name="about_app">About Huckster</string>
     <string name="developers">About The Developers</string>
     <string name="save">Save</string>
-    <string name="space"> </string>
+    <string name="space">&#160;</string>
     <string name="remember_me">Remember me</string>
     <string name="logout">Logout</string>
     <string name="logout_confirmation">Are you sure you want to log out?</string>
@@ -45,5 +45,24 @@
     <string name="log_out">Log Out</string>
     <string name="ervin_intro">Aspiring mobile developer exploring technologies and learning through hands-on projects. Passionate about deep-diving into topics that spark my curiosity and constantly challenging myself to grow. A bit shy at first, but easygoing once you get to know me!</string>
     <string name="ervin_name">Ervin Louis B. Villas</string>
-    <string name="ervin_contact">ervinlouis.villas@cit.edu\n+63-915-0432-243\noutlook</string>
+    <string name="ervin_contact">ervinlouis.villas@cit.edu\n+63 915 0432 243</string>
+    <string name="hector_name">John Hector P. Villarta</string>
+    <string name="hector_intro">A passionate creative with a love for both art and technology. My background in painting sharpens my eye for design, and I aspire to become a UI/UX designer or Data Analyst—blending aesthetics with functionality to craft impactful digital experiences.
+        \n\nBeyond the screen, I have a deep passion for travel, embracing spontaneity and drawing inspiration from new places and cultures. I thrive on impulsive adventures and creative problem-solving, always eager to explore fresh ideas and innovative solutions.
+        \n\nLet’s connect and create something amazing!</string>
+
+    <string name="hector_contact">johnhector.villarta@cit.edu\n+63 929 2982 322</string>
+    <string name="contact_at">Contact at:</string>
+    <string name="about_developers">About Developers</string>
+    <string name="meet_our_team">Meet our Team!</string>
+    <string name="ervin_pic">ervin_pic</string>
+    <string name="app_description">
+    <![CDATA[
+    Huckster is a business inventory management application designed specifically for small retail businesses, such as sari-sari stores and convenience stores.
+
+    \n\nThis platform enables business owners to efficiently manage, track, and optimize their product inventories.
+
+    \n\nBy providing an accessible interface and tools, Huckster empowers retailers to streamline operations, improve inventory accuracy, and make data-driven decisions to enhance business performance.
+    ]]>
+</string>
 </resources>

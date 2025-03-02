@@ -14,6 +14,10 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.android.huckster.utils.UserData
+import com.android.huckster.utils.longToast
+import com.android.huckster.utils.shortToast
+import com.android.huckster.utils.startLoginActivity
 
 class RegisterActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,11 +52,8 @@ class RegisterActivity : Activity() {
         val text_login = findViewById<LinearLayout>(R.id.layout_login)
         text_login.setOnClickListener {
             Log.e("Log in", "Moved to Login Page")
-            Toast.makeText(this, "Sign in!", Toast.LENGTH_LONG).show()
-
-            startActivity(
-                Intent(this, LoginActivity::class.java)
-            )
+            longToast("Sign in!")
+            startLoginActivity()
         }
 
         val button_landing = findViewById<Button>(R.id.button_to_login)
@@ -66,32 +67,33 @@ class RegisterActivity : Activity() {
             val checkpass = edittext_checkpass.text
 
             if(email.isNullOrEmpty() || password.isNullOrEmpty() || fname.isNullOrEmpty() || lname.isNullOrEmpty() || checkpass.isNullOrEmpty()) {
-                Toast.makeText(this, "Fill out everything with your details to sign up!", Toast.LENGTH_LONG).show()
+                longToast("Fill out everything with your details to sign up!")
                 return@setOnClickListener
             }
             // put another condition for both email (proper email format) and password (no slashes, dashes, underscores, punctuation marks)
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(this, "Enter a valid email address!", Toast.LENGTH_LONG).show()
+                longToast("Enter a valid email address!")
                 return@setOnClickListener
             }
 
             //validation for registeredEmails
             if (UserData.isEmailRegistered(email.toString())) {
-                Toast.makeText(this, "Email is already registered. Please log in!", Toast.LENGTH_LONG).show()
+                longToast("Email is already registered. Please log in!")
                 return@setOnClickListener
             }
 
 
             if(!password.toString().equals(checkpass.toString())){
-                Toast.makeText(this, "Password Mismatch!", Toast.LENGTH_LONG).show()
+                longToast( "Password Mismatch!")
                 return@setOnClickListener
             }
 
 
             UserData.registerUser(fname.toString(), lname.toString(), email.toString(), password.toString())
             Log.e("Log in", "Successful Registration!")
-            Toast.makeText(this, "Log in!", Toast.LENGTH_LONG).show()
-
+            longToast("Log in!")
+            startLoginActivity()
+/*
             startActivity(
                 Intent(this, LoginActivity::class.java).apply{
                     putExtra("email", email.toString())
@@ -100,6 +102,8 @@ class RegisterActivity : Activity() {
                     putExtra("lname", lname.toString())
                 }
             )
+
+ */
         }
     }
 

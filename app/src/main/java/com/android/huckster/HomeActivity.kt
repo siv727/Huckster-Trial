@@ -1,20 +1,15 @@
 package com.android.huckster
 
 import android.app.Activity
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.android.huckster.utils.UserData
+import com.android.huckster.utils.shortToast
+import com.android.huckster.utils.startSettingsActivity
 
 class HomeActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +48,10 @@ class HomeActivity : Activity() {
         val acc_button = findViewById<LinearLayout>(R.id.nav_account)
         acc_button.setOnClickListener {
             Log.e("Account", "Moved to account profile!")
-            Toast.makeText(this, "Account Settings", Toast.LENGTH_LONG).show()
-
+            shortToast("Account Settings")
+            startSettingsActivity()
+/*
+            `putExtra` redundant code-- already have userdata
             startActivity(
                 Intent(this, SettingsActivity::class.java).apply{
                     putExtra("fname", first_name)
@@ -62,6 +59,8 @@ class HomeActivity : Activity() {
                     putExtra("email", email_holder)
                 }
             )
+
+ */
         }
 
 /*      Idk if this is needed honestly

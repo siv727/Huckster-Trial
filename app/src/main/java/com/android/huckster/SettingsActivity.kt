@@ -14,6 +14,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.android.huckster.utils.UserData
+import com.android.huckster.utils.shortToast
+import com.android.huckster.utils.startAboutHucksterActivity
+import com.android.huckster.utils.startDeveloperPageActivity
+import com.android.huckster.utils.startProfileActivity
 
 class SettingsActivity : Activity() {
     private lateinit var imageSwitcher: ImageSwitcher
@@ -61,22 +66,28 @@ class SettingsActivity : Activity() {
         val homeButton = findViewById<LinearLayout>(R.id.nav_home)
         homeButton.setOnClickListener {
             Log.e("Home", "Moved to home!")
-            Toast.makeText(this, "Home Page", Toast.LENGTH_LONG).show()
+            shortToast("Home Page")
             startActivity(Intent(this, HomeActivity::class.java))
         }
 
         val profileButton = findViewById<TextView>(R.id.profile_info)
         profileButton.setOnClickListener {
             Log.e("Profile", "Moved to profile!")
-            Toast.makeText(this, "Profile Page", Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, ProfileActivity::class.java))
+            shortToast("Profile Page")
+            startProfileActivity()
         }
 
+        val aboutHucksterActivity = findViewById<TextView>(R.id.about_app)
+        aboutHucksterActivity.setOnClickListener {
+            Log.e("About Huclster","Moved to huckster page!")
+            shortToast("Huckster Page")
+            startAboutHucksterActivity()
+        }
         val aboutDevButton = findViewById<TextView>(R.id.about_dev)
         aboutDevButton.setOnClickListener{
             Log.e("About Developers", "Moved to developer page!")
-            Toast.makeText(this, "Developer Page", Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, DeveloperPageActivity::class.java))
+            shortToast("Developer Page")
+            startDeveloperPageActivity()
         }
 
         val logout_button = findViewById<Button>(R.id.button_to_logout)

@@ -9,8 +9,11 @@ import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.os.Bundle
 import android.text.TextPaint
-import android.util.Log
 import android.widget.*
+import com.android.huckster.utils.UserData
+import com.android.huckster.utils.longToast
+import com.android.huckster.utils.startHomeActivity
+import com.android.huckster.utils.startRegisterActivity
 
 class LoginActivity : Activity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -43,7 +46,7 @@ class LoginActivity : Activity() {
 
         // Navigate to RegisterActivity
         findViewById<LinearLayout>(R.id.layout_register).setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            startRegisterActivity()
         }
 
         // Login button click listener
@@ -52,13 +55,13 @@ class LoginActivity : Activity() {
             val password = edittextPassword.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Email and Password cannot be empty", Toast.LENGTH_LONG).show()
+                longToast("Email and Password cannot be empty")
                 return@setOnClickListener
             }
 
             // Authenticate user using UserData
             if (UserData.authenticate(email, password)) {
-                Toast.makeText(this, "Welcome to Huckster!", Toast.LENGTH_LONG).show()
+                longToast("Welcome to Huckster!")
 
                 // Store login details locally if "Remember Me" is checked
                 if (checkBoxRememberMe.isChecked) {
@@ -67,9 +70,9 @@ class LoginActivity : Activity() {
                     clearPreferences()
                 }
 
-                startActivity(Intent(this, HomeActivity::class.java))
+                startHomeActivity()
             } else {
-                Toast.makeText(this, "Invalid email or password!", Toast.LENGTH_LONG).show()
+                longToast("Invalid email or password!")
             }
         }
     }

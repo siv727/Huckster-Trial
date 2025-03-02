@@ -10,6 +10,9 @@ import android.widget.FrameLayout
 import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.Toast
+import com.android.huckster.utils.UserData
+import com.android.huckster.utils.shortToast
+import com.android.huckster.utils.startSettingsActivity
 
 class ProfileActivity : Activity() {
     private lateinit var changeImageSwitcher: ImageSwitcher
@@ -36,11 +39,9 @@ class ProfileActivity : Activity() {
 
         settings_button.setOnClickListener {
             Log.e("Settings", "Back to settings")
-            Toast.makeText(this, "Settings", Toast.LENGTH_LONG).show()
+            shortToast("Settings")
 
-            startActivity(
-                Intent(this, SettingsActivity::class.java)
-            )
+            startSettingsActivity()
         }
 
         val firstNameInput = findViewById<EditText>(R.id.change_firstname)
@@ -63,15 +64,13 @@ class ProfileActivity : Activity() {
                 val success = UserData.updateUserProfile(newFirstName, newLastName, newEmail)
 
                 if (success) {
-                    Toast.makeText(this, "Profile updated!", Toast.LENGTH_SHORT).show()
-                    startActivity(
-                        Intent(this, SettingsActivity::class.java)
-                    )
+                    shortToast("Profile updated!")
+                    startSettingsActivity()
                 } else {
-                    Toast.makeText(this, "Failed to update profile!", Toast.LENGTH_SHORT).show()
+                    shortToast( "Failed to update profile!")
                 }
             } else {
-                Toast.makeText(this, "Please fill out all fields!", Toast.LENGTH_SHORT).show()
+                shortToast("Please fill out all fields!")
             }
         }
     }

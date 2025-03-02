@@ -14,12 +14,13 @@
             android:id="@+id/back_settings"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/baseline_arrow_back_24" />
+            android:src="@drawable/baseline_arrow_back_24"
+            />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="About Developers"
+            android:text="@string/about_developers"
             android:textSize="25sp"
             android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/trade_blue"
@@ -27,8 +28,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Meet our Team\!"
-            android:textSize="18dp"
+            android:text="@string/meet_our_team"
+            android:textSize="18sp"
             android:textColor="@color/trade_blue_50percent"
             android:fontFamily="@font/rdh_semi_bold"
             android:layout_marginBottom="20dp"
@@ -143,7 +144,7 @@
                 android:elevation="5dp"
                 android:fontFamily="@font/rdh_semi_bold"
                 android:padding="20dp"
-                android:text="A passionate Android developer with a love for clean and efficient code. Specializes in UI/UX and backend optimization."
+                android:text="@string/hector_intro"
                 android:textAlignment="center"
                 android:textStyle=""
                 android:textColor="@color/white"
@@ -160,8 +161,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="johnhector.villarta@cit.edu\n+63-xxx-xxxx-xxx\noutlook"
                 android:textColor="@color/white"
+                android:text="@string/hector_contact"
                 android:textSize="13sp"
                 android:fontFamily="@font/rdh_semi_bold"
                 android:paddingStart="25dp" />
