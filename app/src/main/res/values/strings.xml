@@ -43,4 +43,7 @@
     <string name="logout_confirmation">Are you sure you want to log out?</string>
     <string name="cancel">Cancel</string>
     <string name="log_out">Log Out</string>
+    <string name="ervin_intro">Aspiring mobile developer exploring technologies and learning through hands-on projects. Passionate about deep-diving into topics that spark my curiosity and constantly challenging myself to grow. A bit shy at first, but easygoing once you get to know me!</string>
+    <string name="ervin_name">Ervin Louis B. Villas</string>
+    <string name="ervin_contact">ervinlouis.villas@cit.edu\n+63-915-0432-243\noutlook</string>
 </resources>

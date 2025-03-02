@@ -25,4 +25,17 @@ object UserData {
     }
 
     fun getUsers(): List<User> = users.toList() // Returns a copy of the user list
+
+    fun updateUserProfile(newFirstName: String, newLastName: String, newEmail: String): Boolean {
+        loggedInUser?.let { user ->
+            val index = users.indexOfFirst { it.email == user.email }
+            if (index != -1) {
+                // Update user details
+                users[index] = User(newFirstName, newLastName, newEmail, user.password)
+                loggedInUser = users[index] // Update logged-in user reference
+                return true
+            }
+        }
+        return false // User not found
+    }
 }

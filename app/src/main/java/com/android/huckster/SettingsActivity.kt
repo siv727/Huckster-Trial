@@ -72,6 +72,13 @@ class SettingsActivity : Activity() {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
 
+        val aboutDevButton = findViewById<TextView>(R.id.about_dev)
+        aboutDevButton.setOnClickListener{
+            Log.e("About Developers", "Moved to developer page!")
+            Toast.makeText(this, "Developer Page", Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, DeveloperPageActivity::class.java))
+        }
+
         val logout_button = findViewById<Button>(R.id.button_to_logout)
 
         logout_button.setOnClickListener {

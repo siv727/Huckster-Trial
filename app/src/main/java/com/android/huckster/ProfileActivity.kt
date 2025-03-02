@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageSwitcher
 import android.widget.ImageView
@@ -39,6 +41,38 @@ class ProfileActivity : Activity() {
             startActivity(
                 Intent(this, SettingsActivity::class.java)
             )
+        }
+
+        val firstNameInput = findViewById<EditText>(R.id.change_firstname)
+        val lastNameInput = findViewById<EditText>(R.id.change_lastname)
+        val emailInput = findViewById<EditText>(R.id.change_email)
+        val saveBtn = findViewById<Button>(R.id.button_save)
+
+        UserData.loggedInUser?.let { user ->
+            firstNameInput.setText(user.firstName)
+            lastNameInput.setText(user.lastName)
+            emailInput.setText(user.email)
+        }
+
+        saveBtn.setOnClickListener {
+            val newFirstName = firstNameInput.text.toString().trim()
+            val newLastName = lastNameInput.text.toString().trim()
+            val newEmail = emailInput.text.toString().trim()
+
+            if (newFirstName.isNotEmpty() && newLastName.isNotEmpty() && newEmail.isNotEmpty()) {
+                val success = UserData.updateUserProfile(newFirstName, newLastName, newEmail)
+
+                if (success) {
+                    Toast.makeText(this, "Profile updated!", Toast.LENGTH_SHORT).show()
+                    startActivity(
+                        Intent(this, SettingsActivity::class.java)
+                    )
+                } else {
+                    Toast.makeText(this, "Failed to update profile!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Please fill out all fields!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
