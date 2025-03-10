@@ -93,17 +93,15 @@ class RegisterActivity : Activity() {
             Log.e("Log in", "Successful Registration!")
             longToast("Log in!")
             startLoginActivity()
-/*
+
             startActivity(
                 Intent(this, LoginActivity::class.java).apply{
                     putExtra("email", email.toString())
                     putExtra("password", password.toString())
-                    putExtra("fname", fname.toString())
-                    putExtra("lname", lname.toString())
                 }
             )
 
- */
+
         }
     }
 

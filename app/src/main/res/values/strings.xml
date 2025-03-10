@@ -65,4 +65,6 @@
     \n\nBy providing an accessible interface and tools, Huckster empowers retailers to streamline operations, improve inventory accuracy, and make data-driven decisions to enhance business performance.
     ]]>
 </string>
+    <string name="product_list">Product List</string>
+    <string name="product">Product</string>
 </resources>

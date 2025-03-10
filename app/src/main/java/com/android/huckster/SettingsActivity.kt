@@ -18,6 +18,7 @@ import com.android.huckster.utils.UserData
 import com.android.huckster.utils.shortToast
 import com.android.huckster.utils.startAboutHucksterActivity
 import com.android.huckster.utils.startDeveloperPageActivity
+import com.android.huckster.utils.startProductListActivity
 import com.android.huckster.utils.startProfileActivity
 
 class SettingsActivity : Activity() {
@@ -66,27 +67,30 @@ class SettingsActivity : Activity() {
         val homeButton = findViewById<LinearLayout>(R.id.nav_home)
         homeButton.setOnClickListener {
             Log.e("Home", "Moved to home!")
-            shortToast("Home Page")
-            startActivity(Intent(this, HomeActivity::class.java))
+            startProductListActivity()
+        }
+
+        val list_button = findViewById<LinearLayout>(R.id.nav_list)
+        list_button.setOnClickListener {
+            Log.e("Product List", "Moved to product list!")
+            Toast.makeText(this, "Product List", Toast.LENGTH_LONG).show()
+            startActivity(Intent(this,ProductListActivity::class.java))
         }
 
         val profileButton = findViewById<TextView>(R.id.profile_info)
         profileButton.setOnClickListener {
             Log.e("Profile", "Moved to profile!")
-            shortToast("Profile Page")
             startProfileActivity()
         }
 
         val aboutHucksterActivity = findViewById<TextView>(R.id.about_app)
         aboutHucksterActivity.setOnClickListener {
             Log.e("About Huclster","Moved to huckster page!")
-            shortToast("Huckster Page")
             startAboutHucksterActivity()
         }
         val aboutDevButton = findViewById<TextView>(R.id.about_dev)
         aboutDevButton.setOnClickListener{
             Log.e("About Developers", "Moved to developer page!")
-            shortToast("Developer Page")
             startDeveloperPageActivity()
         }
 

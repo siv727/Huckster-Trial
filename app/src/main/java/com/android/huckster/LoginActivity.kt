@@ -49,6 +49,19 @@ class LoginActivity : Activity() {
             startRegisterActivity()
         }
 
+        //passing data via Intent (Register email and password to Login Fields)
+        var emailFromRegister : String = ""
+        var passwordFromRegister : String = ""
+
+        intent?.let{
+            it.getStringExtra("email")?.let { email -> emailFromRegister = email }
+            it.getStringExtra("password")?.let{ password -> passwordFromRegister = password}
+        }
+
+        edittextEmail.setText(emailFromRegister)
+        edittextPassword.setText(passwordFromRegister)
+
+
         // Login button click listener
         buttonLogin.setOnClickListener {
             val email = edittextEmail.text.toString().trim()

@@ -11,6 +11,7 @@ import android.widget.Toast
 import android.widget.ViewFlipper
 import com.android.huckster.utils.UserData
 import com.android.huckster.utils.shortToast
+import com.android.huckster.utils.startProductListActivity
 import com.android.huckster.utils.startSettingsActivity
 
 class HomeActivity : Activity() {
@@ -59,7 +60,7 @@ class HomeActivity : Activity() {
         val acc_button = findViewById<LinearLayout>(R.id.nav_account)
         acc_button.setOnClickListener {
             Log.e("Account", "Moved to account profile!")
-            shortToast("Account Settings")
+
             startSettingsActivity()
 /*
             `putExtra` redundant code-- already have userdata
@@ -85,16 +86,14 @@ class HomeActivity : Activity() {
         }
 */
 
-/*      Reserved for later stages of development
+      //Reserved for later stages of development
         val list_button = findViewById<LinearLayout>(R.id.nav_list)
         list_button.setOnClickListener {
             Log.e("Product List", "Moved to product list!")
-            Toast.makeText(this, "Product List", Toast.LENGTH_LONG).show()
-
-            val prodlist_intent = Intent(this, ProductListActivity::class.java)
-            startActivity(prodlist_intent)
+            startProductListActivity()
         }
 
+/*
         val notif_button = findViewById<LinearLayout>(R.id.nav_notif)
         notif_button.setOnClickListener {
             Log.e("Notifications", "Moved to notifications!")
