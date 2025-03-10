@@ -4,9 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.ViewFlipper
 import com.android.huckster.utils.UserData
 import com.android.huckster.utils.shortToast
 import com.android.huckster.utils.startSettingsActivity
@@ -29,22 +31,31 @@ class HomeActivity : Activity() {
             textview_greeting.text = "Hello $first_name!"
         }
 
-/* tried using UserData class
-        intent?.let{
-            it.getStringExtra("email")?.let{ email ->
-                email_holder = email
-            }
+        val flipper = findViewById<ViewFlipper>(R.id.viewFlipper)
 
-            it.getStringExtra("fname")?.let{ fname ->
-                textview_greeting.setText("Hello $fname!")
-                first_name = fname
-            }
+        val slideInRight = AnimationUtils.loadAnimation(this, R.anim.slide_in_right)
+        val slideOutLeft = AnimationUtils.loadAnimation(this, R.anim.slide_out_left)
 
-            it.getStringExtra("lname")?.let{ lname ->
-                last_name = lname
-            }
-        }
-*/
+        flipper.setInAnimation(slideInRight)
+        flipper.setOutAnimation(slideOutLeft)
+
+
+        /* tried using UserData class
+                intent?.let{
+                    it.getStringExtra("email")?.let{ email ->
+                        email_holder = email
+                    }
+
+                    it.getStringExtra("fname")?.let{ fname ->
+                        textview_greeting.setText("Hello $fname!")
+                        first_name = fname
+                    }
+
+                    it.getStringExtra("lname")?.let{ lname ->
+                        last_name = lname
+                    }
+                }
+        */
         val acc_button = findViewById<LinearLayout>(R.id.nav_account)
         acc_button.setOnClickListener {
             Log.e("Account", "Moved to account profile!")
