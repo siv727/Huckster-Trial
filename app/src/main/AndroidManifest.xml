@@ -16,6 +16,9 @@
             android:name=".ProductListActivity"
             android:exported="false" />
         <activity
+            android:name=".EditProductActivity"
+            android:exported="false" />
+        <activity
             android:name=".AboutHucksterActivity"
             android:exported="false" />
         <activity
