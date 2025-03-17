@@ -1,6 +1,7 @@
 package com.android.huckster
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -10,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import com.android.huckster.utils.shortToast
+import com.android.huckster.utils.startEditProductActivity
 import com.android.huckster.utils.startHomeActivity
 import com.android.huckster.utils.startSettingsActivity
 
@@ -20,6 +22,12 @@ class ProductListActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_list)
+
+        val prod : TextView = findViewById(R.id.tempProd)
+
+        prod.setOnClickListener {
+            startEditProductActivity()
+        }
 
         val addSomethingButton: TextView = findViewById(R.id.add_something)
         val dynamicContainer: LinearLayout = findViewById(R.id.dynamicContainer)
