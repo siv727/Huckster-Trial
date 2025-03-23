@@ -24,7 +24,6 @@ class ProductListActivity : Activity() {
         setContentView(R.layout.activity_product_list)
 
         val prod : TextView = findViewById(R.id.tempProd)
-
         prod.setOnClickListener {
             startEditProductActivity()
         }
@@ -39,7 +38,7 @@ class ProductListActivity : Activity() {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            layoutParams.setMargins(0, 40, 0, 0)  // Set marginTop as 20px
+            layoutParams.setMargins(0, 40, 0, 0) // Set marginTop as 40px
             newLayout.layoutParams = layoutParams
             newLayout.orientation = LinearLayout.VERTICAL
 
@@ -66,7 +65,7 @@ class ProductListActivity : Activity() {
             newTextView.gravity = Gravity.CENTER
             newTextView.setText(R.string.product)
             newTextView.setTextSize(24f)
-            newTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER)
+            newTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
             newTextView.setPadding(20, 20, 20, 20)
 
             // Set the font using ResourcesCompat for compatibility
@@ -82,6 +81,12 @@ class ProductListActivity : Activity() {
                 newTextView.setTextColor(resources.getColor(R.color.trade_blue))
             }
 
+            // Add click listener to the product container
+            newLayout.setOnClickListener {
+                val productDialog = ProductActivity(this, newTextView.text.toString())
+                productDialog.showDialog()
+            }
+
             // Add the TextView to the new layout
             newLayout.addView(newTextView)
 
@@ -90,10 +95,14 @@ class ProductListActivity : Activity() {
         }
 
         val button_back = findViewById<ImageView>(R.id.back_settings)
-
         button_back.setOnClickListener {
             Log.e("Settings", "Back to settings")
             startHomeActivity()
         }
     }
+
+//    private fun showProductDialog(productName: String) {
+//        val productDialog = ProductActivity(this, productName)
+//        productDialog.show()
+//    }
 }
