@@ -31,10 +31,10 @@ class ProductListView(
 
         val product = productList[position]
 
-        productPic.setImageResource(product.photoRes)
+        productPic.setImageResource(product.photo)
         productName.setText("${product.productName}")
         productPrice.setText("${product.price}")
-        productStock.setText(("${product.stocks}"))
+        productStock.setText(("${product.quantity}"))
 
         return view
     }
