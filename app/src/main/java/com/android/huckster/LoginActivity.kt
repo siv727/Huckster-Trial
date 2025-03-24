@@ -30,37 +30,22 @@ class LoginActivity : Activity() {
 
         sharedPreferences = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
 
-        // Load saved credentials
-        loadPreferences(edittextEmail, edittextPassword, checkBoxRememberMe)
-
         // Apply gradient text color to Register link
-        textViewRegister.text = " Register!"
-        val paint: TextPaint = textViewRegister.paint
-        val width: Float = paint.measureText(textViewRegister.text.toString())
-        val textShader: Shader = LinearGradient(
-            0f, 0f, width, textViewRegister.textSize,
-            intArrayOf(Color.parseColor("#FFA500"), Color.parseColor("#C24733")),
-            null, Shader.TileMode.CLAMP
-        )
-        textViewRegister.paint.shader = textShader
+        applyGradientText(textViewRegister)
 
         // Navigate to RegisterActivity
         findViewById<LinearLayout>(R.id.layout_register).setOnClickListener {
             startRegisterActivity()
         }
 
-        //passing data via Intent (Register email and password to Login Fields)
-        var emailFromRegister : String = ""
-        var passwordFromRegister : String = ""
+        // Load saved credentials from shared preferences first
+        loadPreferences(edittextEmail, edittextPassword, checkBoxRememberMe)
 
-        intent?.let{
-            it.getStringExtra("email")?.let { email -> emailFromRegister = email }
-            it.getStringExtra("password")?.let{ password -> passwordFromRegister = password}
+        // Handle intent data (email and password from RegisterActivity)
+        intent?.let {
+            it.getStringExtra("email")?.let { email -> edittextEmail.setText(email) }
+            it.getStringExtra("password")?.let { password -> edittextPassword.setText(password) }
         }
-
-        edittextEmail.setText(emailFromRegister)
-        edittextPassword.setText(passwordFromRegister)
-
 
         // Login button click listener
         buttonLogin.setOnClickListener {
@@ -91,18 +76,17 @@ class LoginActivity : Activity() {
     }
 
     private fun savePreferences(email: String, password: String) {
-        val user = UserData.loggedInUser // Get logged-in user
+        val user = UserData.loggedInUser // Ensure this gets the correct user object
         if (user != null) {
             val editor = sharedPreferences.edit()
-            editor.putString("email", user.email)
+            editor.putString("email", email) // Store the email
             editor.putString("firstName", user.firstName)
             editor.putString("lastName", user.lastName)
-            editor.putString("password", password) // Store password if needed
+            editor.putString("password", password) // Store the password
             editor.putBoolean("rememberMe", true)
             editor.apply()
         }
     }
-
 
     private fun loadPreferences(edittextEmail: EditText, edittextPassword: EditText, checkBoxRememberMe: CheckBox) {
         val savedEmail = sharedPreferences.getString("email", "")
@@ -118,7 +102,21 @@ class LoginActivity : Activity() {
 
     private fun clearPreferences() {
         val editor = sharedPreferences.edit()
-        editor.clear()
+        editor.remove("email")
+        editor.remove("password")
+        editor.remove("rememberMe")
         editor.apply()
+    }
+
+    private fun applyGradientText(textView: TextView) {
+        textView.text = " Register!"
+        val paint: TextPaint = textView.paint
+        val width: Float = paint.measureText(textView.text.toString())
+        val textShader: Shader = LinearGradient(
+            0f, 0f, width, textView.textSize,
+            intArrayOf(Color.parseColor("#FFA500"), Color.parseColor("#C24733")),
+            null, Shader.TileMode.CLAMP
+        )
+        textView.paint.shader = textShader
     }
 }

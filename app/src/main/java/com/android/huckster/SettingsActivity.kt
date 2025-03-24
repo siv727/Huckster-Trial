@@ -123,6 +123,7 @@ class SettingsActivity : Activity() {
             this.startActivity(
                 Intent(this, LoginActivity::class.java)
             )
+            finishAffinity()
         }
         dialog.show()
     }

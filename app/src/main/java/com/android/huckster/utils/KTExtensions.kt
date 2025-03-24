@@ -27,6 +27,7 @@ fun Activity.startRegisterActivity() {
 
 fun Activity.startHomeActivity(){
     startActivity(Intent(this, HomeActivity::class.java))
+    finishAffinity()
 }
 
 fun Activity.startSettingsActivity(){
