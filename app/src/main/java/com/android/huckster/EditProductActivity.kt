@@ -1,35 +1,45 @@
 package com.android.huckster
 
-import android.app.Activity
-import android.os.Bundle
-import android.util.Log
+import android.app.AlertDialog
+import android.content.Context
+import android.view.LayoutInflater
 import android.widget.ArrayAdapter
-import android.widget.ImageView
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Spinner
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.android.huckster.utils.startHomeActivity
-import com.android.huckster.utils.startProductListActivity
+import android.widget.TextView
 
-class EditProductActivity : Activity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_product)
+class EditProductActivity(private val context: Context, private val productName: String) {
 
-        val unitSpinner: Spinner = findViewById(R.id.unit_spinner)
+    fun showDialog() {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.activity_edit_product, null)
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .create()
+
+        val productNameTextView: TextView = dialogView.findViewById(R.id.product_name)
+        val unitSpinner: Spinner = dialogView.findViewById(R.id.unit_spinner)
+        val priceEditText: EditText = dialogView.findViewById(R.id.price_edit_text)
+        val quantityEditText: EditText = dialogView.findViewById(R.id.quantity_edit_text)
+        val saveButton: Button = dialogView.findViewById(R.id.save_button)
+        val cancelButton: Button = dialogView.findViewById(R.id.cancel_button)
+
+        productNameTextView.text = productName
 
         val unitOptions = arrayOf("Piece", "Pack", "Box", "Kilogram")
-
-        val adapter = ArrayAdapter(this, R.layout.spinner_item, unitOptions)
-
+        val adapter = ArrayAdapter(context, R.layout.spinner_item, unitOptions)
         unitSpinner.adapter = adapter
 
-        val button_back = findViewById<ImageView>(R.id.back_settings)
-        button_back.setOnClickListener {
-            Log.e("Settings", "Back to settings")
-            startProductListActivity()
+        saveButton.setOnClickListener {
+            // Implement save logic here
+            dialog.dismiss()
         }
+
+        cancelButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }
+

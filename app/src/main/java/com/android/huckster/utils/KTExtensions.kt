@@ -5,7 +5,7 @@ import android.content.Intent
 import android.widget.Toast
 import com.android.huckster.AboutHucksterActivity
 import com.android.huckster.DeveloperPageActivity
-import com.android.huckster.EditProductActivity
+import com.android.huckster.NewProductActivity
 import com.android.huckster.HomeActivity
 import com.android.huckster.LoginActivity
 import com.android.huckster.ProductListActivity
@@ -54,5 +54,5 @@ fun Activity.startProductListActivity(){
 }
 
 fun Activity.startEditProductActivity(){
-    startActivity(Intent(this,EditProductActivity::class.java))
+    startActivity(Intent(this,NewProductActivity::class.java))
 }

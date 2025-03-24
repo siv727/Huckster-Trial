@@ -1,7 +1,6 @@
 package com.android.huckster
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -13,7 +12,6 @@ import android.widget.TextView
 import com.android.huckster.utils.Product
 import com.android.huckster.utils.ProductListView
 import androidx.core.content.res.ResourcesCompat
-import com.android.huckster.utils.shortToast
 import com.android.huckster.utils.startEditProductActivity
 import com.android.huckster.utils.startHomeActivity
 
@@ -155,7 +153,7 @@ class ProductListActivity : Activity() {
 
             // Add click listener to the product container
             newLayout.setOnClickListener {
-                val productDialog = ProductActivity(this, newTextView.text.toString())
+                val productDialog = EditProductActivity(this, newTextView.text.toString())
                 productDialog.showDialog()
             }
 
