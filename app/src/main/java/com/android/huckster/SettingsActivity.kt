@@ -18,6 +18,7 @@ import com.android.huckster.utils.UserData
 import com.android.huckster.utils.shortToast
 import com.android.huckster.utils.startAboutHucksterActivity
 import com.android.huckster.utils.startDeveloperPageActivity
+import com.android.huckster.utils.startHomeActivity
 import com.android.huckster.utils.startProductListActivity
 import com.android.huckster.utils.startProfileActivity
 
@@ -67,7 +68,7 @@ class SettingsActivity : Activity() {
         val homeButton = findViewById<LinearLayout>(R.id.nav_home)
         homeButton.setOnClickListener {
             Log.e("Home", "Moved to home!")
-            startProductListActivity()
+            startHomeActivity()
         }
 
         val list_button = findViewById<LinearLayout>(R.id.nav_list)
