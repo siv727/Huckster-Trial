@@ -17,10 +17,12 @@ class EditProductActivity(private val context: Context, private val productName:
             .setView(dialogView)
             .create()
 
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
         val productNameTextView: TextView = dialogView.findViewById(R.id.product_name)
         val unitSpinner: Spinner = dialogView.findViewById(R.id.unit_spinner)
         val priceEditText: EditText = dialogView.findViewById(R.id.price_edit_text)
-        val quantityEditText: EditText = dialogView.findViewById(R.id.quantity_edit_text)
+        val quantityEditText: EditText = dialogView.findViewById(R.id.stocks_edit_text)
         val saveButton: Button = dialogView.findViewById(R.id.save_button)
         val cancelButton: Button = dialogView.findViewById(R.id.cancel_button)
 

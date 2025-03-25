@@ -42,6 +42,7 @@
         android:textColor="@color/trade_blue"
         android:fontFamily="@font/montserrat_semi_bold"
         android:hint="Product Name"
+        android:inputType="text"
         android:layout_marginBottom="20dp"/>
 
     <!-- Category & Price Row -->
@@ -60,6 +61,7 @@
             android:textSize="12sp"
             android:textColor="@color/trade_blue"
             android:fontFamily="@font/montserrat_semi_bold"
+            android:inputType="text"
             android:hint="Category"/>
 
         <Space
@@ -76,7 +78,8 @@
             android:textSize="12sp"
             android:textColor="@color/trade_blue"
             android:fontFamily="@font/montserrat_semi_bold"
-            android:hint="Price"/>
+            android:hint="Price"
+            android:inputType="text"/>
     </LinearLayout>
 
     <!-- Stock Count & Unit Spinner Row -->
@@ -96,7 +99,8 @@
             android:textSize="12sp"
             android:textColor="@color/trade_blue"
             android:fontFamily="@font/montserrat_semi_bold"
-            android:hint="Stocks"/>
+            android:hint="Stocks"
+            android:inputType="text"/>
 
         <Space
             android:layout_width="10dp"
