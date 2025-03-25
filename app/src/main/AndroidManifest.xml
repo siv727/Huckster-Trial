@@ -13,16 +13,20 @@
         android:theme="@style/Theme.Huckster"
         tools:targetApi="31">
         <activity
+<<<<<<< HEAD
             android:name=".NotificationsActivity"
             android:exported="false" />
         <activity
             android:name=".ProductActivity"
+=======
+            android:name=".EditProductActivity"
+>>>>>>> feature/edit-product-page
             android:exported="false" />
         <activity
             android:name=".ProductListActivity"
             android:exported="false" />
         <activity
-            android:name=".EditProductActivity"
+            android:name=".NewProductActivity"
             android:exported="false" />
         <activity
             android:name=".AboutHucksterActivity"
