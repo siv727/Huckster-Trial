@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.android.huckster.utils.NotificationListView
 import com.android.huckster.utils.ProductData
+import com.android.huckster.utils.setNotifCountImage
 import com.android.huckster.utils.startHomeActivity
 import com.android.huckster.utils.startProductListActivity
 import com.android.huckster.utils.startSettingsActivity
@@ -34,15 +35,22 @@ class NotificationsActivity : Activity() {
             startHomeActivity()
         }
 
-        val acc_button = findViewById<LinearLayout>(R.id.nav_account)
-        acc_button.setOnClickListener {
-            startSettingsActivity()
+        val notifCount = findViewById<ImageView>(R.id.notif_count)
+        if(ProductData.getLowStockProductCount()!=0){
+            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
         }
 
         val list_button = findViewById<LinearLayout>(R.id.nav_list)
         list_button.setOnClickListener {
             startProductListActivity()
         }
+
+        val acc_button = findViewById<LinearLayout>(R.id.nav_account)
+        acc_button.setOnClickListener {
+            startSettingsActivity()
+        }
+
+
 
     }
 }

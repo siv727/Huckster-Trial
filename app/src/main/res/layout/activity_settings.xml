@@ -280,11 +280,26 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/notification_icon" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
+                <ImageView
+                    android:id="@+id/img_notif"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/notification_icon" />
+
+                <ImageView
+                    android:id="@+id/notif_count"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_margin="1dp"
+                    android:layout_alignEnd="@id/img_notif"
+                    android:layout_alignTop="@id/img_notif"
+                    android:layout_marginEnd="-2dp"
+                    android:layout_marginTop="-2dp"/>
+            </RelativeLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

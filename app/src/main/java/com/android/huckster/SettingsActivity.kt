@@ -14,7 +14,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.UserData
+import com.android.huckster.utils.setNotifCountImage
 import com.android.huckster.utils.shortToast
 import com.android.huckster.utils.startAboutHucksterActivity
 import com.android.huckster.utils.startDeveloperPageActivity
@@ -82,6 +84,10 @@ class SettingsActivity : Activity() {
         val notif_button = findViewById<LinearLayout>(R.id.nav_notif)
         notif_button.setOnClickListener {
             startNotificationsActivity()
+        }
+        val notifCount = findViewById<ImageView>(R.id.notif_count)
+        if(ProductData.getLowStockProductCount()!=0){
+            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
         }
 
         val profileButton = findViewById<TextView>(R.id.profile_info)

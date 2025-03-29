@@ -44,4 +44,9 @@ object ProductData {
     fun getLowStockProduct(): List<Product>{
         return products.filter { it.quantity <= 5 }
     }
+
+    fun getLowStockProductCount(): Int {
+        return getLowStockProduct().size
+    }
+
 }

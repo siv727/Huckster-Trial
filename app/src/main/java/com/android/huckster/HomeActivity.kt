@@ -5,11 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ViewFlipper
+import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.UserData
+import com.android.huckster.utils.setNotifCountImage
 import com.android.huckster.utils.shortToast
 import com.android.huckster.utils.startNotificationsActivity
 import com.android.huckster.utils.startProductListActivity
@@ -42,19 +45,26 @@ class HomeActivity : Activity() {
         flipper.setInAnimation(slideInRight)
         flipper.setOutAnimation(slideOutLeft)
 
-        val acc_button = findViewById<LinearLayout>(R.id.nav_account)
-        acc_button.setOnClickListener {
-            startSettingsActivity()
-        }
-
         val list_button = findViewById<LinearLayout>(R.id.nav_list)
         list_button.setOnClickListener {
             startProductListActivity()
         }
 
+
         val notif_button = findViewById<LinearLayout>(R.id.nav_notif)
         notif_button.setOnClickListener {
             startNotificationsActivity()
         }
+        val notifCount = findViewById<ImageView>(R.id.notif_count)
+        if(ProductData.getLowStockProductCount()!=0){
+            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
+        }
+
+        val acc_button = findViewById<LinearLayout>(R.id.nav_account)
+        acc_button.setOnClickListener {
+            startSettingsActivity()
+        }
+
+
     }
 }

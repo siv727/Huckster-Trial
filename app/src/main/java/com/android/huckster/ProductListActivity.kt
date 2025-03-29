@@ -13,6 +13,7 @@ import com.android.huckster.utils.Product
 import com.android.huckster.utils.ProductListView
 import androidx.core.content.res.ResourcesCompat
 import com.android.huckster.utils.ProductData
+import com.android.huckster.utils.setNotifCountImage
 import com.android.huckster.utils.startEditProductActivity
 import com.android.huckster.utils.startHomeActivity
 import com.android.huckster.utils.startNotificationsActivity
@@ -50,17 +51,23 @@ class ProductListActivity : Activity() {
             startHomeActivity()
         }
 
-        val acc_button = findViewById<LinearLayout>(R.id.nav_account)
-        acc_button.setOnClickListener {
-            startSettingsActivity()
-        }
-
 
 
         val notif_button = findViewById<LinearLayout>(R.id.nav_notif)
         notif_button.setOnClickListener {
             startNotificationsActivity()
         }
+        val notifCount = findViewById<ImageView>(R.id.notif_count)
+        if(ProductData.getLowStockProductCount()!=0){
+            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
+        }
+
+        val acc_button = findViewById<LinearLayout>(R.id.nav_account)
+        acc_button.setOnClickListener {
+            startSettingsActivity()
+        }
+
+
 
 
         val button_back = findViewById<ImageView>(R.id.back_settings)
