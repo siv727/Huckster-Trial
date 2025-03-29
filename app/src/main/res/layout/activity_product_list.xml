@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/welcome_yellow">
+    android:background="@color/welcome_yellow"
+    android:orientation="vertical"
+    android:padding="30dp">
 
-    <LinearLayout
-        android:id="@+id/dynamicContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="30dp">
+
 
         <ImageView
             android:id="@+id/back_settings"
@@ -40,65 +37,10 @@
 
             />
 
-        <!-- Ervin Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingVertical="24dp"
-            android:background="@drawable/dialog_background"
 
-            android:layout_marginBottom="20dp"
-            >
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/montserrat_semi_bold"
-                android:padding="8dp"
-                android:text="@string/product"
-                android:textColor="@color/trade_blue"
-                android:textSize="24sp" />
-
-
-
-        </LinearLayout>
-
-        <!-- Hector Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/color_gradient_button_2"
-            android:paddingVertical="24dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_semi_bold"
-                android:text="@string/product"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                android:padding="8dp"
-                android:layout_gravity="center"/>
-
-
-
-
-        </LinearLayout>
         <ListView
             android:id="@+id/listlist"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
-</ScrollView>
+            android:layout_height="match_parent" />
+
+</LinearLayout>
