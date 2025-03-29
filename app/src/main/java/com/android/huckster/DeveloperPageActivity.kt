@@ -18,7 +18,6 @@ class DeveloperPageActivity : Activity() {
 
         settings_button.setOnClickListener {
             Log.e("Settings", "Back to settings")
-            shortToast("Settings")
             startSettingsActivity()
         }
 

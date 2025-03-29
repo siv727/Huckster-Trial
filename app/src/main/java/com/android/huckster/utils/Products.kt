@@ -7,7 +7,7 @@ data class Product(
     val price: Double,
     val unit: String,
     val quantity: Int,
-    val photo : Int = R.drawable.huckster
+    val photo : Int = R.drawable.products_icon
 )
 
 object ProductData {
@@ -40,4 +40,8 @@ object ProductData {
     }
 
     fun getProducts(): List<Product> = products.toList() // Returns a copy of the product list
+
+    fun getLowStockProduct(): List<Product>{
+        return products.filter { it.quantity <= 5 }
+    }
 }

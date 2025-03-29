@@ -19,6 +19,7 @@ import com.android.huckster.utils.shortToast
 import com.android.huckster.utils.startAboutHucksterActivity
 import com.android.huckster.utils.startDeveloperPageActivity
 import com.android.huckster.utils.startHomeActivity
+import com.android.huckster.utils.startNotificationsActivity
 import com.android.huckster.utils.startProductListActivity
 import com.android.huckster.utils.startProfileActivity
 
@@ -76,6 +77,11 @@ class SettingsActivity : Activity() {
             Log.e("Product List", "Moved to product list!")
             Toast.makeText(this, "Product List", Toast.LENGTH_LONG).show()
             startActivity(Intent(this,ProductListActivity::class.java))
+        }
+
+        val notif_button = findViewById<LinearLayout>(R.id.nav_notif)
+        notif_button.setOnClickListener {
+            startNotificationsActivity()
         }
 
         val profileButton = findViewById<TextView>(R.id.profile_info)

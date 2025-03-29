@@ -1,5 +1,9 @@
 package com.android.huckster.utils
 
+
+
+
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +11,11 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.android.huckster.R
 
-class ProductListView(
+
+
+class NotificationListView(
     private val context : Context,
     private val productList : List<Product>
 
@@ -23,7 +28,7 @@ class ProductListView(
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView?: LayoutInflater.from(context)
-            .inflate(R.layout.product_list_view_item, parent,false)
+            .inflate(R.layout.notification_list_view_item, parent,false)
 
         val productPic = view.findViewById<ImageView>(R.id.product_photo)
         val productName = view.findViewById<TextView>(R.id.item_name)
@@ -32,17 +37,10 @@ class ProductListView(
 
         val product = productList[position]
 
-        productPic.setImageResource(R.drawable.products_icon)
+        productPic.setImageResource(R.drawable.notification_icon)
         productName.setText("${product.productName}")
-        productPrice.setText("\$${product.price}")
-        productStock.setText(("${product.quantity} ${product.unit}(s)"))
-
-        if(product.quantity<=5){
-            productStock.setTextColor(ContextCompat.getColor(context,R.color.reddish_white))
-            productStock.setText(("${product.quantity} ${product.unit}(s) left!"))
-        }else if(product.quantity>=50){
-            productStock.setTextColor(ContextCompat.getColor(context,R.color.green_thyme))
-        }
+        productPrice.setText("Price: \$${product.price}")
+        productStock.setText(("${product.quantity}${product.unit}(s) left!"))
 
         return view
     }

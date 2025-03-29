@@ -15,4 +15,7 @@
     <color name="welcome_yellow">#fbefb2</color>
     <color name="green">#00b464</color>
     <color name="off_white">#fefefe</color>
+    <color name="red">#f83e3e</color>
+    <color name="reddish_white">#f69697</color>
+    <color name="green_thyme">#5edc1f</color>
 </resources>

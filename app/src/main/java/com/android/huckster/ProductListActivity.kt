@@ -15,6 +15,9 @@ import androidx.core.content.res.ResourcesCompat
 import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.startEditProductActivity
 import com.android.huckster.utils.startHomeActivity
+import com.android.huckster.utils.startNotificationsActivity
+import com.android.huckster.utils.startProductListActivity
+import com.android.huckster.utils.startSettingsActivity
 
 class ProductListActivity : Activity() {
 
@@ -27,12 +30,8 @@ class ProductListActivity : Activity() {
 
         // Add a sample product if the list is empty (for testing)
         if (ProductData.getProducts().isEmpty()) {
-            ProductData.addProduct("Product1", "kilo", 5.0, 50, R.drawable.huckster)
+            ProductData.addProduct("Coke na Coke", "Bottle", 2.0, 43, R.drawable.products_icon)
         }
-
-        // Initialize adapter with dynamic product list
-
-
 
 
         val adapter = ProductListView(this, ProductData.getProducts())
@@ -46,6 +45,22 @@ class ProductListActivity : Activity() {
             startEditProductActivity()
         }
 
+        val home_button = findViewById<LinearLayout>(R.id.nav_home)
+        home_button.setOnClickListener {
+            startHomeActivity()
+        }
+
+        val acc_button = findViewById<LinearLayout>(R.id.nav_account)
+        acc_button.setOnClickListener {
+            startSettingsActivity()
+        }
+
+
+
+        val notif_button = findViewById<LinearLayout>(R.id.nav_notif)
+        notif_button.setOnClickListener {
+            startNotificationsActivity()
+        }
 
 
         val button_back = findViewById<ImageView>(R.id.back_settings)

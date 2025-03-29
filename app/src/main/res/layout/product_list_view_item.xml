@@ -20,29 +20,83 @@
         android:orientation="vertical"
         android:layout_marginLeft="8dp">
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Details:"
+            android:textSize="15sp"
+            android:textColor="@color/off_white"
+            android:textStyle="bold"
+            android:fontFamily="@font/rdh_semi_bold"/>
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name:"
+            android:textSize="15sp"
+            android:textColor="@color/trade_blue"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_semi_bold"/>
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:textSize="15sp"
+            android:textColor="@color/trade_blue"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_semi_bold"
+            />
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stocks"
+            android:textSize="15sp"
+            android:textColor="@color/trade_blue"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_semi_bold"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="15sp"
+            android:textColor="@color/off_white"
+            android:textStyle="bold"
+            android:fontFamily="@font/rdh_semi_bold"/>
+        <TextView
             android:id="@+id/item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name"
-            android:textSize="30sp"
-            android:textColor="@color/trade_blue"
-            android:textStyle="bold"/>
+            android:text="Product Name:"
+            android:textSize="15sp"
+            android:textColor="@color/off_white"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_semi_bold"/>
         <TextView
             android:id="@+id/item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Price"
-            android:textSize="30sp"
-            android:textColor="@color/trade_blue"
-            android:textStyle="bold"/>
+            android:textSize="15sp"
+            android:textColor="@color/welcome_yellow"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_semi_bold"
+            />
         <TextView
             android:id="@+id/item_stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Stocks"
-            android:textSize="30sp"
-            android:textColor="@color/trade_blue"
-            android:textStyle="bold"/>
+            android:textSize="15sp"
+            android:textColor="@color/powder_blue"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_semi_bold"/>
     </LinearLayout>
 
 </LinearLayout>

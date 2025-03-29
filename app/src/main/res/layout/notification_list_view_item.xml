@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/dialog_background"
+    android:padding="20dp"
+    android:elevation="20dp"
+    android:layout_marginBottom="10dp"
+    >
+
+    <ImageView
+        android:id="@+id/product_photo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/notification_icon"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Restock Needed!"
+            android:fontFamily="@font/rdh_semi_bold"
+            />
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textSize="15sp"
+            android:layout_marginTop="7dp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:textColor="@color/trade_blue"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:textSize="15sp"
+            android:textColor="@color/trade_yellow"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_semi_bold"/>
+        <TextView
+            android:id="@+id/item_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stocks"
+            android:textSize="15sp"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_semi_bold"/>
+    </LinearLayout>
+
+</LinearLayout>

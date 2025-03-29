@@ -67,4 +67,6 @@
 </string>
     <string name="product_list">Product List</string>
     <string name="product">Product</string>
+    <string name="notifications">Notifications</string>
+    <string name="clear">Clear</string>
 </resources>
