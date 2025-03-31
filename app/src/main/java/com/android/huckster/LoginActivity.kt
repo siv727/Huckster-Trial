@@ -10,12 +10,14 @@ import android.graphics.Shader
 import android.os.Bundle
 import android.text.TextPaint
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.android.huckster.utils.UserData
 import com.android.huckster.utils.longToast
 import com.android.huckster.utils.startHomeActivity
+import com.android.huckster.utils.startMainContainerActivity
 import com.android.huckster.utils.startRegisterActivity
 
-class LoginActivity : Activity() {
+class LoginActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,11 +74,16 @@ class LoginActivity : Activity() {
                     clearPreferences()
                 }
 
-                startHomeActivity()
+                onLoginSuccess()
             } else {
                 longToast("Invalid email or password!")
             }
         }
+    }
+
+    private fun onLoginSuccess() {
+        startMainContainerActivity() // Instead of startHomeActivity()
+        finish()
     }
 
     private fun savePreferences(email: String, password: String) {

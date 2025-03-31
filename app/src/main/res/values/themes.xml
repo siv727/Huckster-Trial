@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Huckster" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Huckster" parent="Theme.AppCompat.Light.NoActionBar" />
+    <style name="BottomNavTextActive" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/trade_blue</item>
+        <item name="fontFamily">@font/montserrat_bold</item>
+    </style>
+
+    <style name="BottomNavTextInactive" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/trade_blue_50percent</item>
+        <item name="fontFamily">@font/montserrat_semi_bold</item>
+    </style>
 </resources>

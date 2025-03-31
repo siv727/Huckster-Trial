@@ -1,15 +1,20 @@
 package com.android.huckster.utils
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.android.huckster.AboutHucksterActivity
 import com.android.huckster.DeveloperPageActivity
+import com.android.huckster.EditProductActivity
 import com.android.huckster.NewProductActivity
 import com.android.huckster.HomeActivity
 import com.android.huckster.LoginActivity
+import com.android.huckster.MainContainerActivity
 import com.android.huckster.NotificationsActivity
 import com.android.huckster.ProductListActivity
 import com.android.huckster.ProfileActivity
@@ -87,4 +92,35 @@ fun ImageView.setNotifCountImage(count : Int){
         9 -> this.setImageResource(R.drawable.notif_9)
         else -> this.setImageResource(R.drawable.notif_10)
     }
+}
+
+// Navigation extension functions
+fun Fragment.navigateToFragment(destinationId: Int) {
+    findNavController().navigate(destinationId)
+}
+
+// For starting activities from fragments
+fun Fragment.startEditProductActivity() {
+    startActivity(Intent(requireContext(), EditProductActivity::class.java))
+}
+
+fun Fragment.startProfileActivity() {
+    startActivity(Intent(requireContext(), ProfileActivity::class.java))
+}
+
+fun Fragment.startAboutHucksterActivity() {
+    startActivity(Intent(requireContext(), AboutHucksterActivity::class.java))
+}
+
+fun Fragment.startDeveloperPageActivity() {
+    startActivity(Intent(requireContext(), DeveloperPageActivity::class.java))
+}
+
+// For starting MainContainerActivity with specific destination
+fun Context.startMainContainerActivity(startDestination: Int? = null) {
+    val intent = Intent(this, MainContainerActivity::class.java)
+    startDestination?.let {
+        intent.putExtra("startDestination", it)
+    }
+    startActivity(intent)
 }
