@@ -21,6 +21,28 @@ class MainContainerActivity : AppCompatActivity() {
         // Set up BottomNavigationView with NavController
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         bottomNavigationView.setupWithNavController(navController)
+
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    navController.navigate(R.id.homeFragment)
+                    true
+                }
+                R.id.navigation_products -> {
+                    navController.navigate(R.id.productListFragment)
+                    true
+                }
+                R.id.navigation_notifications -> {
+                    navController.navigate(R.id.notificationsFragment)
+                    true
+                }
+                R.id.navigation_account -> {
+                    navController.navigate(R.id.settingsFragment)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }
 
