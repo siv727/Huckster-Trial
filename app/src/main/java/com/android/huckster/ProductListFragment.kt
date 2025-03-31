@@ -1,5 +1,7 @@
 package com.android.huckster
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,12 +10,28 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import com.android.huckster.utils.ProductData
+import com.android.huckster.utils.ProductData.getProducts
+import com.android.huckster.utils.ProductData.updateProduct
 import com.android.huckster.utils.ProductListView
 import com.android.huckster.utils.setNotifCountImage
 import com.android.huckster.utils.startEditProductActivity
 
 class ProductListFragment : Fragment() {
+    // Put this and updateProductList in Extensions
+    private val addProductLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // Refresh product list when a new product is successfully added
+            updateProductList()
+        }
+    }
+
+    private fun updateProductList() {
+        val listView = view?.findViewById<ListView>(R.id.listlist)
+        listView?.adapter = ProductListView(requireContext(), ProductData.getProducts())
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,7 +55,8 @@ class ProductListFragment : Fragment() {
 
         val addProd: TextView = view.findViewById(R.id.add_something)
         addProd.setOnClickListener {
-            startEditProductActivity()
+            val intent = Intent(requireActivity(), NewProductActivity::class.java)
+            addProductLauncher.launch(intent)
         }
 
         // Setup notification count badge
@@ -49,7 +68,7 @@ class ProductListFragment : Fragment() {
         // Back button is optional with bottom navigation
         val buttonBack = view.findViewById<ImageView>(R.id.back_settings)
         buttonBack.setOnClickListener {
-            requireActivity().onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 }

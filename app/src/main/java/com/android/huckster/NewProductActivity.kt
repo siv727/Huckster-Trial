@@ -1,6 +1,7 @@
 package com.android.huckster
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
@@ -29,8 +30,7 @@ class NewProductActivity : Activity() {
 
         // Back button
         buttonBack.setOnClickListener {
-            Log.e("Settings", "Back to Product List")
-            startProductListActivity()
+            finish()
         }
 
         // Add Product Button Click
@@ -64,7 +64,9 @@ class NewProductActivity : Activity() {
 
             if (success) {
                 shortToast("Product Added!")
-                startProductListActivity() // Go back to product list
+                val resultIntent = Intent()
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish() // Go back to product list
             } else {
                 shortToast("Product Already Exists");
             }

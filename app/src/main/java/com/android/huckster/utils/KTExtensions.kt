@@ -100,9 +100,9 @@ fun Fragment.navigateToFragment(destinationId: Int) {
 }
 
 // For starting activities from fragments
-fun Fragment.startEditProductActivity() {
-    startActivity(Intent(requireContext(), EditProductActivity::class.java))
-}
+//fun Fragment.startEditProductActivity() {
+//    startActivity(Intent(requireContext(), EditProductActivity::class.java))
+//}
 
 fun Fragment.startProfileActivity() {
     startActivity(Intent(requireContext(), ProfileActivity::class.java))
