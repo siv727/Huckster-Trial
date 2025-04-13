@@ -14,31 +14,23 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.ViewFlipper
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.ViewModelProvider
 import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.ProductListView
+import com.android.huckster.utils.SharedProductViewModel
 import com.android.huckster.utils.UserData
 import com.android.huckster.utils.setNotifCountImage
 import com.android.huckster.utils.startEditProductActivity
 
 class HomeFragment : Fragment() {
-    // Please put this in Extensions
-    private val addProductLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            // Refresh product list when a new product is successfully added
-            updateProductList()
-        }
+    private lateinit var sharedViewModel: SharedProductViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedViewModel = ViewModelProvider(requireActivity())[SharedProductViewModel::class.java]
     }
 
-    // Also this one in Extensions
-    private fun updateProductList() {
-        val listView = view?.findViewById<ListView>(R.id.listlist)
-        listView?.adapter = ProductListView(requireContext(), ProductData.getProducts())
-    }
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -46,30 +38,23 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val textViewGreeting = view.findViewById<TextView>(R.id.greeting)
-
-        // Retrieve user data from UserData
         UserData.loggedInUser?.let { user ->
             textViewGreeting.text = "Hello ${user.firstName}!"
         }
 
         val flipper = view.findViewById<ViewFlipper>(R.id.viewFlipper)
-        val slideInRight = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_in_right)
-        val slideOutLeft = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_out_left)
+        flipper.setInAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.slide_in_right))
+        flipper.setOutAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.slide_out_left))
 
-        flipper.setInAnimation(slideInRight)
-        flipper.setOutAnimation(slideOutLeft)
+//        val notifCount = view.findViewById<ImageView>(R.id.notif_count)
+//        if (ProductData.getLowStockProductCount() != 0) {
+//            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
+//        }
 
-        // Setup notification count badge if applicable
-        val notifCount = view.findViewById<ImageView>(R.id.notif_count)
-        if (ProductData.getLowStockProductCount() != 0) {
-            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
-        }
-
-        // Add button click listeners
         val addButton = view.findViewById<Button>(R.id.button_add)
         addButton.setOnClickListener {
-            val intent = Intent(requireActivity(), NewProductActivity::class.java)
-            addProductLauncher.launch(intent)
+            startActivity(Intent(requireContext(), NewProductActivity::class.java))
+            sharedViewModel.refreshProductList.value = true
         }
     }
 }

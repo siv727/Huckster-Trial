@@ -28,10 +28,10 @@ class NotificationsFragment : Fragment() {
         listNotifs.adapter = adapter
 
         // Display notification count
-        val notifCount = view.findViewById<ImageView>(R.id.notif_count)
-        if (ProductData.getLowStockProductCount() != 0) {
-            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
-        }
+//        val notifCount = view.findViewById<ImageView>(R.id.notif_count)
+//        if (ProductData.getLowStockProductCount() != 0) {
+//            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
+//        }
 
         // Back button handling
         val buttonBack = view.findViewById<ImageView>(R.id.back_settings)

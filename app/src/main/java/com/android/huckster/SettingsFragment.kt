@@ -42,10 +42,10 @@ class SettingsFragment : Fragment() {
         setupLogoutButton(view)
 
         // Setup notification badge
-        val notifCount = view.findViewById<ImageView>(R.id.notif_count)
-        if (ProductData.getLowStockProductCount() != 0) {
-            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
-        }
+//        val notifCount = view.findViewById<ImageView>(R.id.notif_count)
+//        if (ProductData.getLowStockProductCount() != 0) {
+//            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
+//        }
     }
 
     private fun setupImageSwitcher(view: View) {
