@@ -17,8 +17,7 @@ class DeveloperPageActivity : Activity() {
         val settings_button = findViewById<ImageView>(R.id.back_settings)
 
         settings_button.setOnClickListener {
-            Log.e("Settings", "Back to settings")
-            startSettingsActivity()
+            finish()
         }
 
     }

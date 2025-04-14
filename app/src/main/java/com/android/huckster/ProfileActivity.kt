@@ -41,7 +41,7 @@ class ProfileActivity : Activity() {
             Log.e("Settings", "Back to settings")
             shortToast("Settings")
 
-            startSettingsActivity()
+            finish()
         }
 
         val firstNameInput = findViewById<EditText>(R.id.change_firstname)
@@ -65,7 +65,7 @@ class ProfileActivity : Activity() {
 
                 if (success) {
                     shortToast("Profile updated!")
-                    startSettingsActivity()
+                    finish()
                 } else {
                     shortToast( "Failed to update profile!")
                 }
