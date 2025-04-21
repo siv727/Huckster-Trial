@@ -4,9 +4,9 @@ import com.android.huckster.R
 
 data class Product(
     val productName: String,
-    val price: Double,
-    val unit: String,
-    val quantity: Int,
+    var price: Double,
+    var unit: String,
+    var quantity: Int,
     val photo : Int = R.drawable.products_icon
 )
 

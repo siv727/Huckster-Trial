@@ -8,9 +8,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import com.android.huckster.utils.Product // Import this if it's in another package
+import com.android.huckster.utils.ProductData
 
-class EditProductActivity(private val context: Context, private val productName: String) {
-
+class EditProductActivity(
+    private val context: Context,
+    private val product: Product,
+    private val onProductUpdated: () -> Unit = {} // optional lambda with default
+) {
     fun showDialog() {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.activity_edit_product, null)
         val dialog = AlertDialog.Builder(context)
@@ -26,14 +31,27 @@ class EditProductActivity(private val context: Context, private val productName:
         val saveButton: Button = dialogView.findViewById(R.id.save_button)
         val cancelButton: Button = dialogView.findViewById(R.id.cancel_button)
 
-        productNameTextView.text = productName
+        productNameTextView.text = product.productName
+        priceEditText.setText(product.price.toString())
+        quantityEditText.setText(product.quantity.toString())
 
         val unitOptions = arrayOf("Piece", "Pack", "Box", "Kilogram")
         val adapter = ArrayAdapter(context, R.layout.spinner_item, unitOptions)
         unitSpinner.adapter = adapter
 
+        val unitIndex = unitOptions.indexOf(product.unit)
+        if (unitIndex != -1) {
+            unitSpinner.setSelection(unitIndex)
+        }
+
         saveButton.setOnClickListener {
-            // Implement save logic here
+            val newPrice = priceEditText.text.toString().toDoubleOrNull() ?: product.price
+            val newQuantity = quantityEditText.text.toString().toIntOrNull() ?: product.quantity
+            val newUnit = unitSpinner.selectedItem.toString()
+
+            ProductData.updateProduct(product.productName, newUnit, newPrice, newQuantity)
+
+            onProductUpdated() // <-- Callback triggered here
             dialog.dismiss()
         }
 

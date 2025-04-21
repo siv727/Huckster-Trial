@@ -3,100 +3,109 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@drawable/color_gradient_button_2"
-    android:padding="20dp"
-    android:elevation="10dp"
-    android:layout_marginBottom="10dp"
+    android:paddingBottom="5dp"
+    android:elevation="5dp"
+    android:layout_marginBottom="7dp"
     >
-
-    <ImageView
-        android:id="@+id/product_photo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/huckster_logo"/>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="8dp">
-        <TextView
+        android:orientation="horizontal"
+        android:padding="20dp"
+        android:elevation="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/color_gradient_button">
+        <ImageView
+            android:id="@+id/product_photo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/huckster_logo"/>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Details:"
-            android:textSize="15sp"
-            android:textColor="@color/off_white"
-            android:textStyle="bold"
-            android:fontFamily="@font/rdh_semi_bold"/>
-        <TextView
+            android:orientation="vertical"
+            android:layout_marginLeft="8dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Details:"
+                android:textSize="15sp"
+                android:textColor="@color/off_white"
+                android:textStyle="bold"
+                android:fontFamily="@font/rdh_semi_bold"/>
+            <TextView
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name:"
-            android:textSize="15sp"
-            android:textColor="@color/trade_blue"
-            android:textStyle="bold"
-            android:fontFamily="@font/montserrat_semi_bold"/>
-        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name:"
+                android:textSize="15sp"
+                android:textColor="@color/trade_blue"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semi_bold"/>
+            <TextView
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Price"
-            android:textSize="15sp"
-            android:textColor="@color/trade_blue"
-            android:textStyle="bold"
-            android:fontFamily="@font/montserrat_semi_bold"
-            />
-        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:textSize="15sp"
+                android:textColor="@color/trade_blue"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semi_bold"
+                />
+            <TextView
 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stocks"
+                android:textSize="15sp"
+                android:textColor="@color/trade_blue"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semi_bold"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Stocks"
-            android:textSize="15sp"
-            android:textColor="@color/trade_blue"
-            android:textStyle="bold"
-            android:fontFamily="@font/montserrat_semi_bold"/>
+            android:orientation="vertical"
+            android:layout_marginLeft="8dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="15sp"
+                android:textColor="@color/off_white"
+                android:textStyle="bold"
+                android:fontFamily="@font/rdh_semi_bold"/>
+            <TextView
+                android:id="@+id/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Product Name:"
+                android:textSize="15sp"
+                android:textColor="@color/off_white"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semi_bold"/>
+            <TextView
+                android:id="@+id/item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:textSize="15sp"
+                android:textColor="@color/welcome_yellow"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semi_bold"
+                />
+            <TextView
+                android:id="@+id/item_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stocks"
+                android:textSize="15sp"
+                android:textColor="@color/powder_blue"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semi_bold"/>
+        </LinearLayout>
+
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="8dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="15sp"
-            android:textColor="@color/off_white"
-            android:textStyle="bold"
-            android:fontFamily="@font/rdh_semi_bold"/>
-        <TextView
-            android:id="@+id/item_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Product Name:"
-            android:textSize="15sp"
-            android:textColor="@color/off_white"
-            android:textStyle="bold"
-            android:fontFamily="@font/montserrat_semi_bold"/>
-        <TextView
-            android:id="@+id/item_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Price"
-            android:textSize="15sp"
-            android:textColor="@color/welcome_yellow"
-            android:textStyle="bold"
-            android:fontFamily="@font/montserrat_semi_bold"
-            />
-        <TextView
-            android:id="@+id/item_stock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Stocks"
-            android:textSize="15sp"
-            android:textColor="@color/powder_blue"
-            android:textStyle="bold"
-            android:fontFamily="@font/montserrat_semi_bold"/>
-    </LinearLayout>
+
 
 </LinearLayout>
