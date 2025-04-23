@@ -12,7 +12,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.android.huckster.utils.UserData
 import com.android.huckster.utils.shortToast
-import com.android.huckster.utils.startSettingsActivity
 
 class ProfileActivity : Activity() {
     private lateinit var changeImageSwitcher: ImageSwitcher

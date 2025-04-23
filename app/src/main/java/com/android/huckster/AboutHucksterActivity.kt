@@ -4,9 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
-
 import com.android.huckster.utils.shortToast
-import com.android.huckster.utils.startSettingsActivity
 
 class AboutHucksterActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {

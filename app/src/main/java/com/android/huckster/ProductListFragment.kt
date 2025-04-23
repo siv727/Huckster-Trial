@@ -42,11 +42,6 @@ class ProductListFragment : Fragment() {
             startActivity(Intent(requireContext(), NewProductActivity::class.java))
         }
 
-        // Back button
-        view.findViewById<ImageView>(R.id.back_settings).setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-
         // Item click opens Edit dialog
         listView.setOnItemClickListener { _, _, position, _ ->
             val selectedProduct = ProductData.getProducts()[position]

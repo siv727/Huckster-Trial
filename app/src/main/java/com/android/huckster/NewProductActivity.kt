@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import com.android.huckster.utils.ProductData
-import com.android.huckster.utils.startProductListActivity
 import com.android.huckster.R
 import com.android.huckster.utils.shortToast
 

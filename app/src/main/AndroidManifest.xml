@@ -16,13 +16,7 @@
             android:name=".MainContainerActivity"
             android:exported="false" />
         <activity
-            android:name=".NotificationsActivity"
-            android:exported="false" />
-        <activity
             android:name=".EditProductActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProductListActivity"
             android:exported="false" />
         <activity
             android:name=".NewProductActivity"
@@ -34,13 +28,7 @@
             android:name=".DeveloperPageActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity"
-            android:exported="false" />
-        <activity
             android:name=".ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomeActivity"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"

@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import com.android.huckster.utils.shortToast
-import com.android.huckster.utils.startSettingsActivity
 
 class DeveloperPageActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {

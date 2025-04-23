@@ -17,7 +17,7 @@
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#80FFFFFF"
+        android:background="#F3F2E6"
         app:elevation="0dp"
         app:itemIconSize="24dp"
         app:itemTextAppearanceActive="@style/BottomNavTextActive"

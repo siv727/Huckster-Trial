@@ -32,11 +32,5 @@ class NotificationsFragment : Fragment() {
 //        if (ProductData.getLowStockProductCount() != 0) {
 //            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
 //        }
-
-        // Back button handling
-        val buttonBack = view.findViewById<ImageView>(R.id.back_settings)
-        buttonBack.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
     }
 }
