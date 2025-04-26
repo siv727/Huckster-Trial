@@ -16,8 +16,9 @@ import android.widget.TextView
 import android.widget.Toast
 import com.android.huckster.utils.UserData
 import com.android.huckster.utils.longToast
-import com.android.huckster.utils.shortToast
 import com.android.huckster.utils.startLoginActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class RegisterActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,39 +61,43 @@ class RegisterActivity : Activity() {
         button_landing.setOnClickListener {
             Log.e("Register", "Logging in credentials!")
 
-            val email = edittext_email.text
-            val password = edittext_password.text
-            val fname = edittext_fname.text
-            val lname = edittext_lname.text
-            val checkpass = edittext_checkpass.text
+            val email = edittext_email.text.toString().trim()
+            val password = edittext_password.text.toString().trim()
+            val firstName = edittext_fname.text.toString().trim()
+            val lastName = edittext_lname.text.toString().trim()
+            val checkpass = edittext_checkpass.text.toString().trim()
 
-            if(email.isNullOrEmpty() || password.isNullOrEmpty() || fname.isNullOrEmpty() || lname.isNullOrEmpty() || checkpass.isNullOrEmpty()) {
+            if(email.isNullOrEmpty() || password.isNullOrEmpty() || firstName.isNullOrEmpty() || lastName.isNullOrEmpty() || checkpass.isNullOrEmpty()) {
                 longToast("Fill out everything with your details to sign up!")
                 return@setOnClickListener
             }
-            // put another condition for both email (proper email format) and password (no slashes, dashes, underscores, punctuation marks)
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                longToast("Enter a valid email address!")
-                return@setOnClickListener
-            }
 
-            //validation for registeredEmails
-            if (UserData.isEmailRegistered(email.toString())) {
-                longToast("Email is already registered. Please log in!")
-                return@setOnClickListener
-            }
-
-
-            if(!password.toString().equals(checkpass.toString())){
+            if(!password.equals(checkpass)){
                 longToast( "Password Mismatch!")
                 return@setOnClickListener
             }
 
-
-            UserData.registerUser(fname.toString(), lname.toString(), email.toString(), password.toString())
-            Log.e("Log in", "Successful Registration!")
-            longToast("Log in!")
-            startLoginActivity()
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Save user details to the Realtime Database
+                        val userId = FirebaseAuth.getInstance().currentUser?.uid
+                        val user = User(firstName, lastName, email)
+                        userId?.let {
+                            FirebaseDatabase.getInstance().getReference("Users").child(it).setValue(user)
+                                .addOnCompleteListener { dbTask ->
+                                    if (dbTask.isSuccessful) {
+                                        Toast.makeText(this, "Sign-Up Successful", Toast.LENGTH_SHORT).show()
+                                        finish() // Close RegisterActivity and return to LoginActivity
+                                    } else {
+                                        Toast.makeText(this, "Database Error: ${dbTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                        }
+                    } else {
+                        Toast.makeText(this, "Sign-Up Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
 
             startActivity(
                 Intent(this, LoginActivity::class.java).apply{
@@ -100,9 +105,7 @@ class RegisterActivity : Activity() {
                     putExtra("password", password.toString())
                 }
             )
-
-
         }
     }
-
+    data class User(val firstName: String, val lastName: String, val email: String)
 }

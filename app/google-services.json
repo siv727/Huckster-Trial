@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "617873335592",
+    "project_id": "huckster-a5c57",
+    "storage_bucket": "huckster-a5c57.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617873335592:android:36b53f5fcf68432fc29c1d",
+        "android_client_info": {
+          "package_name": "com.android.huckster"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj9FbtfgKHSLESokl1NIcqmIpH0zz9CB8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

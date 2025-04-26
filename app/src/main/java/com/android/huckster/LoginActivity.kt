@@ -15,9 +15,9 @@ import com.android.huckster.utils.UserData
 import com.android.huckster.utils.longToast
 import com.android.huckster.utils.startMainContainerActivity
 import com.android.huckster.utils.startRegisterActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +29,6 @@ class LoginActivity : AppCompatActivity() {
         val buttonLogin = findViewById<Button>(R.id.button_login)
         val textViewRegister: TextView = findViewById(R.id.textview_register)
 
-        sharedPreferences = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-
-        //ADMIN direct user and password:
-        val adminUserAndPass : String = "xxxxx"
-
-
         // Apply gradient text color to Register link
         applyGradientText(textViewRegister)
 
@@ -42,9 +36,6 @@ class LoginActivity : AppCompatActivity() {
         findViewById<LinearLayout>(R.id.layout_register).setOnClickListener {
             startRegisterActivity()
         }
-
-        // Load saved credentials from shared preferences first
-        loadPreferences(edittextEmail, edittextPassword, checkBoxRememberMe)
 
         // Handle intent data (email and password from RegisterActivity)
         intent?.let {
@@ -62,60 +53,21 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Authenticate user using UserData
-            if (UserData.authenticate(email, password) || email == adminUserAndPass) {
-                longToast("Welcome to Huckster!")
-
-                // Store login details locally if "Remember Me" is checked
-                if (checkBoxRememberMe.isChecked) {
-                    savePreferences(email, password)
-                } else {
-                    clearPreferences()
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        longToast("Welcome to Huckster!")
+                        onLoginSuccess()
+                    } else {
+                        longToast("Sign-In Failed: ${task.exception?.message}")
+                    }
                 }
-
-                onLoginSuccess()
-            } else {
-                longToast("Invalid email or password!")
-            }
         }
     }
 
     private fun onLoginSuccess() {
         startMainContainerActivity() // Instead of startHomeActivity()
         finish()
-    }
-
-    private fun savePreferences(email: String, password: String) {
-        val user = UserData.loggedInUser // Ensure this gets the correct user object
-        if (user != null) {
-            val editor = sharedPreferences.edit()
-            editor.putString("email", email) // Store the email
-            editor.putString("firstName", user.firstName)
-            editor.putString("lastName", user.lastName)
-            editor.putString("password", password) // Store the password
-            editor.putBoolean("rememberMe", true)
-            editor.apply()
-        }
-    }
-
-    private fun loadPreferences(edittextEmail: EditText, edittextPassword: EditText, checkBoxRememberMe: CheckBox) {
-        val savedEmail = sharedPreferences.getString("email", "")
-        val savedPassword = sharedPreferences.getString("password", "")
-        val isRemembered = sharedPreferences.getBoolean("rememberMe", false)
-
-        if (isRemembered) {
-            edittextEmail.setText(savedEmail)
-            edittextPassword.setText(savedPassword)
-            checkBoxRememberMe.isChecked = true
-        }
-    }
-
-    private fun clearPreferences() {
-        val editor = sharedPreferences.edit()
-        editor.remove("email")
-        editor.remove("password")
-        editor.remove("rememberMe")
-        editor.apply()
     }
 
     private fun applyGradientText(textView: TextView) {
