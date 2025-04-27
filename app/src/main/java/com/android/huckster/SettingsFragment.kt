@@ -1,29 +1,24 @@
 package com.android.huckster
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.ImageSwitcher
-import android.widget.ImageView
-import android.widget.TextView
-import com.android.huckster.utils.ProductData
+import android.widget.*
+import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.android.huckster.utils.UserData
-import com.android.huckster.utils.setNotifCountImage
 import com.android.huckster.utils.startAboutHucksterActivity
 import com.android.huckster.utils.startDeveloperPageActivity
 import com.android.huckster.utils.startProfileActivity
 
 class SettingsFragment : Fragment() {
     private lateinit var imageSwitcher: ImageSwitcher
-    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,20 +31,16 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupImageSwitcher(view)
-        setupUserInfo(view)
+        setupViews(view)
+        loadCachedUserInfo() // Display cached data immediately
+        fetchAndDisplayUserInfo() // Fetch fresh data in the background
         setupMenuItems(view)
         setupLogoutButton(view)
-
-        // Setup notification badge
-//        val notifCount = view.findViewById<ImageView>(R.id.notif_count)
-//        if (ProductData.getLowStockProductCount() != 0) {
-//            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
-//        }
     }
 
-    private fun setupImageSwitcher(view: View) {
+    private fun setupViews(view: View) {
         imageSwitcher = view.findViewById(R.id.imageSwitcher)
+
         imageSwitcher.setFactory {
             ImageView(requireContext()).apply {
                 scaleType = ImageView.ScaleType.CENTER_CROP
@@ -59,34 +50,64 @@ class SettingsFragment : Fragment() {
                 )
             }
         }
-        imageSwitcher.setImageResource(R.drawable.profile_default)
+
+        // Load saved image from SharedPreferences
+        val savedImage = UserData.loadProfileImage(requireContext())
+        if (savedImage != null) {
+            Glide.with(this)
+                .load(savedImage)
+                .placeholder(R.drawable.profile_default)
+                .into(imageSwitcher.currentView as ImageView)
+        } else {
+            Glide.with(this)
+                .load(R.drawable.profile_default)
+                .into(imageSwitcher.currentView as ImageView)
+        }
     }
 
-    private fun setupUserInfo(view: View) {
-        val textViewName = view.findViewById<TextView>(R.id.name)
-        val textViewEmail = view.findViewById<TextView>(R.id.email)
+    fun fetchAndDisplayUserInfo() {
+        val textViewName = view?.findViewById<TextView>(R.id.name)
+        val textViewEmail = view?.findViewById<TextView>(R.id.email)
 
-        // Retrieve user data
-        val user = UserData.loggedInUser
+        // Fetch user data from Firebase asynchronously
+        UserData.fetchLoggedInUser { user ->
+            if (user != null) {
+                // Update UI with fresh data
+                textViewName?.text = "${user.firstName} ${user.lastName}"
+                textViewEmail?.text = user.email
 
-        if (user != null) {
-            textViewName.text = "${user.firstName} ${user.lastName}"
-            textViewEmail.text = user.email
-        } else {
-            sharedPreferences = requireActivity().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-            val firstName = sharedPreferences.getString("firstName", "Unknown")
-            val lastName = sharedPreferences.getString("lastName", "User")
-            val email = sharedPreferences.getString("email", "No Email")
+                // Cache the user data
+                val sharedPreferences = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                sharedPreferences.edit()
+                    .putString("firstName", user.firstName)
+                    .putString("lastName", user.lastName)
+                    .putString("email", user.email)
+                    .apply()
 
-            textViewName.text = "$firstName $lastName"
-            textViewEmail.text = email
+                // Load profile image from Firebase
+                val savedImage = UserData.loadProfileImage(requireContext())
+                if (savedImage != null) {
+                    Glide.with(this)
+                        .load(savedImage)
+                        .placeholder(R.drawable.profile_default)
+                        .into(imageSwitcher.currentView as ImageView)
+                }
+            } else {
+                // Handle error case
+                textViewName?.text = "Unknown User"
+                textViewEmail?.text = "No Email"
+                Glide.with(this)
+                    .load(R.drawable.profile_default)
+                    .into(imageSwitcher.currentView as ImageView)
+            }
         }
     }
 
     private fun setupMenuItems(view: View) {
         val profileButton = view.findViewById<TextView>(R.id.profile_info)
         profileButton.setOnClickListener {
-            startProfileActivity()
+            val intent = Intent(requireContext(), ProfileActivity::class.java)
+            startActivityForResult(intent, PROFILE_UPDATE_REQUEST_CODE)
         }
 
         val aboutHucksterActivity = view.findViewById<TextView>(R.id.about_app)
@@ -97,6 +118,56 @@ class SettingsFragment : Fragment() {
         val aboutDevButton = view.findViewById<TextView>(R.id.about_dev)
         aboutDevButton.setOnClickListener {
             startDeveloperPageActivity()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PROFILE_UPDATE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            // Refresh user details
+            fetchAndDisplayUserInfo()
+
+            // Load saved image from SharedPreferences
+            val savedImage = UserData.loadProfileImage(requireContext())
+            if (savedImage != null) {
+                Glide.with(this)
+                    .load(savedImage)
+                    .placeholder(R.drawable.profile_default)
+                    .into(imageSwitcher.currentView as ImageView)
+            } else {
+                Glide.with(this)
+                    .load(R.drawable.profile_default)
+                    .into(imageSwitcher.currentView as ImageView)
+            }
+        }
+    }
+
+    companion object {
+        private const val PROFILE_UPDATE_REQUEST_CODE = 1
+    }
+
+    private fun loadCachedUserInfo() {
+        val textViewName = view?.findViewById<TextView>(R.id.name)
+        val textViewEmail = view?.findViewById<TextView>(R.id.email)
+
+        // Load cached user info
+        val cachedUser = UserData.loadUserData(requireContext())
+        if (cachedUser != null) {
+            textViewName?.text = "${cachedUser.firstName} ${cachedUser.lastName}"
+            textViewEmail?.text = cachedUser.email
+
+            // Load profile image from cached photo
+            Glide.with(this)
+                .load(cachedUser.photo) // Can be Base64 decoded or a URL
+                .placeholder(R.drawable.profile_default)
+                .into(imageSwitcher.currentView as ImageView)
+        } else {
+            // Display default values
+            textViewName?.text = "Unknown User"
+            textViewEmail?.text = "No Email"
+            Glide.with(this)
+                .load(R.drawable.profile_default)
+                .into(imageSwitcher.currentView as ImageView)
         }
     }
 

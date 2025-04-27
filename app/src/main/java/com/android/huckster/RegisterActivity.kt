@@ -8,7 +8,6 @@ import android.graphics.Shader
 import android.os.Bundle
 import android.text.TextPaint
 import android.util.Log
-import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -18,7 +17,6 @@ import com.android.huckster.utils.UserData
 import com.android.huckster.utils.longToast
 import com.android.huckster.utils.startLoginActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 class RegisterActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,8 +42,7 @@ class RegisterActivity : Activity() {
                 Color.parseColor("#FFA500"),
                 Color.parseColor("#FFA500"),
                 Color.parseColor("#C24733"),
-
-                ),
+            ),
             null, Shader.TileMode.CLAMP
         )
         textViewLogin.paint.shader = textShader
@@ -67,13 +64,13 @@ class RegisterActivity : Activity() {
             val lastName = edittext_lname.text.toString().trim()
             val checkpass = edittext_checkpass.text.toString().trim()
 
-            if(email.isNullOrEmpty() || password.isNullOrEmpty() || firstName.isNullOrEmpty() || lastName.isNullOrEmpty() || checkpass.isNullOrEmpty()) {
+            if (email.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || checkpass.isEmpty()) {
                 longToast("Fill out everything with your details to sign up!")
                 return@setOnClickListener
             }
 
-            if(!password.equals(checkpass)){
-                longToast( "Password Mismatch!")
+            if (password != checkpass) {
+                longToast("Password Mismatch!")
                 return@setOnClickListener
             }
 
@@ -81,18 +78,13 @@ class RegisterActivity : Activity() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Save user details to the Realtime Database
-                        val userId = FirebaseAuth.getInstance().currentUser?.uid
-                        val user = User(firstName, lastName, email)
-                        userId?.let {
-                            FirebaseDatabase.getInstance().getReference("Users").child(it).setValue(user)
-                                .addOnCompleteListener { dbTask ->
-                                    if (dbTask.isSuccessful) {
-                                        Toast.makeText(this, "Sign-Up Successful", Toast.LENGTH_SHORT).show()
-                                        finish() // Close RegisterActivity and return to LoginActivity
-                                    } else {
-                                        Toast.makeText(this, "Database Error: ${dbTask.exception?.message}", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
+                        UserData.registerUser(firstName, lastName, email) { success ->
+                            if (success) {
+                                Toast.makeText(this, "Sign-Up Successful", Toast.LENGTH_SHORT).show()
+                                finish() // Close RegisterActivity and return to LoginActivity
+                            } else {
+                                Toast.makeText(this, "Failed to save user data.", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     } else {
                         Toast.makeText(this, "Sign-Up Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
@@ -101,11 +93,10 @@ class RegisterActivity : Activity() {
 
             startActivity(
                 Intent(this, LoginActivity::class.java).apply{
-                    putExtra("email", email.toString())
-                    putExtra("password", password.toString())
+                    putExtra("email", email)
+                    putExtra("password", password)
                 }
             )
         }
     }
-    data class User(val firstName: String, val lastName: String, val email: String)
 }
