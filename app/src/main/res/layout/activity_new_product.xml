@@ -28,8 +28,8 @@
         android:textColor="@color/trade_blue"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"/>
 
     <!-- Product Name Input -->
     <EditText
@@ -45,74 +45,50 @@
         android:inputType="text"
         android:layout_marginBottom="20dp"/>
 
-    <!-- Category & Price Row -->
-    <LinearLayout
+    <EditText
+        android:id="@+id/category"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="50dp"
+        android:paddingHorizontal="14dp"
+        android:background="@drawable/inner_shadow"
+        android:textSize="12sp"
+        android:textColor="@color/trade_blue"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:inputType="text"
+        android:hint="Category"
+        android:layout_marginBottom="20dp"/>
 
-        <EditText
-            android:id="@+id/category"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:paddingHorizontal="14dp"
-            android:background="@drawable/inner_shadow"
-            android:textSize="12sp"
-            android:textColor="@color/trade_blue"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:inputType="text"
-            android:hint="Category"/>
-
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="1dp"/>
-
-        <EditText
-            android:id="@+id/price"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:paddingHorizontal="14dp"
-            android:background="@drawable/inner_shadow"
-            android:textSize="12sp"
-            android:textColor="@color/trade_blue"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:hint="Price"
-            android:inputType="text"/>
-    </LinearLayout>
-
-    <!-- Stock Count & Unit Spinner Row -->
-    <LinearLayout
+    <EditText
+        android:id="@+id/price"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_height="50dp"
+        android:paddingHorizontal="14dp"
+        android:background="@drawable/inner_shadow"
+        android:textSize="12sp"
+        android:textColor="@color/trade_blue"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:inputType="text"
+        android:hint="Price"
+        android:layout_marginBottom="20dp"/>
 
-        <EditText
-            android:id="@+id/stock_count"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:paddingHorizontal="14dp"
-            android:background="@drawable/inner_shadow"
-            android:textSize="12sp"
-            android:textColor="@color/trade_blue"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:hint="Stocks"
-            android:inputType="text"/>
+    <EditText
+        android:id="@+id/stock_count"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingHorizontal="14dp"
+        android:background="@drawable/inner_shadow"
+        android:textSize="12sp"
+        android:textColor="@color/trade_blue"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:hint="Stocks"
+        android:inputType="text"
+        android:layout_marginBottom="20dp"/>
 
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="1dp"/>
-
-        <Spinner
-            android:id="@+id/unit_spinner"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@drawable/inner_shadow"/>
-    </LinearLayout>
+    <Spinner
+        android:id="@+id/unit_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/inner_shadow" />
 
     <!-- Add Product Button -->
     <Button
@@ -120,7 +96,7 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/color_gradient_button"
         android:fontFamily="@font/montserrat_bold"
         android:text="Add Product"

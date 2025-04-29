@@ -12,11 +12,11 @@ data class User(
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
-    val photo: String = "" // URL for the user's profile photo
+    val photo: String = ""
 )
 
 object UserData {
-    var loggedInUser: User? = null // Stores currently logged-in user
+    var loggedInUser: User? = null
 
     // Save profile image to SharedPreferences as Base64
     fun saveProfileImage(context: Context, bitmap: Bitmap?) {
@@ -139,6 +139,22 @@ object UserData {
             User(firstName, lastName, email, photo ?: "")
         } else {
             null
+        }
+    }
+
+    fun changePassword(newPassword: String, callback: (Boolean, String?) -> Unit) {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            user.updatePassword(newPassword)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        callback(true, null) // Password changed successfully
+                    } else {
+                        callback(false, task.exception?.message) // Error occurred
+                    }
+                }
+        } else {
+            callback(false, "User not authenticated")
         }
     }
 }

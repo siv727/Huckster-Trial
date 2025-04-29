@@ -1,52 +1,108 @@
 package com.android.huckster.utils
 
-import com.android.huckster.R
+import com.google.firebase.database.FirebaseDatabase
 
 data class Product(
-    val productName: String,
-    var price: Double,
-    var unit: String,
-    var quantity: Int,
-    val photo : Int = R.drawable.products_icon
+    val productName: String = "",
+    var price: Double = 0.0,
+    var unit: String = "",
+    var quantity: Int = 0,
+    var category: String = ""
 )
 
 object ProductData {
-    private val products: MutableList<Product> = mutableListOf()
+    private val database = FirebaseDatabase.getInstance().getReference("Products")
 
-    var selectedProduct: Product? = null // Stores the currently selected product
+    // Add a new product to Firebase
+    fun addProduct(
+        productName: String,
+        unit: String,
+        price: Double,
+        quantity: Int,
+        category: String,
+        callback: (Boolean) -> Unit
+    ) {
+        val product = Product(productName, price, unit, quantity, category)
+        database.child(productName).setValue(product)
+            .addOnCompleteListener { task ->
+                callback(task.isSuccessful)
+            }
+    }
 
-    fun addProduct(productName: String, unit: String, price: Double, quantity: Int, photo: Int): Boolean {
-        if (products.any { it.productName == productName }) {
-            return false // Product already exists
+    // Update an existing product in Firebase
+    fun updateProduct(
+        productName: String,
+        newUnit: String,
+        newPrice: Double,
+        newQuantity: Int,
+        newCategory: String,
+        callback: (Boolean) -> Unit
+    ) {
+        val updates = mapOf(
+            "unit" to newUnit,
+            "price" to newPrice,
+            "quantity" to newQuantity,
+            "category" to newCategory
+        )
+        database.child(productName).updateChildren(updates)
+            .addOnCompleteListener { task ->
+                callback(task.isSuccessful)
+            }
+    }
+
+    // Remove a product from Firebase
+    fun removeProduct(productName: String, callback: (Boolean) -> Unit) {
+        database.child(productName).removeValue()
+            .addOnCompleteListener { task ->
+                callback(task.isSuccessful)
+            }
+    }
+
+    // Fetch all products from Firebase
+    fun getProducts(callback: (List<Product>) -> Unit) {
+        database.get().addOnSuccessListener { snapshot ->
+            val productList = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
+            callback(productList)
+        }.addOnFailureListener {
+            callback(emptyList())
         }
-
-        val newProduct = Product(productName, price, unit, quantity, photo)
-        products.add(newProduct)
-        return true // Successfully added
     }
 
-    fun removeProduct(productName: String): Boolean {
-        return products.removeIf { it.productName == productName }
-    }
-
-    fun updateProduct(productName: String, newUnit: String, newPrice: Double, newQuantity: Int): Boolean {
-        val index = products.indexOfFirst { it.productName == productName }
-        if (index != -1) {
-            // Update product details
-            products[index] = Product(productName, newPrice, newUnit, newQuantity)
-            return true
+    // Fetch low-stock products from Firebase
+    fun getLowStockProducts(threshold: Int, callback: (List<Product>) -> Unit) {
+        database.get().addOnSuccessListener { snapshot ->
+            val lowStockProducts = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
+                .filter { it.quantity <= threshold }
+            callback(lowStockProducts)
+        }.addOnFailureListener {
+            callback(emptyList())
         }
-        return false // Product not found
     }
 
-    fun getProducts(): List<Product> = products.toList() // Returns a copy of the product list
-
-    fun getLowStockProduct(): List<Product>{
-        return products.filter { it.quantity <= 5 }
+    // Add a new category for products
+    fun addCategory(categoryName: String, callback: (Boolean) -> Unit) {
+        database.child("Categories").child(categoryName).setValue(true)
+            .addOnCompleteListener { task ->
+                callback(task.isSuccessful)
+            }
     }
 
-    fun getLowStockProductCount(): Int {
-        return getLowStockProduct().size
+    // Remove a category
+    fun removeCategory(categoryName: String, callback: (Boolean) -> Unit) {
+        database.child("Categories").child(categoryName).removeValue()
+            .addOnCompleteListener { task ->
+                callback(task.isSuccessful)
+            }
     }
 
+    // Fetch all categories
+    fun getCategories(callback: (List<String>) -> Unit) {
+        database.child("Categories").get()
+            .addOnSuccessListener { snapshot ->
+                val categories = snapshot.children.mapNotNull { it.key }
+                callback(categories)
+            }.addOnFailureListener {
+                callback(emptyList())
+            }
+    }
 }

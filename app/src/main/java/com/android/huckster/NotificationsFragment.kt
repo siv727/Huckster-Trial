@@ -12,6 +12,10 @@ import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.setNotifCountImage
 
 class NotificationsFragment : Fragment() {
+
+    private lateinit var listNotifs: ListView
+    private lateinit var notifCount: ImageView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -23,14 +27,28 @@ class NotificationsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listNotifs = view.findViewById<ListView>(R.id.listview_notification)
-        val adapter = NotificationListView(requireContext(), ProductData.getLowStockProduct())
-        listNotifs.adapter = adapter
+        listNotifs = view.findViewById(R.id.listview_notification)
+//        notifCount = view.findViewById(R.id.notif_count)
 
-        // Display notification count
-//        val notifCount = view.findViewById<ImageView>(R.id.notif_count)
-//        if (ProductData.getLowStockProductCount() != 0) {
-//            notifCount.setNotifCountImage(ProductData.getLowStockProductCount())
-//        }
+        // Fetch and display low-stock products
+        fetchAndDisplayLowStockProducts()
+    }
+
+    private fun fetchAndDisplayLowStockProducts() {
+        val lowStockThreshold = 5 // Define the threshold for low stock
+        ProductData.getLowStockProducts(lowStockThreshold) { lowStockProducts ->
+            // Update the ListView with low-stock products
+            val adapter = NotificationListView(requireContext(), lowStockProducts)
+            listNotifs.adapter = adapter
+
+            // Update the notification count image
+//            val lowStockCount = lowStockProducts.size
+//            if (lowStockCount > 0) {
+//                notifCount.setNotifCountImage(lowStockCount)
+//                notifCount.visibility = View.VISIBLE
+//            } else {
+//                notifCount.visibility = View.GONE // Hide the notification icon if no low-stock products
+//            }
+        }
     }
 }
