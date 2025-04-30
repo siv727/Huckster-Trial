@@ -23,7 +23,7 @@ class ProductListView(
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView?: LayoutInflater.from(context)
-            .inflate(R.layout.product_list_view_item, parent,false)
+            .inflate(R.layout.list_item_product_view, parent,false)
 
         val productPic = view.findViewById<ImageView>(R.id.product_photo)
         val productName = view.findViewById<TextView>(R.id.item_name)

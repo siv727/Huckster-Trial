@@ -110,6 +110,24 @@ class SettingsFragment : Fragment() {
             startActivityForResult(intent, PROFILE_UPDATE_REQUEST_CODE)
         }
 
+        val changePasswordButton = view.findViewById<TextView>(R.id.change_pass)
+        changePasswordButton.setOnClickListener {
+            val intent = Intent(requireContext(), ChangePasswordActivity::class.java)
+            startActivity(intent)
+        }
+
+        val categoriesButton = view.findViewById<TextView>(R.id.product_group)
+        categoriesButton.setOnClickListener {
+            val intent = Intent(requireContext(), CategoriesActivity::class.java)
+            startActivity(intent)
+        }
+
+        val stockButton = view.findViewById<TextView>(R.id.stock_notif)
+        stockButton.setOnClickListener {
+            val intent = Intent(requireContext(), StockLevelsActivity::class.java)
+            startActivity(intent)
+        }
+
         val aboutHucksterActivity = view.findViewById<TextView>(R.id.about_app)
         aboutHucksterActivity.setOnClickListener {
             startAboutHucksterActivity()

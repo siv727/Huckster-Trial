@@ -42,5 +42,10 @@ class HomeFragment : Fragment() {
         addButton.setOnClickListener {
             startActivity(Intent(requireContext(), NewProductActivity::class.java))
         }
+
+        val removeButton = view.findViewById<Button>(R.id.button_remove)
+        removeButton.setOnClickListener{
+            startActivity(Intent(requireContext(), RemoveProductActivity::class.java))
+        }
     }
 }

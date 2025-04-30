@@ -38,5 +38,6 @@
         android:layout_marginHorizontal="30dp"
         android:layout_marginBottom="30dp"
         android:divider="@null"
+        android:dividerHeight="5dp"
         android:layout_below="@id/add_something"/>
 </RelativeLayout>
