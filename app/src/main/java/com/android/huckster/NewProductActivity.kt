@@ -23,7 +23,7 @@ class NewProductActivity : Activity() {
         val buttonBack = findViewById<ImageView>(R.id.back_settings)
 
         // Preload the spinner with default unit values
-        val unitOptions = listOf("Unit", "package", "piece", "kilogram", "liter", "meter", "milliliter", "case")
+        val unitOptions = listOf("Unit", "Package", "Piece", "Kilogram", "Liter", "Meter", "Milliliter", "Case")
         val adapter = object : ArrayAdapter<String>(this, R.layout.spinner_item, unitOptions) {
             override fun isEnabled(position: Int): Boolean {
                 // Disable the placeholder item

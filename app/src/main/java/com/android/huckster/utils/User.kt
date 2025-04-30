@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import com.android.huckster.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.io.ByteArrayOutputStream
@@ -12,11 +13,11 @@ data class User(
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
-    val photo: String = ""
+    val photo: String = "" // URL for the user's profile photo
 )
 
 object UserData {
-    var loggedInUser: User? = null
+    var loggedInUser: User? = null // Stores currently logged-in user
 
     // Save profile image to SharedPreferences as Base64
     fun saveProfileImage(context: Context, bitmap: Bitmap?) {
@@ -44,19 +45,24 @@ object UserData {
     }
 
     // Register a new user in Firebase Realtime Database
-    fun registerUser(firstName: String, lastName: String, email: String, callback: (Boolean) -> Unit) {
+    fun registerUser(context: Context, firstName: String, lastName: String, email: String, callback: (Boolean) -> Unit) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId == null) {
             callback(false) // User not authenticated
             return
         }
 
-        // Default photo URL (replace with your hosted image URL)
-        val defaultPhotoUrl = "https://imgur.com/a/idk-SEPTK2x"
+        // Default photo as a drawable resource
+        val defaultPhotoUrl = "android.resource://${context.packageName}/${R.drawable.profile_default}"
 
         val user = User(firstName, lastName, email, defaultPhotoUrl)
         FirebaseDatabase.getInstance().getReference("Users").child(userId).setValue(user)
             .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Clear any existing cached profile image
+                    val sharedPreferences = context.getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
+                    sharedPreferences.edit().clear().apply()
+                }
                 callback(task.isSuccessful)
             }
     }
@@ -142,19 +148,11 @@ object UserData {
         }
     }
 
-    fun changePassword(newPassword: String, callback: (Boolean, String?) -> Unit) {
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
-            user.updatePassword(newPassword)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        callback(true, null) // Password changed successfully
-                    } else {
-                        callback(false, task.exception?.message) // Error occurred
-                    }
-                }
-        } else {
-            callback(false, "User not authenticated")
-        }
+    fun clearCachedUserData(context: Context) {
+//        val sharedPreferences = context.getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
+//        sharedPreferences.edit().clear().apply()
+
+        val userPrefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        userPrefs.edit().clear().apply()
     }
 }

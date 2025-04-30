@@ -195,6 +195,7 @@ class SettingsFragment : Fragment() {
 
         btnConfirm.setOnClickListener {
             UserData.loggedInUser = null
+            UserData.clearCachedUserData(requireContext())
             dialog.dismiss()
             requireActivity().startActivity(
                 Intent(requireContext(), LoginActivity::class.java)

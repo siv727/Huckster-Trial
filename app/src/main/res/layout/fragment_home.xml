@@ -27,18 +27,18 @@
         android:flipInterval="3000">
 
         <ImageView
-            android:layout_width="275dp"
-            android:layout_height="275dp"
+            android:layout_width="330dp"
+            android:layout_height="330dp"
             android:src="@drawable/stats" />
 
         <ImageView
-            android:layout_width="275dp"
-            android:layout_height="275dp"
+            android:layout_width="330dp"
+            android:layout_height="330dp"
             android:src="@drawable/sales" />
 
         <ImageView
-            android:layout_width="275dp"
-            android:layout_height="275dp"
+            android:layout_width="330dp"
+            android:layout_height="330dp"
             android:src="@drawable/product" />
     </ViewFlipper>
 
@@ -48,7 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/viewFlipper"
         android:orientation="vertical"
-        android:layout_marginStart="20dp">
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp">
 
         <!--Here we can add like Hello [First name] para personalized-->
         <TextView
@@ -56,8 +57,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="25dp"
             android:fontFamily="@font/rdh_semi_bold"
             android:textColor="@color/trade_blue"
             android:textSize="25sp"
@@ -68,7 +67,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:layout_marginStart="25dp"
             android:text="@string/todo"
             android:textSize="14sp"
             android:fontFamily="@font/rdh_semi_bold"
@@ -78,11 +76,13 @@
 
     <Button
         android:id="@+id/button_add"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/welcome"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/button_bg"
         android:fontFamily="@font/montserrat_bold"
         android:text="@string/add"
@@ -90,10 +90,12 @@
 
     <Button
         android:id="@+id/button_remove"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/button_add"
         android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/button_bg2"
         android:fontFamily="@font/montserrat_bold"

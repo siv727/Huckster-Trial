@@ -20,20 +20,22 @@ class EditProductActivity(
 
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        val productNameTextView: TextView = dialogView.findViewById(R.id.product_name)
+        val productNameEditText: EditText = dialogView.findViewById(R.id.name_edit_text)
         val unitSpinner: Spinner = dialogView.findViewById(R.id.unit_spinner)
         val categoryEditText: EditText = dialogView.findViewById(R.id.category_edit_text)
         val priceEditText: EditText = dialogView.findViewById(R.id.price_edit_text)
         val quantityEditText: EditText = dialogView.findViewById(R.id.stocks_edit_text)
+        val soldEditText: EditText = dialogView.findViewById(R.id.sold_edit_text)
         val saveButton: Button = dialogView.findViewById(R.id.save_button)
         val cancelButton: Button = dialogView.findViewById(R.id.cancel_button)
 
-        productNameTextView.text = product.productName
+        productNameEditText.setText(product.productName)
         categoryEditText.setText(product.category)
         priceEditText.setText(product.price.toString())
         quantityEditText.setText(product.quantity.toString())
+        soldEditText.setText(product.quantitySold.toString())
         
-        val unitOptions = listOf("package", "piece", "kilogram", "liter", "meter", "milliliter", "case")
+        val unitOptions = listOf("Package", "Piece", "Kilogram", "Liter", "Meter", "Milliliter", "Case")
         val adapter = ArrayAdapter(context, R.layout.spinner_item, unitOptions)
         unitSpinner.adapter = adapter
 
@@ -44,8 +46,10 @@ class EditProductActivity(
         }
 
         saveButton.setOnClickListener {
+            val newProductName = productNameEditText.text.toString().trim()
             val newPrice = priceEditText.text.toString().toDoubleOrNull() ?: product.price
             val newQuantity = quantityEditText.text.toString().toIntOrNull() ?: product.quantity
+            val newSold = soldEditText.text.toString().toIntOrNull() ?: product.quantitySold
             val newUnit = unitSpinner.selectedItem?.toString() ?: product.unit
             val newCategory = categoryEditText.text.toString().trim()
 
@@ -54,18 +58,15 @@ class EditProductActivity(
                 return@setOnClickListener
             }
 
-            if (unitSpinner.selectedItemPosition == 0) {
-                Toast.makeText(context, "Please select a valid unit!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
             // Update the product in the database
             ProductData.updateProduct(
-                productName = product.productName,
+                oldProductName = product.productName,
+                newProductName = newProductName,
                 newUnit = newUnit,
                 newPrice = newPrice,
                 newQuantity = newQuantity,
-                newCategory = newCategory
+                newCategory = newCategory,
+                newQuantitySold = newSold
             ) { success ->
                 if (success) {
                     Toast.makeText(context, "Product updated successfully!", Toast.LENGTH_SHORT).show()

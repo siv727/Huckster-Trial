@@ -103,21 +103,18 @@ class ProfileActivity : Activity() {
             selectedImageUri?.let { uri ->
                 val bitmap = uriToBitmap(uri)
                 if (bitmap != null) {
-                    // Save the image to SharedPreferences
-                    UserData.saveProfileImage(this, bitmap)
-
-                    // Update the ImageSwitcher in ProfileActivity
+                    UserData.saveProfileImage(this, bitmap) // Save image to shared preferences
                     Glide.with(this)
                         .load(bitmap)
                         .placeholder(R.drawable.profile_default)
                         .into(changeImageSwitcher.currentView as ImageView)
-
-                    // Notify SettingsFragment that the image has been updated
                     setResult(Activity.RESULT_OK, Intent().apply {
                         putExtra("image_updated", true)
                     })
+                } else {
+                    shortToast("Failed to load image!")
                 }
-            }
+            } ?: shortToast("No image selected!")
         }
     }
 

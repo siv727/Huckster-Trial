@@ -35,60 +35,66 @@
     <EditText
         android:id="@+id/product_name"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:paddingHorizontal="14dp"
+        android:paddingVertical="14dp"
         android:background="@drawable/inner_shadow"
         android:textSize="12sp"
         android:textColor="@color/trade_blue"
         android:fontFamily="@font/montserrat_semi_bold"
         android:hint="Product Name"
         android:inputType="text"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="10dp"/>
 
     <EditText
         android:id="@+id/category"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:paddingHorizontal="14dp"
+        android:paddingVertical="14dp"
         android:background="@drawable/inner_shadow"
         android:textSize="12sp"
         android:textColor="@color/trade_blue"
         android:fontFamily="@font/montserrat_semi_bold"
         android:inputType="text"
         android:hint="Category"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="10dp"/>
 
     <EditText
         android:id="@+id/price"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:paddingHorizontal="14dp"
+        android:paddingVertical="14dp"
         android:background="@drawable/inner_shadow"
         android:textSize="12sp"
         android:textColor="@color/trade_blue"
         android:fontFamily="@font/montserrat_semi_bold"
         android:inputType="text"
         android:hint="Price"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="10dp"/>
 
     <EditText
         android:id="@+id/stock_count"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:paddingHorizontal="14dp"
+        android:paddingVertical="14dp"
         android:background="@drawable/inner_shadow"
         android:textSize="12sp"
         android:textColor="@color/trade_blue"
         android:fontFamily="@font/montserrat_semi_bold"
         android:hint="Stocks"
         android:inputType="text"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="10dp"/>
 
     <Spinner
         android:id="@+id/unit_spinner"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/inner_shadow" />
+        android:layout_height="wrap_content"
+        android:paddingVertical="5dp"
+        android:background="@drawable/inner_shadow"
+        android:layout_marginBottom="10dp"/>
 
     <!-- Add Product Button -->
     <Button

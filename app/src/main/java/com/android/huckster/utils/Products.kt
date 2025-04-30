@@ -7,7 +7,9 @@ data class Product(
     var price: Double = 0.0,
     var unit: String = "",
     var quantity: Int = 0,
-    var category: String = ""
+    var category: String = "",
+    var quantitySold: Int = 0,
+    val sales: Double = 0.0
 )
 
 object ProductData {
@@ -22,7 +24,15 @@ object ProductData {
         category: String,
         callback: (Boolean) -> Unit
     ) {
-        val product = Product(productName, price, unit, quantity, category)
+        val product = Product(
+            productName,
+            price,
+            unit,
+            quantity,
+            category,
+            quantitySold = 0,
+            sales = 0.0
+        )
         database.child(productName).setValue(product)
             .addOnCompleteListener { task ->
                 callback(task.isSuccessful)
@@ -31,20 +41,34 @@ object ProductData {
 
     // Update an existing product in Firebase
     fun updateProduct(
-        productName: String,
+        oldProductName: String, // Old product name to find the existing product
+        newProductName: String, // New product name (can be the same or edited)
         newUnit: String,
         newPrice: Double,
         newQuantity: Int,
         newCategory: String,
+        newQuantitySold: Int,
         callback: (Boolean) -> Unit
     ) {
-        val updates = mapOf(
-            "unit" to newUnit,
-            "price" to newPrice,
-            "quantity" to newQuantity,
-            "category" to newCategory
+        val newSales = newQuantitySold * newPrice
+
+        // Remove the old product entry if the product name has changed
+        if (oldProductName != newProductName) {
+            database.child(oldProductName).removeValue()
+        }
+
+        // Create or update the product with the new name
+        val updatedProduct = Product(
+            productName = newProductName,
+            price = newPrice,
+            unit = newUnit,
+            quantity = newQuantity,
+            category = newCategory,
+            quantitySold = newQuantitySold,
+            sales = newSales
         )
-        database.child(productName).updateChildren(updates)
+
+        database.child(newProductName).setValue(updatedProduct)
             .addOnCompleteListener { task ->
                 callback(task.isSuccessful)
             }
@@ -104,5 +128,15 @@ object ProductData {
             }.addOnFailureListener {
                 callback(emptyList())
             }
+    }
+
+    fun getRestockTrends(callback: (List<Product>) -> Unit) {
+        database.get().addOnSuccessListener { snapshot ->
+            val products = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
+                .sortedByDescending { it.quantitySold } // Sort by quantity sold (or other metrics)
+            callback(products)
+        }.addOnFailureListener {
+            callback(emptyList())
+        }
     }
 }

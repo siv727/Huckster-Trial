@@ -78,7 +78,7 @@ class RegisterActivity : Activity() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Save user details to the Realtime Database
-                        UserData.registerUser(firstName, lastName, email) { success ->
+                        UserData.registerUser(this, firstName, lastName, email) { success ->
                             if (success) {
                                 Toast.makeText(this, "Sign-Up Successful", Toast.LENGTH_SHORT).show()
                                 finish() // Close RegisterActivity and return to LoginActivity

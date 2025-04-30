@@ -51,8 +51,10 @@
 
     <include layout="@layout/view_separator"
         android:layout_below="@id/profile_shortcut"
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_centerHorizontal="true"/>
 
     <!--Account Settings-->
@@ -62,17 +64,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/profile_shortcut"
         android:layout_marginTop="15dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:orientation="vertical"
-        >
+        android:layout_centerHorizontal="true"
+        android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/account_settings"
             android:fontFamily="@font/montserrat_semi_bold"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/profile_info"
@@ -82,10 +86,14 @@
             android:layout_marginBottom="3dp"
             android:text="@string/profile_info"
             android:fontFamily="@font/rdh_semi_bold"
-            android:textSize="13sp"
-            android:paddingHorizontal="20dp"/>
+            android:textSize="13sp" />
 
-        <include layout="@layout/view_separator"/>
+        <include layout="@layout/view_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:id="@+id/change_pass"
@@ -95,10 +103,14 @@
             android:layout_marginBottom="3dp"
             android:text="@string/change_pass"
             android:fontFamily="@font/rdh_semi_bold"
-            android:textSize="13sp"
-            android:paddingHorizontal="20dp"/>
+            android:textSize="13sp" />
 
-        <include layout="@layout/view_separator"/>
+        <include layout="@layout/view_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_centerHorizontal="true"/>
     </LinearLayout>
 
     <!--Store Settings-->
@@ -108,9 +120,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/info_edit"
         android:layout_marginTop="15dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="15dp"
-        android:orientation="vertical">
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp">
 
         <TextView
 
@@ -118,7 +132,8 @@
             android:layout_height="wrap_content"
             android:text="@string/store_inventory"
             android:fontFamily="@font/montserrat_semi_bold"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/product_group"
@@ -128,10 +143,14 @@
             android:layout_marginBottom="3dp"
             android:text="@string/product_categories"
             android:fontFamily="@font/rdh_semi_bold"
-            android:textSize="13sp"
-            android:paddingHorizontal="20dp"/>
+            android:textSize="13sp" />
 
-        <include layout="@layout/view_separator"/>
+        <include layout="@layout/view_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:id="@+id/stock_notif"
@@ -141,10 +160,14 @@
             android:layout_marginBottom="3dp"
             android:text="@string/stock_alerts"
             android:fontFamily="@font/rdh_semi_bold"
-            android:textSize="13sp"
-            android:paddingHorizontal="20dp"/>
+            android:textSize="13sp" />
 
-        <include layout="@layout/view_separator"/>
+        <include layout="@layout/view_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_centerHorizontal="true"/>
     </LinearLayout>
 
     <LinearLayout
@@ -153,16 +176,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/store_settings"
         android:layout_marginTop="15dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="15dp"
-        android:orientation="vertical">
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/about_info"
             android:fontFamily="@font/montserrat_semi_bold"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/about_app"
@@ -172,10 +198,14 @@
             android:layout_marginBottom="3dp"
             android:text="@string/about_app"
             android:fontFamily="@font/rdh_semi_bold"
-            android:textSize="13sp"
-            android:paddingHorizontal="20dp"/>
+            android:textSize="13sp" />
 
-        <include layout="@layout/view_separator"/>
+        <include layout="@layout/view_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:id="@+id/about_dev"
@@ -185,20 +215,26 @@
             android:layout_marginBottom="3dp"
             android:text="@string/developers"
             android:fontFamily="@font/rdh_semi_bold"
-            android:textSize="13sp"
-            android:paddingHorizontal="20dp"/>
+            android:textSize="13sp" />
 
-        <include layout="@layout/view_separator"/>
+        <include layout="@layout/view_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_centerHorizontal="true"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/button_to_logout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_below="@+id/about"
         android:layout_centerHorizontal="true"
-        android:paddingHorizontal="130dp"
+        android:paddingHorizontal="10dp"
         android:backgroundTint="@color/trade_orange"
         android:fontFamily="@font/montserrat_bold"
         android:text="@string/log_out"
