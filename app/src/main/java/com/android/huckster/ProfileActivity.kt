@@ -1,6 +1,7 @@
 package com.android.huckster
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -63,6 +64,18 @@ class ProfileActivity : Activity() {
         UserData.loggedInUser?.let { user ->
             firstNameInput.setText(user.firstName)
             lastNameInput.setText(user.lastName)
+
+            val savedImage = UserData.loadProfileImage(this)
+            if (savedImage != null) {
+                Glide.with(this)
+                    .load(savedImage)
+                    .placeholder(R.drawable.profile_default)
+                    .into(changeImageSwitcher.currentView as ImageView)
+            } else {
+                Glide.with(this)
+                    .load(R.drawable.profile_default)
+                    .into(changeImageSwitcher.currentView as ImageView)
+            }
         }
 
         saveBtn.setOnClickListener {
@@ -70,14 +83,20 @@ class ProfileActivity : Activity() {
             val newLastName = lastNameInput.text.toString().trim()
 
             if (newFirstName.isNotEmpty() && newLastName.isNotEmpty()) {
+                val progressDialog = ProgressDialog(this)
+                progressDialog.setMessage("Updating profile...")
+                progressDialog.setCancelable(false)
+                progressDialog.show()
+
                 UserData.updateUserProfile(
                     this,
                     newFirstName,
                     newLastName
                 ) { success ->
+                    progressDialog.dismiss()
                     if (success) {
                         shortToast("Profile updated!")
-                        setResult(Activity.RESULT_OK) // Notify that profile was updated
+                        setResult(Activity.RESULT_OK)
                         finish()
                     } else {
                         shortToast("Failed to update profile!")

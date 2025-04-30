@@ -7,6 +7,9 @@ import android.util.Base64
 import com.android.huckster.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
 data class User(
@@ -22,13 +25,15 @@ object UserData {
     // Save profile image to SharedPreferences as Base64
     fun saveProfileImage(context: Context, bitmap: Bitmap?) {
         bitmap?.let {
-            val baos = ByteArrayOutputStream()
-            it.compress(Bitmap.CompressFormat.PNG, 100, baos)
-            val imageBytes = baos.toByteArray()
-            val imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT)
+            CoroutineScope(Dispatchers.IO).launch {
+                val baos = ByteArrayOutputStream()
+                it.compress(Bitmap.CompressFormat.PNG, 100, baos)
+                val imageBytes = baos.toByteArray()
+                val imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT)
 
-            val sharedPreferences = context.getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
-            sharedPreferences.edit().putString("profile_image", imageString).apply()
+                val sharedPreferences = context.getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
+                sharedPreferences.edit().putString("profile_image", imageString).apply()
+            }
         }
     }
 
@@ -45,7 +50,13 @@ object UserData {
     }
 
     // Register a new user in Firebase Realtime Database
-    fun registerUser(context: Context, firstName: String, lastName: String, email: String, callback: (Boolean) -> Unit) {
+    fun registerUser(
+        context: Context,
+        firstName: String,
+        lastName: String,
+        email: String,
+        callback: (Boolean) -> Unit
+    ) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId == null) {
             callback(false) // User not authenticated
@@ -56,12 +67,14 @@ object UserData {
         val defaultPhotoUrl = "android.resource://${context.packageName}/${R.drawable.profile_default}"
 
         val user = User(firstName, lastName, email, defaultPhotoUrl)
+
+        // Perform database operation in the background
         FirebaseDatabase.getInstance().getReference("Users").child(userId).setValue(user)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Clear any existing cached profile image
-                    val sharedPreferences = context.getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
-                    sharedPreferences.edit().clear().apply()
+                    context.getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
+                        .edit().clear().apply()
                 }
                 callback(task.isSuccessful)
             }
@@ -87,41 +100,48 @@ object UserData {
     }
 
     // Update user profile
-    fun updateUserProfile(context: Context, firstName: String, lastName: String, callback: (Boolean) -> Unit) {
+    fun updateUserProfile(
+        context: Context,
+        firstName: String,
+        lastName: String,
+        callback: (Boolean) -> Unit
+    ) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId == null) {
             callback(false)
             return
         }
 
-        // Retrieve photo from SharedPreferences
-        val sharedPreferences = context.getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
-        val photoBase64 = sharedPreferences.getString("profile_image", null)
+        // Retrieve photo from SharedPreferences in the background
+        CoroutineScope(Dispatchers.IO).launch {
+            val sharedPreferences = context.getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
+            val photoBase64 = sharedPreferences.getString("profile_image", null)
 
-        // Prepare updates map
-        val updates = mutableMapOf<String, Any>(
-            "firstName" to firstName,
-            "lastName" to lastName
-        )
-        if (photoBase64 != null) {
-            updates["photo"] = photoBase64 // Include photo if it exists
-        }
-
-        // Update Firebase Realtime Database
-        FirebaseDatabase.getInstance().getReference("Users").child(userId).updateChildren(updates)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Update the locally cached user object
-                    loggedInUser = loggedInUser?.copy(
-                        firstName = firstName,
-                        lastName = lastName,
-                        photo = photoBase64 ?: loggedInUser?.photo ?: ""
-                    )
-                    callback(true)
-                } else {
-                    callback(false)
-                }
+            // Prepare updates map
+            val updates = mutableMapOf<String, Any>(
+                "firstName" to firstName,
+                "lastName" to lastName
+            )
+            if (photoBase64 != null) {
+                updates["photo"] = photoBase64 // Include photo if it exists
             }
+
+            // Update Firebase Realtime Database
+            FirebaseDatabase.getInstance().getReference("Users").child(userId).updateChildren(updates)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Update the locally cached user object
+                        loggedInUser = loggedInUser?.copy(
+                            firstName = firstName,
+                            lastName = lastName,
+                            photo = photoBase64 ?: loggedInUser?.photo ?: ""
+                        )
+                        callback(true)
+                    } else {
+                        callback(false)
+                    }
+                }
+        }
     }
 
     fun saveUserData(context: Context, user: User) {
@@ -154,5 +174,19 @@ object UserData {
 
         val userPrefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         userPrefs.edit().clear().apply()
+    }
+
+    fun preloadUserData(context: Context) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+            val firstName = sharedPreferences.getString("firstName", null)
+            val lastName = sharedPreferences.getString("lastName", null)
+            val email = sharedPreferences.getString("email", null)
+            val photo = sharedPreferences.getString("photo", null)
+
+            if (firstName != null && lastName != null && email != null) {
+                loggedInUser = User(firstName, lastName, email, photo ?: "")
+            }
+        }
     }
 }

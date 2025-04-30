@@ -150,8 +150,8 @@ class SettingsFragment : Fragment() {
         val textViewName = view?.findViewById<TextView>(R.id.name)
         val textViewEmail = view?.findViewById<TextView>(R.id.email)
 
-        // Load cached user info
-        val cachedUser = UserData.loadUserData(requireContext())
+        // Use preloaded user data
+        val cachedUser = UserData.loggedInUser
         if (cachedUser != null) {
             textViewName?.text = "${cachedUser.firstName} ${cachedUser.lastName}"
             textViewEmail?.text = cachedUser.email

@@ -9,6 +9,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.NavController
+import com.android.huckster.utils.UserData
 
 class MainContainerActivity : AppCompatActivity() {
     private lateinit var navController: NavController
@@ -16,6 +17,8 @@ class MainContainerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_container)
+
+        UserData.preloadUserData(this)
 
         // Retrieve NavController from NavHostFragment
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
