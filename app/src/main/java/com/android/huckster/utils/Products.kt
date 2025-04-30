@@ -1,6 +1,10 @@
 package com.android.huckster.utils
 
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 data class Product(
     val productName: String = "",
@@ -14,6 +18,7 @@ data class Product(
 
 object ProductData {
     private val database = FirebaseDatabase.getInstance().getReference("Products")
+    private var cachedProducts: List<Product> = emptyList()
 
     // Add a new product to Firebase
     fun addProduct(
@@ -41,8 +46,8 @@ object ProductData {
 
     // Update an existing product in Firebase
     fun updateProduct(
-        oldProductName: String, // Old product name to find the existing product
-        newProductName: String, // New product name (can be the same or edited)
+        oldProductName: String,
+        newProductName: String,
         newUnit: String,
         newPrice: Double,
         newQuantity: Int,
@@ -57,7 +62,6 @@ object ProductData {
             database.child(oldProductName).removeValue()
         }
 
-        // Create or update the product with the new name
         val updatedProduct = Product(
             productName = newProductName,
             price = newPrice,
@@ -93,14 +97,26 @@ object ProductData {
     }
 
     // Fetch low-stock products from Firebase
-    fun getLowStockProducts(threshold: Int, callback: (List<Product>) -> Unit) {
-        database.get().addOnSuccessListener { snapshot ->
-            val lowStockProducts = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
-                .filter { it.quantity <= threshold }
-            callback(lowStockProducts)
-        }.addOnFailureListener {
-            callback(emptyList())
+    fun getLowStockProducts(threshold: Int): List<Product> {
+        return cachedProducts.filter { it.quantity <= threshold }
+    }
+
+    // Preload products into memory
+    fun preloadProducts(callback: (Boolean) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val snapshot = database.get().await()
+                cachedProducts = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
+                callback(true)
+            } catch (e: Exception) {
+                callback(false)
+            }
         }
+    }
+
+    // Get preloaded products
+    fun getCachedProducts(): List<Product> {
+        return cachedProducts
     }
 
     // Add a new category for products

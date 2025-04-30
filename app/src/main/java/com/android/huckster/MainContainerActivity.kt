@@ -3,12 +3,14 @@ package com.android.huckster
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.NavController
+import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.UserData
 
 class MainContainerActivity : AppCompatActivity() {
@@ -19,6 +21,11 @@ class MainContainerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main_container)
 
         UserData.preloadUserData(this)
+        ProductData.preloadProducts { success ->
+            if (!success) {
+                Toast.makeText(this, "Failed to load products.", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         // Retrieve NavController from NavHostFragment
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

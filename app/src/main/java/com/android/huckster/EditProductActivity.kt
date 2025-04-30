@@ -1,6 +1,7 @@
 package com.android.huckster
 
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.*
@@ -34,7 +35,7 @@ class EditProductActivity(
         priceEditText.setText(product.price.toString())
         quantityEditText.setText(product.quantity.toString())
         soldEditText.setText(product.quantitySold.toString())
-        
+
         val unitOptions = listOf("Package", "Piece", "Kilogram", "Liter", "Meter", "Milliliter", "Case")
         val adapter = ArrayAdapter(context, R.layout.spinner_item, unitOptions)
         unitSpinner.adapter = adapter
@@ -58,6 +59,12 @@ class EditProductActivity(
                 return@setOnClickListener
             }
 
+            // Show a progress dialog while updating the product
+            val progressDialog = ProgressDialog(context)
+            progressDialog.setMessage("Updating product...")
+            progressDialog.setCancelable(false)
+            progressDialog.show()
+
             // Update the product in the database
             ProductData.updateProduct(
                 oldProductName = product.productName,
@@ -68,9 +75,10 @@ class EditProductActivity(
                 newCategory = newCategory,
                 newQuantitySold = newSold
             ) { success ->
+                progressDialog.dismiss() // Dismiss the progress dialog after update
                 if (success) {
                     Toast.makeText(context, "Product updated successfully!", Toast.LENGTH_SHORT).show()
-                    onProductUpdated() // Trigger the callback
+                    onProductUpdated() // Trigger the callback to refresh the product list
                     dialog.dismiss()
                 } else {
                     Toast.makeText(context, "Failed to update product.", Toast.LENGTH_SHORT).show()

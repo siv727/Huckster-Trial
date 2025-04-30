@@ -144,30 +144,6 @@ object UserData {
         }
     }
 
-    fun saveUserData(context: Context, user: User) {
-        val sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-        sharedPreferences.edit()
-            .putString("firstName", user.firstName)
-            .putString("lastName", user.lastName)
-            .putString("email", user.email)
-            .putString("photo", user.photo) // Save photo as Base64 or URL
-            .apply()
-    }
-
-    fun loadUserData(context: Context): User? {
-        val sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-        val firstName = sharedPreferences.getString("firstName", null)
-        val lastName = sharedPreferences.getString("lastName", null)
-        val email = sharedPreferences.getString("email", null)
-        val photo = sharedPreferences.getString("photo", null)
-
-        return if (firstName != null && lastName != null && email != null) {
-            User(firstName, lastName, email, photo ?: "")
-        } else {
-            null
-        }
-    }
-
     fun clearCachedUserData(context: Context) {
 //        val sharedPreferences = context.getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
 //        sharedPreferences.edit().clear().apply()

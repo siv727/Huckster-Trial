@@ -36,19 +36,9 @@ class NotificationsFragment : Fragment() {
 
     private fun fetchAndDisplayLowStockProducts() {
         val lowStockThreshold = 5 // Define the threshold for low stock
-        ProductData.getLowStockProducts(lowStockThreshold) { lowStockProducts ->
-            // Update the ListView with low-stock products
-            val adapter = NotificationListView(requireContext(), lowStockProducts)
-            listNotifs.adapter = adapter
+        val lowStockProducts = ProductData.getLowStockProducts(lowStockThreshold)
 
-            // Update the notification count image
-//            val lowStockCount = lowStockProducts.size
-//            if (lowStockCount > 0) {
-//                notifCount.setNotifCountImage(lowStockCount)
-//                notifCount.visibility = View.VISIBLE
-//            } else {
-//                notifCount.visibility = View.GONE // Hide the notification icon if no low-stock products
-//            }
-        }
+        val adapter = NotificationListView(requireContext(), lowStockProducts)
+        listNotifs.adapter = adapter
     }
 }

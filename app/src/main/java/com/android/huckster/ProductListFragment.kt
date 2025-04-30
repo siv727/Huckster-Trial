@@ -1,5 +1,6 @@
 package com.android.huckster
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -33,15 +34,19 @@ class ProductListFragment : Fragment() {
             startActivity(Intent(requireContext(), NewProductActivity::class.java))
         }
 
-        // Fetch and display products
+        // Populate the product list from cached data
         fetchAndDisplayProducts()
 
         // Item click opens Edit dialog
         listView.setOnItemClickListener { _, _, position, _ ->
             val selectedProduct = productList[position]
             val editDialog = EditProductActivity(requireContext(), selectedProduct) {
-                // Callback: Refresh the product list after editing
-                fetchAndDisplayProducts()
+                // Refresh the product list after editing
+                ProductData.getProducts { products ->
+                    productList = products
+                    adapter = ProductListView(requireContext(), productList)
+                    listView.adapter = adapter
+                }
             }
             editDialog.showDialog()
         }
