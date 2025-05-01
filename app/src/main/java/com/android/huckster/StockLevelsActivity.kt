@@ -90,12 +90,13 @@ class StockLevelsActivity : Activity() {
 
     // Display only products below threshold
     private fun fetchAndDisplayLowStockProducts() {
-        val lowStockProducts = ProductData.getLowStockProducts(lowStockThreshold)
-        runOnUiThread {
-            if (lowStockProducts.isEmpty()) {
-                Toast.makeText(this, "No products below threshold.", Toast.LENGTH_SHORT).show()
+        ProductData.getLowStockProducts(lowStockThreshold) { lowStockProducts ->
+            runOnUiThread {
+                if (lowStockProducts.isEmpty()) {
+                    Toast.makeText(this, "No products below threshold.", Toast.LENGTH_SHORT).show()
+                }
+                listNotifs.adapter = NotificationListView(this, lowStockProducts)
             }
-            listNotifs.adapter = NotificationListView(this, lowStockProducts)
         }
     }
 

@@ -43,8 +43,10 @@ class NotificationsFragment : Fragment() {
         val sharedPref = requireContext().getSharedPreferences("StockPrefs", android.content.Context.MODE_PRIVATE)
         val lowStockThreshold = sharedPref.getInt("low_stock_threshold", 5)
 
-        val lowStockProducts = ProductData.getLowStockProducts(5)
-        listNotifs.adapter = NotificationListView(requireContext(), lowStockProducts)
+        ProductData.getLowStockProducts(lowStockThreshold) { lowStockProducts ->
+            adapter = NotificationListView(requireContext(), lowStockProducts)
+            listNotifs.adapter = adapter
+        }
     }
 }
 

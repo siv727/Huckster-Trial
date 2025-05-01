@@ -1,5 +1,6 @@
 package com.android.huckster.utils
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +14,8 @@ data class Product(
     var quantity: Int = 0,
     var categoryId: String = "",
     var quantitySold: Int = 0,
-    val sales: Double = 0.0
+    val sales: Double = 0.0,
+    val userId: String = ""
 )
 
 object ProductData {
@@ -30,6 +32,7 @@ object ProductData {
         categoryId: String, // Use categoryId instead of category name
         callback: (Boolean) -> Unit
     ) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val product = Product(
             productName,
             price,
@@ -37,9 +40,10 @@ object ProductData {
             quantity,
             categoryId, // Store categoryId
             quantitySold = 0,
-            sales = 0.0
+            sales = 0.0,
+            userId = userId
         )
-        productDatabase.child(productName).setValue(product)
+        productDatabase.child(userId).child(productName).setValue(product)
             .addOnCompleteListener { task ->
                 callback(task.isSuccessful)
             }
@@ -56,11 +60,12 @@ object ProductData {
         newQuantitySold: Int,
         callback: (Boolean) -> Unit
     ) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val newSales = newQuantitySold * newPrice
 
         // Remove the old product entry if the product name has changed
         if (oldProductName != newProductName) {
-            productDatabase.child("products").child(oldProductName).removeValue()
+            productDatabase.child(userId).child(oldProductName).removeValue()
         }
 
         val updatedProduct = Product(
@@ -70,10 +75,11 @@ object ProductData {
             quantity = newQuantity,
             categoryId = newCategoryId,
             quantitySold = newQuantitySold,
-            sales = newSales
+            sales = newSales,
+            userId = userId
         )
 
-        productDatabase.child(newProductName).setValue(updatedProduct)
+        productDatabase.child(userId).child(newProductName).setValue(updatedProduct)
             .addOnCompleteListener { task ->
                 callback(task.isSuccessful)
             }
@@ -81,7 +87,8 @@ object ProductData {
 
     // Remove a product from Firebase
     fun removeProduct(productName: String, callback: (Boolean) -> Unit) {
-        productDatabase.child(productName).removeValue()
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        productDatabase.child(userId).child(productName).removeValue()
             .addOnCompleteListener { task ->
                 callback(task.isSuccessful)
             }
@@ -89,7 +96,8 @@ object ProductData {
 
     // Fetch all products from Firebase
     fun getProducts(callback: (List<Product>) -> Unit) {
-        productDatabase.get().addOnSuccessListener { snapshot ->
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return callback(emptyList())
+        productDatabase.child(userId).get().addOnSuccessListener { snapshot ->
             val productList = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
             callback(productList)
         }.addOnFailureListener {
@@ -98,16 +106,24 @@ object ProductData {
     }
 
     // Fetch low-stock products from Firebase
-    fun getLowStockProducts(threshold: Int): List<Product> {
-        return cachedProducts.filter { it.quantity <= threshold } ?: emptyList()
+    fun getLowStockProducts(threshold: Int, callback: (List<Product>) -> Unit) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return callback(emptyList())
+        productDatabase.child(userId).get().addOnSuccessListener { snapshot ->
+            val lowStockProducts = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
+                .filter { it.quantity <= threshold }
+            callback(lowStockProducts)
+        }.addOnFailureListener {
+            callback(emptyList())
+        }
     }
 
 
     // Preload products into memory
     fun preloadProducts(callback: (Boolean) -> Unit) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return callback(false)
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val snapshot = productDatabase.get().await()
+                val snapshot = productDatabase.child(userId).get().await()
                 cachedProducts = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
                 callback(true)
             } catch (e: Exception) {
