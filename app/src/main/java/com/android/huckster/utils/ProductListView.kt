@@ -12,8 +12,8 @@ import com.android.huckster.R
 
 class ProductListView(
     private val context : Context,
-    private val productList : List<Product>
-
+    private val productList : List<Product>,
+    private val lowStockThreshold : Int
 ) : BaseAdapter(){
     override fun getCount(): Int = productList.size
 
@@ -37,12 +37,13 @@ class ProductListView(
         productPrice.setText("\$${product.price}")
         productStock.setText(("${product.quantity} ${product.unit}(s)"))
 
-        if(product.quantity<=5){
-            productStock.setTextColor(ContextCompat.getColor(context,R.color.reddish_white))
-            productStock.setText(("${product.quantity} ${product.unit}(s) left!"))
-        }else if(product.quantity>=50){
-            productStock.setTextColor(ContextCompat.getColor(context,R.color.green_thyme))
+        if (product.quantity <= lowStockThreshold) {
+            productStock.setTextColor(ContextCompat.getColor(context, R.color.reddish_white))
+            productStock.text = "${product.quantity} ${product.unit}(s) left!"
+        } else if (product.quantity >= 50 + lowStockThreshold) {
+            productStock.setTextColor(ContextCompat.getColor(context, R.color.green_thyme))
         }
+
 
         return view
     }

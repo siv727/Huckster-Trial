@@ -1,5 +1,6 @@
 package com.android.huckster
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,9 @@ class HomeFragment : Fragment() {
     private lateinit var inventoryValueTextView: TextView
     private lateinit var topSellingRecyclerView: RecyclerView
     private lateinit var restockingTrendsRecyclerView: RecyclerView
+
+    private val ADD_PRODUCT_REQUEST_CODE = 1
+    private val REMOVE_PRODUCT_REQUEST_CODE = 2
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,12 +53,34 @@ class HomeFragment : Fragment() {
 
         val addButton = view.findViewById<Button>(R.id.button_add)
         addButton.setOnClickListener {
-            startActivity(Intent(requireContext(), NewProductActivity::class.java))
+            startActivityForResult(Intent(requireContext(), NewProductActivity::class.java), ADD_PRODUCT_REQUEST_CODE)
         }
 
         val removeButton = view.findViewById<Button>(R.id.button_remove)
         removeButton.setOnClickListener{
-            startActivity(Intent(requireContext(), RemoveProductActivity::class.java))
+            startActivityForResult(Intent(requireContext(), RemoveProductActivity::class.java), REMOVE_PRODUCT_REQUEST_CODE)
+        }
+    }
+
+    // Handle result from NewProductActivity or RemoveProductActivity
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                ADD_PRODUCT_REQUEST_CODE -> {
+                    // Refresh data after adding product
+                    loadInventoryValue()
+                    loadTopSellingProducts()
+                    loadRestockingTrends()
+                }
+                REMOVE_PRODUCT_REQUEST_CODE -> {
+                    // Refresh data after removing product
+                    loadInventoryValue()
+                    loadTopSellingProducts()
+                    loadRestockingTrends()
+                }
+            }
         }
     }
 

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import com.android.huckster.utils.Product
 import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.RemovableProductAdapter
+import com.android.huckster.utils.refreshNotificationBadge
 
 class RemoveProductActivity : Activity() {
 
@@ -31,7 +32,11 @@ class RemoveProductActivity : Activity() {
         }
 
         val settingsButton = findViewById<ImageView>(R.id.back_settings)
-        settingsButton.setOnClickListener { finish() }
+        settingsButton.setOnClickListener {
+            setResult(Activity.RESULT_OK) // Indicate successful removal
+            refreshNotificationBadge()
+            finish() }
+
 
         val removeBtn = findViewById<Button>(R.id.remove_selected_btn)
         removeBtn.setOnClickListener {
@@ -67,6 +72,7 @@ class RemoveProductActivity : Activity() {
                 ProductData.removeProduct(product.productName) { success ->
                     if (success) {
                         Toast.makeText(this, "${product.productName} removed", Toast.LENGTH_SHORT).show()
+                        refreshNotificationBadge()
                         recreate()
                     } else {
                         Toast.makeText(this, "Failed to remove ${product.productName}", Toast.LENGTH_SHORT).show()

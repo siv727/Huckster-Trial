@@ -15,6 +15,8 @@ import android.widget.TextView
 import android.widget.Toast
 import com.android.huckster.utils.Product
 import com.android.huckster.utils.ProductData
+import com.android.huckster.utils.refreshNotificationBadge
+
 
 class EditProductActivity(
     private val context: Context,
@@ -86,11 +88,13 @@ class EditProductActivity(
                 if (success) {
                     Toast.makeText(context, "Product updated successfully!", Toast.LENGTH_SHORT).show()
                     onProductUpdated()
+                    context.refreshNotificationBadge()
                     dialog.dismiss()
                 } else {
                     Toast.makeText(context, "Failed to update product.", Toast.LENGTH_SHORT).show()
                 }
             }
+
         }
 
         cancelButton.setOnClickListener {
