@@ -3,16 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp"
-    android:background="@drawable/dialog_background">
+    android:padding="16dp">
 
-    <!-- Category Name -->
     <TextView
         android:id="@+id/category_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Category Name"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Category Name"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:layout_gravity="center_vertical" />
+        android:text="Delete"
+        android:textColor="@android:color/white"
+        android:background="@color/red" />
+
 </LinearLayout>

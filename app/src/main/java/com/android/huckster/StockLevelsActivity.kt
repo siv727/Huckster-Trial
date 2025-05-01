@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.android.huckster.utils.NotificationListView
 import com.android.huckster.utils.ProductData
+import com.android.huckster.utils.refreshNotificationBadge
 
 class StockLevelsActivity : Activity() {
 
@@ -45,6 +46,7 @@ class StockLevelsActivity : Activity() {
 
         // Back button to exit
         settingsButton.setOnClickListener {
+
             finish()
         }
 
@@ -61,6 +63,7 @@ class StockLevelsActivity : Activity() {
             }
 
             saveThresholdToPreferences(lowStockThreshold)
+            refreshNotificationBadge()
             updateThresholdDisplay()
             fetchAndDisplayLowStockProducts()
         }

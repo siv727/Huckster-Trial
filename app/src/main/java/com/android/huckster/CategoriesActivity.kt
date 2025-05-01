@@ -48,13 +48,14 @@ class CategoriesActivity : Activity() {
                 categories.addAll(categoryMap.values)
                 categoryIds.addAll(categoryMap.keys)
 
-                categoryAdapter = CategoryAdapter(this, categories)
+                categoryAdapter = CategoryAdapter(this, categories, categoryIds)  // Pass category IDs to adapter
                 categoriesListView.adapter = categoryAdapter
             } else {
                 Toast.makeText(this, "No categories available", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
 
     // Show a dialog to add a new category
     private fun showAddCategoryDialog() {
