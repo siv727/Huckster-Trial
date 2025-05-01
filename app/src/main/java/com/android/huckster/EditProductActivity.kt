@@ -4,7 +4,15 @@ import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.view.LayoutInflater
-import android.widget.*
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
 import com.android.huckster.utils.Product
 import com.android.huckster.utils.ProductData
 
@@ -13,6 +21,10 @@ class EditProductActivity(
     private val product: Product,
     private val onProductUpdated: () -> Unit = {}
 ) {
+    private var categoryList: List<String> = emptyList()  // List of category names
+    private var categoryIdList: List<String> = emptyList()  // List of corresponding category IDs
+    private var selectedCategoryId: String? = product.categoryId  // Default to product's current categoryId
+
     fun showDialog() {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.activity_edit_product, null)
         val dialog = AlertDialog.Builder(context)
@@ -42,31 +54,7 @@ class EditProductActivity(
         unitSpinner.setSelection(unitOptions.indexOf(product.unit).takeIf { it >= 0 } ?: 0)
 
         // Load Categories from Firebase
-        ProductData.getCategories { categories ->
-            val categoryList = categories.toMutableList()
-            categoryList.add("Add Category...")
-
-            val categoryAdapter = ArrayAdapter(context, R.layout.spinner_item, categoryList)
-            categorySpinner.adapter = categoryAdapter
-
-            val currentCategoryIndex = categoryList.indexOf(product.category).takeIf { it >= 0 } ?: 0
-            categorySpinner.setSelection(currentCategoryIndex)
-
-            categorySpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: android.view.View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (categoryList[position] == "Add Category...") {
-                        showAddCategoryDialog(categorySpinner, categoryAdapter, categoryList)
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            })
-        }
+        fetchCategories(categorySpinner)
 
         saveButton.setOnClickListener {
             val newProductName = productNameEditText.text.toString().trim()
@@ -74,10 +62,9 @@ class EditProductActivity(
             val newQuantity = quantityEditText.text.toString().toIntOrNull() ?: product.quantity
             val newSold = soldEditText.text.toString().toIntOrNull() ?: product.quantitySold
             val newUnit = unitSpinner.selectedItem?.toString() ?: product.unit
-            val newCategory = categorySpinner.selectedItem?.toString() ?: product.category
 
-            if (newCategory.isBlank() || newCategory == "Add Category...") {
-                Toast.makeText(context, "Please select or add a valid category!", Toast.LENGTH_SHORT).show()
+            if (selectedCategoryId.isNullOrBlank()) {
+                Toast.makeText(context, "Please select a valid category!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -92,7 +79,7 @@ class EditProductActivity(
                 newUnit = newUnit,
                 newPrice = newPrice,
                 newQuantity = newQuantity,
-                newCategory = newCategory,
+                newCategoryId = selectedCategoryId!!,  // Pass categoryId
                 newQuantitySold = newSold
             ) { success ->
                 progressDialog.dismiss()
@@ -113,11 +100,60 @@ class EditProductActivity(
         dialog.show()
     }
 
-    private fun showAddCategoryDialog(
-        spinner: Spinner,
-        adapter: ArrayAdapter<String>,
-        categoryList: MutableList<String>
-    ) {
+    private fun fetchCategories(categorySpinner: Spinner) {
+        ProductData.getCategories { categories ->
+            categoryList = categories.values.toList()
+            categoryIdList = categories.keys.toList()
+
+            val categoryWithAdd = listOf("Select Category") + categoryList + "Add New Category"
+            val categoryAdapter = object : ArrayAdapter<String>(context, R.layout.spinner_item, categoryWithAdd) {
+                override fun isEnabled(position: Int): Boolean {
+                    return position != 0  // Disable "Select Category"
+                }
+
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    val view = super.getView(position, convertView, parent)
+                    val textView = view as TextView
+                    textView.setTextColor(
+                        if (position == 0 || position == categoryWithAdd.size - 1) context.resources.getColor(R.color.gray)
+                        else context.resources.getColor(R.color.black)
+                    )
+                    return view
+                }
+
+                override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    val view = super.getDropDownView(position, convertView, parent)
+                    val textView = view as TextView
+                    textView.setTextColor(
+                        if (position == 0 || position == categoryWithAdd.size - 1) context.resources.getColor(R.color.gray)
+                        else context.resources.getColor(R.color.black)
+                    )
+                    return view
+                }
+            }
+
+            categorySpinner.adapter = categoryAdapter
+
+            // Set default selection
+            val currentCategoryIndex = categoryIdList.indexOf(product.categoryId).takeIf { it >= 0 }?.plus(1) ?: 0
+            categorySpinner.setSelection(currentCategoryIndex)
+
+            // Handle "Add New Category" option
+            categorySpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    when (position) {
+                        0 -> selectedCategoryId = null  // No category selected
+                        categoryWithAdd.size - 1 -> showAddCategoryDialog()
+                        else -> selectedCategoryId = categoryIdList[position - 1]  // Map to categoryId
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            })
+        }
+    }
+
+    private fun showAddCategoryDialog() {
         val input = EditText(context)
         input.hint = "Enter new category"
         input.setPadding(20, 20, 20, 20)
@@ -130,9 +166,7 @@ class EditProductActivity(
                 if (newCategory.isNotEmpty()) {
                     ProductData.addCategory(newCategory) { success ->
                         if (success) {
-                            categoryList.add(categoryList.size - 1, newCategory)
-                            adapter.notifyDataSetChanged()
-                            spinner.setSelection(categoryList.indexOf(newCategory))
+                            fetchCategories(categorySpinner = Spinner(context)) // Reload categories
                         } else {
                             Toast.makeText(context, "Failed to add category.", Toast.LENGTH_SHORT).show()
                         }

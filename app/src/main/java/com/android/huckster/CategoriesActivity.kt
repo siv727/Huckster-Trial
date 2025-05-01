@@ -4,15 +4,11 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.android.huckster.R
 import com.android.huckster.utils.CategoryAdapter
 import com.android.huckster.utils.ProductData
 
@@ -21,7 +17,7 @@ class CategoriesActivity : Activity() {
     private lateinit var categoriesListView: ListView
     private lateinit var categoryAdapter: CategoryAdapter
     private val categories: MutableList<String> = mutableListOf()
-
+    private val categoryIds: MutableList<String> = mutableListOf() // List to store category IDs
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +25,7 @@ class CategoriesActivity : Activity() {
 
         categoriesListView = findViewById(R.id.categories_list)
 
-        // Fetch categories from Firebase
-        fetchCategories()
-
-        // Set the adapter
-        categoryAdapter = CategoryAdapter(this, categories)
-        categoriesListView.adapter = categoryAdapter
+        fetchCategories() // Fetch categories from Firebase
 
         // Back button functionality
         findViewById<ImageView>(R.id.back_categories).setOnClickListener {
@@ -48,11 +39,17 @@ class CategoriesActivity : Activity() {
     }
 
     private fun fetchCategories() {
-        ProductData.getCategories { categoryList ->
-            if (categoryList.isNotEmpty()) {
+        ProductData.getCategories { categoryMap ->
+            if (categoryMap.isNotEmpty()) {
                 categories.clear()
-                categories.addAll(categoryList)
-                categoryAdapter.notifyDataSetChanged()  // Notify the adapter about the data change
+                categoryIds.clear()
+
+                // Populate categories and their IDs
+                categories.addAll(categoryMap.values)
+                categoryIds.addAll(categoryMap.keys)
+
+                categoryAdapter = CategoryAdapter(this, categories)
+                categoriesListView.adapter = categoryAdapter
             } else {
                 Toast.makeText(this, "No categories available", Toast.LENGTH_SHORT).show()
             }
@@ -83,7 +80,7 @@ class CategoriesActivity : Activity() {
             ProductData.addCategory(categoryName) { success ->
                 if (success) {
                     Toast.makeText(this, "Category added successfully!", Toast.LENGTH_SHORT).show()
-                    fetchCategories()
+                    fetchCategories() // Reload categories after adding
                     dialog.dismiss()
                 } else {
                     Toast.makeText(this, "Failed to add category", Toast.LENGTH_SHORT).show()
@@ -97,8 +94,4 @@ class CategoriesActivity : Activity() {
 
         dialog.show()
     }
-
-
-
 }
-

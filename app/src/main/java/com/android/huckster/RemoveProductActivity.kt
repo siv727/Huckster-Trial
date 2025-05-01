@@ -8,7 +8,6 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import com.android.huckster.utils.Product
 import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.RemovableProductAdapter

@@ -2,9 +2,15 @@ package com.android.huckster
 
 import android.app.Activity
 import android.os.Bundle
-import android.widget.*
-import com.android.huckster.utils.ProductData
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.ListView
+import android.widget.SeekBar
+import android.widget.TextView
+import android.widget.Toast
 import com.android.huckster.utils.NotificationListView
+import com.android.huckster.utils.ProductData
 
 class StockLevelsActivity : Activity() {
 
@@ -26,7 +32,7 @@ class StockLevelsActivity : Activity() {
         lowStockThreshold = sharedPref.getInt("low_stock_threshold", 5)
 
         // Initialize views
-        listNotifs = findViewById(R.id.listview_notification)
+        listNotifs = findViewById(R.id.listview_notification2)
         thresholdInput = findViewById(R.id.threshold_input)
         thresholdSeekBar = findViewById(R.id.threshold_seekbar)
         applyThresholdButton = findViewById(R.id.apply_threshold_button)

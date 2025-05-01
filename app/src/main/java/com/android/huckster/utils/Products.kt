@@ -11,13 +11,14 @@ data class Product(
     var price: Double = 0.0,
     var unit: String = "",
     var quantity: Int = 0,
-    var category: String = "",
+    var categoryId: String = "",
     var quantitySold: Int = 0,
     val sales: Double = 0.0
 )
 
 object ProductData {
-    private val database = FirebaseDatabase.getInstance().getReference("Products")
+    private val productDatabase = FirebaseDatabase.getInstance().getReference("Products")
+    private val categoryDatabase = FirebaseDatabase.getInstance().getReference("Categories")
     private var cachedProducts: List<Product> = emptyList()
 
     // Add a new product to Firebase
@@ -26,7 +27,7 @@ object ProductData {
         unit: String,
         price: Double,
         quantity: Int,
-        category: String,
+        categoryId: String, // Use categoryId instead of category name
         callback: (Boolean) -> Unit
     ) {
         val product = Product(
@@ -34,11 +35,11 @@ object ProductData {
             price,
             unit,
             quantity,
-            category,
+            categoryId, // Store categoryId
             quantitySold = 0,
             sales = 0.0
         )
-        database.child(productName).setValue(product)
+        productDatabase.child(productName).setValue(product)
             .addOnCompleteListener { task ->
                 callback(task.isSuccessful)
             }
@@ -51,7 +52,7 @@ object ProductData {
         newUnit: String,
         newPrice: Double,
         newQuantity: Int,
-        newCategory: String,
+        newCategoryId: String,
         newQuantitySold: Int,
         callback: (Boolean) -> Unit
     ) {
@@ -59,7 +60,7 @@ object ProductData {
 
         // Remove the old product entry if the product name has changed
         if (oldProductName != newProductName) {
-            database.child(oldProductName).removeValue()
+            productDatabase.child("products").child(oldProductName).removeValue()
         }
 
         val updatedProduct = Product(
@@ -67,12 +68,12 @@ object ProductData {
             price = newPrice,
             unit = newUnit,
             quantity = newQuantity,
-            category = newCategory,
+            categoryId = newCategoryId,
             quantitySold = newQuantitySold,
             sales = newSales
         )
 
-        database.child(newProductName).setValue(updatedProduct)
+        productDatabase.child(newProductName).setValue(updatedProduct)
             .addOnCompleteListener { task ->
                 callback(task.isSuccessful)
             }
@@ -80,7 +81,7 @@ object ProductData {
 
     // Remove a product from Firebase
     fun removeProduct(productName: String, callback: (Boolean) -> Unit) {
-        database.child(productName).removeValue()
+        productDatabase.child(productName).removeValue()
             .addOnCompleteListener { task ->
                 callback(task.isSuccessful)
             }
@@ -88,7 +89,7 @@ object ProductData {
 
     // Fetch all products from Firebase
     fun getProducts(callback: (List<Product>) -> Unit) {
-        database.get().addOnSuccessListener { snapshot ->
+        productDatabase.get().addOnSuccessListener { snapshot ->
             val productList = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
             callback(productList)
         }.addOnFailureListener {
@@ -98,7 +99,7 @@ object ProductData {
 
     // Fetch low-stock products from Firebase
     fun getLowStockProducts(threshold: Int): List<Product> {
-        return cachedProducts?.filter { it.quantity <= threshold } ?: emptyList()
+        return cachedProducts.filter { it.quantity <= threshold } ?: emptyList()
     }
 
 
@@ -106,7 +107,7 @@ object ProductData {
     fun preloadProducts(callback: (Boolean) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val snapshot = database.get().await()
+                val snapshot = productDatabase.get().await()
                 cachedProducts = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
                 callback(true)
             } catch (e: Exception) {
@@ -122,33 +123,34 @@ object ProductData {
 
     // Add a new category for products
     fun addCategory(categoryName: String, callback: (Boolean) -> Unit) {
-        database.child("Categories").child(categoryName).setValue(true)
+        val categoryId = categoryDatabase.push().key ?: return
+        categoryDatabase.child(categoryId).setValue(mapOf("name" to categoryName))
             .addOnCompleteListener { task ->
                 callback(task.isSuccessful)
             }
     }
 
     // Remove a category
-    fun removeCategory(categoryName: String, callback: (Boolean) -> Unit) {
-        database.child("Categories").child(categoryName).removeValue()
+    fun removeCategory(categoryId: String, callback: (Boolean) -> Unit) {
+        categoryDatabase.child(categoryId).removeValue()
             .addOnCompleteListener { task ->
                 callback(task.isSuccessful)
             }
     }
 
     // Fetch all categories
-    fun getCategories(callback: (List<String>) -> Unit) {
-        database.child("Categories").get()
+    fun getCategories(callback: (Map<String, String>) -> Unit) {
+        categoryDatabase.get()
             .addOnSuccessListener { snapshot ->
-                val categories = snapshot.children.mapNotNull { it.key }
+                val categories = snapshot.children.associate { it.key!! to it.child("name").value.toString() }
                 callback(categories)
             }.addOnFailureListener {
-                callback(emptyList())
+                callback(emptyMap())
             }
     }
 
     fun getRestockTrends(callback: (List<Product>) -> Unit) {
-        database.get().addOnSuccessListener { snapshot ->
+        productDatabase.get().addOnSuccessListener { snapshot ->
             val products = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
                 .sortedByDescending { it.quantitySold } // Sort by quantity sold (or other metrics)
             callback(products)

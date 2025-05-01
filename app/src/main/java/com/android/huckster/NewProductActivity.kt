@@ -7,14 +7,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
 import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.shortToast
 
 class NewProductActivity : Activity() {
 
     private lateinit var categorySpinner: Spinner
-    private var categoryList: List<String> = emptyList()
+    private var categoryList: List<String> = emptyList() // List of category names
+    private var categoryIdList: List<String> = emptyList() // List of corresponding category IDs
+    private var selectedCategoryId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +40,32 @@ class NewProductActivity : Activity() {
 
         // Preload the spinner with default unit values
         val unitOptions = listOf("Unit", "Package", "Piece", "Kilogram", "Liter", "Meter", "Milliliter", "Case")
-        val unitAdapter = ArrayAdapter(this, R.layout.spinner_item, unitOptions)
+        val unitAdapter = object : ArrayAdapter<String>(this, R.layout.spinner_item, unitOptions) {
+            override fun isEnabled(position: Int): Boolean {
+                // Disable the placeholder item
+                return position != 0
+            }
+
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                val textView = view as TextView
+                // Set the placeholder text color to gray if it's selected
+                textView.setTextColor(
+                    if (position == 0) resources.getColor(R.color.gray) else resources.getColor(R.color.trade_blue)
+                )
+                return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val textView = view as TextView
+                // Set the placeholder text color to gray in the dropdown
+                textView.setTextColor(
+                    if (position == 0) resources.getColor(R.color.gray) else resources.getColor(R.color.trade_blue)
+                )
+                return view
+            }
+        }
         unitSpinner.adapter = unitAdapter
 
         // Fetch categories from Firebase
@@ -45,7 +79,7 @@ class NewProductActivity : Activity() {
         // Add Product Button Click
         addProductButton.setOnClickListener {
             val productName = productNameInput.text.toString().trim()
-            val category = categorySpinner.selectedItem?.toString() ?: ""
+            val category = selectedCategoryId ?: ""
             val unit = unitSpinner.selectedItem?.toString() ?: ""
             val priceText = priceInput.text.toString().trim()
             val stockText = stockInput.text.toString().trim()
@@ -86,8 +120,12 @@ class NewProductActivity : Activity() {
     // Fetch categories from Firebase and set them in the category spinner
     private fun fetchCategories() {
         ProductData.getCategories { categories ->
-            categoryList = categories
-            // Add the "Select Category" and "Add" options
+            val categoryNames = categories.values.toList()
+            val categoryIds = categories.keys.toList()
+            categoryList = categoryNames
+            categoryIdList = categoryIds
+
+            // Add the "Select Category" and "Add New Category" options
             val categoryWithAdd = listOf("Select Category") + categoryList + "Add New Category"
             val categoryAdapter = object : ArrayAdapter<String>(this, R.layout.spinner_item, categoryWithAdd) {
                 override fun isEnabled(position: Int): Boolean {
@@ -101,7 +139,7 @@ class NewProductActivity : Activity() {
                     // Set the placeholder and "Add New Category" text color
                     textView.setTextColor(
                         if (position == 0 || position == categoryWithAdd.size - 1) resources.getColor(R.color.gray)
-                        else resources.getColor(R.color.black)
+                        else resources.getColor(R.color.trade_blue)
                     )
                     return view
                 }
@@ -112,7 +150,7 @@ class NewProductActivity : Activity() {
                     // Set the placeholder and "Add New Category" text color in the dropdown
                     textView.setTextColor(
                         if (position == 0 || position == categoryWithAdd.size - 1) resources.getColor(R.color.gray)
-                        else resources.getColor(R.color.black)
+                        else resources.getColor(R.color.trade_blue)
                     )
                     return view
                 }
@@ -122,8 +160,16 @@ class NewProductActivity : Activity() {
             // Handle the "Add New Category" option selection
             categorySpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    if (position == categoryWithAdd.size - 1) {
-                        showAddCategoryDialog()
+                    when (position) {
+                        0 -> {
+                            selectedCategoryId = null // No category selected
+                        }
+                        categoryWithAdd.size - 1 -> {
+                            showAddCategoryDialog()
+                        }
+                        else -> {
+                            selectedCategoryId = categoryIdList[position - 1] // Map to category ID
+                        }
                     }
                 }
 

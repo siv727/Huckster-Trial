@@ -92,7 +92,7 @@
 
     <!-- ListView to display low-stock products -->
     <ListView
-        android:id="@+id/listview_notification"
+        android:id="@+id/listview_notification2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:divider="@android:color/darker_gray"

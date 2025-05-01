@@ -1,16 +1,14 @@
 package com.android.huckster
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.android.huckster.utils.NotificationListView
 import com.android.huckster.utils.ProductData
-import com.android.huckster.utils.setNotifCountImage
 
 class NotificationsFragment : Fragment() {
 
@@ -29,7 +27,7 @@ class NotificationsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listNotifs = view.findViewById(R.id.listview_notification)
+        listNotifs = view.findViewById(R.id.listview_notification1)
         clearText = view.findViewById(R.id.textview_clear)
 
         fetchAndDisplayLowStockProducts()
@@ -39,16 +37,14 @@ class NotificationsFragment : Fragment() {
             adapter.clearList()
             emptyText.visibility = View.VISIBLE
         }
-
     }
 
     private fun fetchAndDisplayLowStockProducts() {
         val sharedPref = requireContext().getSharedPreferences("StockPrefs", android.content.Context.MODE_PRIVATE)
         val lowStockThreshold = sharedPref.getInt("low_stock_threshold", 5)
 
-        val lowStockProducts = ProductData.getLowStockProducts(lowStockThreshold)
-        adapter = NotificationListView(requireContext(), lowStockProducts)
-        listNotifs.adapter = adapter
+        val lowStockProducts = ProductData.getLowStockProducts(5)
+        listNotifs.adapter = NotificationListView(requireContext(), lowStockProducts)
     }
 }
 
