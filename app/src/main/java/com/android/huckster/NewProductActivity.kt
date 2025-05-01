@@ -16,6 +16,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import com.android.huckster.utils.ProductData
+import com.android.huckster.utils.refreshNotificationBadge
 import com.android.huckster.utils.shortToast
 
 class NewProductActivity : Activity() {
@@ -107,8 +108,10 @@ class NewProductActivity : Activity() {
             ProductData.addProduct(productName, unit, price, stock, category) { success ->
                 if (success) {
                     shortToast("Product added successfully!")
+                    // Reload data after adding
                     val resultIntent = Intent()
                     setResult(Activity.RESULT_OK, resultIntent)
+                    refreshNotificationBadge()
                     finish() // Go back to product list
                 } else {
                     shortToast("Product already exists!")

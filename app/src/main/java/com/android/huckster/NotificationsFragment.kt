@@ -8,13 +8,16 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.android.huckster.utils.NotificationListView
+import com.android.huckster.utils.Product
 import com.android.huckster.utils.ProductData
 
 class NotificationsFragment : Fragment() {
 
     private lateinit var listNotifs: ListView
     private lateinit var clearText: View
+    private lateinit var emptyText: TextView
     private lateinit var adapter: NotificationListView
+    private var notifList: MutableList<Product> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,12 +32,16 @@ class NotificationsFragment : Fragment() {
 
         listNotifs = view.findViewById(R.id.listview_notification1)
         clearText = view.findViewById(R.id.textview_clear)
+        emptyText = view.findViewById(R.id.textview_empty)
+
+        adapter = NotificationListView(requireContext(), notifList)
+        listNotifs.adapter = adapter
 
         fetchAndDisplayLowStockProducts()
 
-        val emptyText = view.findViewById<TextView>(R.id.textview_empty)
         clearText.setOnClickListener {
-            adapter.clearList()
+            notifList.clear()
+            adapter.notifyDataSetChanged()
             emptyText.visibility = View.VISIBLE
         }
     }
@@ -44,10 +51,11 @@ class NotificationsFragment : Fragment() {
         val lowStockThreshold = sharedPref.getInt("low_stock_threshold", 5)
 
         ProductData.getLowStockProducts(lowStockThreshold) { lowStockProducts ->
-            adapter = NotificationListView(requireContext(), lowStockProducts)
-            listNotifs.adapter = adapter
+            notifList.clear()
+            notifList.addAll(lowStockProducts)
+            adapter.notifyDataSetChanged()
+
+            emptyText.visibility = if (notifList.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 }
-
-

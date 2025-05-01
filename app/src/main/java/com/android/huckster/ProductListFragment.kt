@@ -59,10 +59,14 @@ class ProductListFragment : Fragment() {
     }
 
     private fun fetchAndDisplayProducts() {
+        val sharedPref = requireContext().getSharedPreferences("StockPrefs", android.content.Context.MODE_PRIVATE)
+        val lowStockThreshold = sharedPref.getInt("low_stock_threshold", 5) // default is 5
+
         ProductData.getProducts { products ->
             productList = products
-            adapter = ProductListView(requireContext(), productList)
+            adapter = ProductListView(requireContext(), productList, lowStockThreshold)
             listView.adapter = adapter
         }
     }
+
 }

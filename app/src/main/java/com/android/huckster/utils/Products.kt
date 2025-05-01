@@ -117,6 +117,19 @@ object ProductData {
         }
     }
 
+    // Get notification count for low-stock products
+    fun getLowStockNotificationCount(threshold: Int, callback: (Int) -> Unit) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return callback(0)
+        productDatabase.child(userId).get().addOnSuccessListener { snapshot ->
+            val lowStockCount = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
+                .count { it.quantity <= threshold }
+            callback(lowStockCount)
+        }.addOnFailureListener {
+            callback(0)
+        }
+    }
+
+
 
     // Preload products into memory
     fun preloadProducts(callback: (Boolean) -> Unit) {

@@ -74,3 +74,13 @@ fun Context.startMainContainerActivity(startDestination: Int? = null) {
     }
     startActivity(intent)
 }
+
+fun Context.refreshNotificationBadge() {
+    if (this is MainContainerActivity) {
+        this.updateNotificationBadge()
+    }
+}
+
+fun Fragment.refreshNotificationBadge() {
+    (requireActivity() as? MainContainerActivity)?.updateNotificationBadge()
+}
