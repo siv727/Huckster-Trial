@@ -165,4 +165,20 @@ object UserData {
             }
         }
     }
+
+    fun changePassword(newPassword: String, callback: (Boolean, String?) -> Unit) {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            user.updatePassword(newPassword)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        callback(true, null) // Password changed successfully
+                    } else {
+                        callback(false, task.exception?.message) // Error occurred
+                    }
+                }
+        } else {
+            callback(false, "User not authenticated")
+        }
+    }
 }
