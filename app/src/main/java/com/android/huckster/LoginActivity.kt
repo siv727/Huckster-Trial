@@ -29,6 +29,18 @@ class LoginActivity : AppCompatActivity() {
         val buttonLogin = findViewById<Button>(R.id.button_login)
         val textViewRegister: TextView = findViewById(R.id.textview_register)
 
+        // Load saved credentials (if any)
+        val preferences = getSharedPreferences("HucksterPrefs", Context.MODE_PRIVATE)
+        val savedEmail = preferences.getString("email", "")
+        val savedPassword = preferences.getString("password", "")
+        val rememberMe = preferences.getBoolean("rememberMe", false)
+
+        if (rememberMe) {
+            edittextEmail.setText(savedEmail)
+            edittextPassword.setText(savedPassword)
+            checkBoxRememberMe.isChecked = true
+        }
+
         // Apply gradient text color to Register link
         applyGradientText(textViewRegister)
 
@@ -47,15 +59,22 @@ class LoginActivity : AppCompatActivity() {
         buttonLogin.setOnClickListener {
             val email = edittextEmail.text.toString().trim()
             val password = edittextPassword.text.toString().trim()
-
             if (email.isEmpty() || password.isEmpty()) {
                 longToast("Email and Password cannot be empty")
                 return@setOnClickListener
             }
 
+
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+
+                        if (checkBoxRememberMe.isChecked) {
+                            saveLoginCredentials(email, password)
+                        } else {
+                            clearLoginCredentials()
+                        }
+
                         longToast("Welcome to Huckster!")
                         onLoginSuccess()
                     } else {
@@ -81,4 +100,25 @@ class LoginActivity : AppCompatActivity() {
         )
         textView.paint.shader = textShader
     }
+
+    private fun saveLoginCredentials(email: String, password: String) {
+        val preferences = getSharedPreferences("HucksterPrefs", Context.MODE_PRIVATE)
+        with(preferences.edit()) {
+            putString("email", email)
+            putString("password", password)
+            putBoolean("rememberMe", true)
+            apply()
+        }
+    }
+
+    private fun clearLoginCredentials() {
+        val preferences = getSharedPreferences("HucksterPrefs", Context.MODE_PRIVATE)
+        with(preferences.edit()) {
+            remove("email")
+            remove("password")
+            putBoolean("rememberMe", false)
+            apply()
+        }
+    }
+
 }

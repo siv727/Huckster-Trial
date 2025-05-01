@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="20dp"
+    android:elevation="5dp"
+    android:layout_marginBottom="7dp"
+    android:weightSum="4"
+    android:background="@drawable/color_gradient_button">
+
+    <!-- Image Section (1/4 weight) -->
+    <ImageView
+        android:id="@+id/product_photo"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        android:src="@drawable/huckster_logo" />
+
+    <!-- Details Section (3/4 weight) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp">
+
+        <!-- "Details:" Header -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Details:"
+            android:textSize="15sp"
+            android:textColor="@color/off_white"
+            android:textStyle="bold"
+            android:fontFamily="@font/rdh_semi_bold" />
+
+        <!-- Name Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name:  "
+                android:textSize="15sp"
+                android:textColor="@color/trade_blue"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semi_bold" />
+
+            <TextView
+                android:id="@+id/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Product Name"
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/off_white"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semi_bold" />
+        </LinearLayout>
+
+        <!-- Price Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price:    "
+                android:textSize="15sp"
+                android:textColor="@color/trade_blue"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semi_bold" />
+
+            <TextView
+                android:id="@+id/item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/montserrat_semi_bold"
+                android:text="₱0.00"
+                android:textColor="@color/welcome_yellow"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Stocks Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stocks: "
+                android:textSize="15sp"
+                android:textColor="@color/trade_blue"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semi_bold" />
+
+            <TextView
+                android:id="@+id/item_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:layout_marginStart="10dp"
+                android:textSize="15sp"
+                android:textColor="@color/powder_blue"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semi_bold" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

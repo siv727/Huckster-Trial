@@ -90,6 +90,9 @@ class RegisterActivity : Activity() {
                         Toast.makeText(this, "Sign-Up Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
+            if(password.length <= 6){
+                return@setOnClickListener
+            }
 
             startActivity(
                 Intent(this, LoginActivity::class.java).apply{

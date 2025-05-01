@@ -9,13 +9,15 @@
     android:background="@color/welcome_yellow"
     android:orientation="vertical">
 
+    <!-- Back Button: Align it similarly to the developer layout -->
     <ImageView
         android:id="@+id/back_settings"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/baseline_arrow_back_24" />
+        android:layout_marginStart="24dp"
+    android:layout_marginTop="24dp"
+    android:src="@drawable/baseline_arrow_back_24"
+    android:layout_gravity="start"/>
 
     <ImageSwitcher
         android:id="@+id/change_pic"

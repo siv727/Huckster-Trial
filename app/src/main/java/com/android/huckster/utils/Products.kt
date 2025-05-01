@@ -98,8 +98,9 @@ object ProductData {
 
     // Fetch low-stock products from Firebase
     fun getLowStockProducts(threshold: Int): List<Product> {
-        return cachedProducts.filter { it.quantity <= threshold }
+        return cachedProducts?.filter { it.quantity <= threshold } ?: emptyList()
     }
+
 
     // Preload products into memory
     fun preloadProducts(callback: (Boolean) -> Unit) {

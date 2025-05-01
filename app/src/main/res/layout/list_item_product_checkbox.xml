@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="20dp"
+    android:background="@drawable/color_gradient_button"
+    android:elevation="5dp"
+    android:layout_marginBottom="7dp">
+
+    <!-- Product image -->
+    <ImageView
+        android:id="@+id/product_photo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/huckster_logo" />
+
+    <!-- Product details -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="12dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/product_name_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product Name"
+            android:textSize="15sp"
+            android:textColor="@color/off_white"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_semi_bold" />
+
+        <TextView
+            android:id="@+id/product_price_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:textSize="15sp"
+            android:textColor="@color/welcome_yellow"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_semi_bold" />
+
+        <TextView
+            android:id="@+id/product_stock_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stocks"
+            android:textSize="15sp"
+            android:textColor="@color/powder_blue"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_semi_bold" />
+    </LinearLayout>
+
+    <!-- Checkbox fixed on the right side -->
+    <CheckBox
+        android:id="@+id/product_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:buttonTint="@color/white"/>
+</LinearLayout>

@@ -23,7 +23,7 @@ class EditProductActivity(
 
         val productNameEditText: EditText = dialogView.findViewById(R.id.name_edit_text)
         val unitSpinner: Spinner = dialogView.findViewById(R.id.unit_spinner)
-        val categoryEditText: EditText = dialogView.findViewById(R.id.category_edit_text)
+        val categorySpinner: Spinner = dialogView.findViewById(R.id.category_spinner)
         val priceEditText: EditText = dialogView.findViewById(R.id.price_edit_text)
         val quantityEditText: EditText = dialogView.findViewById(R.id.stocks_edit_text)
         val soldEditText: EditText = dialogView.findViewById(R.id.sold_edit_text)
@@ -31,19 +31,41 @@ class EditProductActivity(
         val cancelButton: Button = dialogView.findViewById(R.id.cancel_button)
 
         productNameEditText.setText(product.productName)
-        categoryEditText.setText(product.category)
         priceEditText.setText(product.price.toString())
         quantityEditText.setText(product.quantity.toString())
         soldEditText.setText(product.quantitySold.toString())
 
+        // Unit Spinner
         val unitOptions = listOf("Package", "Piece", "Kilogram", "Liter", "Meter", "Milliliter", "Case")
-        val adapter = ArrayAdapter(context, R.layout.spinner_item, unitOptions)
-        unitSpinner.adapter = adapter
+        val unitAdapter = ArrayAdapter(context, R.layout.spinner_item, unitOptions)
+        unitSpinner.adapter = unitAdapter
+        unitSpinner.setSelection(unitOptions.indexOf(product.unit).takeIf { it >= 0 } ?: 0)
 
-        // Set the current unit as selected in the spinner
-        val unitIndex = unitOptions.indexOf(product.unit)
-        if (unitIndex != -1) {
-            unitSpinner.setSelection(unitIndex)
+        // Load Categories from Firebase
+        ProductData.getCategories { categories ->
+            val categoryList = categories.toMutableList()
+            categoryList.add("Add Category...")
+
+            val categoryAdapter = ArrayAdapter(context, R.layout.spinner_item, categoryList)
+            categorySpinner.adapter = categoryAdapter
+
+            val currentCategoryIndex = categoryList.indexOf(product.category).takeIf { it >= 0 } ?: 0
+            categorySpinner.setSelection(currentCategoryIndex)
+
+            categorySpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: android.view.View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (categoryList[position] == "Add Category...") {
+                        showAddCategoryDialog(categorySpinner, categoryAdapter, categoryList)
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            })
         }
 
         saveButton.setOnClickListener {
@@ -52,20 +74,18 @@ class EditProductActivity(
             val newQuantity = quantityEditText.text.toString().toIntOrNull() ?: product.quantity
             val newSold = soldEditText.text.toString().toIntOrNull() ?: product.quantitySold
             val newUnit = unitSpinner.selectedItem?.toString() ?: product.unit
-            val newCategory = categoryEditText.text.toString().trim()
+            val newCategory = categorySpinner.selectedItem?.toString() ?: product.category
 
-            if (newCategory.isBlank()) {
-                Toast.makeText(context, "Category cannot be empty!", Toast.LENGTH_SHORT).show()
+            if (newCategory.isBlank() || newCategory == "Add Category...") {
+                Toast.makeText(context, "Please select or add a valid category!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Show a progress dialog while updating the product
             val progressDialog = ProgressDialog(context)
             progressDialog.setMessage("Updating product...")
             progressDialog.setCancelable(false)
             progressDialog.show()
 
-            // Update the product in the database
             ProductData.updateProduct(
                 oldProductName = product.productName,
                 newProductName = newProductName,
@@ -75,10 +95,10 @@ class EditProductActivity(
                 newCategory = newCategory,
                 newQuantitySold = newSold
             ) { success ->
-                progressDialog.dismiss() // Dismiss the progress dialog after update
+                progressDialog.dismiss()
                 if (success) {
                     Toast.makeText(context, "Product updated successfully!", Toast.LENGTH_SHORT).show()
-                    onProductUpdated() // Trigger the callback to refresh the product list
+                    onProductUpdated()
                     dialog.dismiss()
                 } else {
                     Toast.makeText(context, "Failed to update product.", Toast.LENGTH_SHORT).show()
@@ -91,5 +111,35 @@ class EditProductActivity(
         }
 
         dialog.show()
+    }
+
+    private fun showAddCategoryDialog(
+        spinner: Spinner,
+        adapter: ArrayAdapter<String>,
+        categoryList: MutableList<String>
+    ) {
+        val input = EditText(context)
+        input.hint = "Enter new category"
+        input.setPadding(20, 20, 20, 20)
+
+        AlertDialog.Builder(context)
+            .setTitle("Add New Category")
+            .setView(input)
+            .setPositiveButton("Add") { _, _ ->
+                val newCategory = input.text.toString().trim()
+                if (newCategory.isNotEmpty()) {
+                    ProductData.addCategory(newCategory) { success ->
+                        if (success) {
+                            categoryList.add(categoryList.size - 1, newCategory)
+                            adapter.notifyDataSetChanged()
+                            spinner.setSelection(categoryList.indexOf(newCategory))
+                        } else {
+                            Toast.makeText(context, "Failed to add category.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 }

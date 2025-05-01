@@ -4,7 +4,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/welcome_yellow">
 
     <TextView
@@ -16,7 +15,7 @@
         android:fontFamily="@font/montserrat_bold"
         android:textColor="@color/trade_blue"
         android:layout_marginTop="30dp"
-        android:layout_marginHorizontal="30dp"/>
+        android:layout_marginHorizontal="30dp" />
 
     <TextView
         android:id="@+id/textview_clear"
@@ -29,12 +28,24 @@
         android:layout_marginBottom="20dp"
         android:textAlignment="textEnd"
         android:layout_marginHorizontal="30dp"
-        android:layout_below="@+id/textview_notification"/>
+        android:layout_below="@+id/textview_notification" />
+
+    <TextView
+        android:id="@+id/textview_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No low-stock notifications!"
+        android:textSize="16sp"
+        android:textColor="@color/trade_blue"
+        android:gravity="center"
+        android:layout_below="@id/textview_clear"
+        android:layout_marginTop="20dp"
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/listview_notification"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="30dp"
-        android:layout_below="@+id/textview_clear" />
+        android:layout_below="@+id/textview_clear"
+        android:layout_marginHorizontal="30dp" />
 </RelativeLayout>
