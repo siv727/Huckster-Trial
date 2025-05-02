@@ -21,7 +21,6 @@ data class User(
 
 object UserData {
     var loggedInUser: User? = null // Stores currently logged-in user
-
     // Save profile image to SharedPreferences as Base64
     fun saveProfileImage(context: Context, bitmap: Bitmap?) {
         bitmap?.let {

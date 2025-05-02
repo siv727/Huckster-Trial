@@ -8,6 +8,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import com.android.huckster.utils.UserData
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
 
 class ChangePasswordActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +27,7 @@ class ChangePasswordActivity : Activity() {
         }
 
         changeButton.setOnClickListener {
+            val currentPwd = currentPassword.text.toString().trim()
             val newPwd = newPassword.text.toString().trim()
             val confirmPwd = confirmPassword.text.toString().trim()
 
@@ -38,8 +41,25 @@ class ChangePasswordActivity : Activity() {
                 return@setOnClickListener
             }
 
-            showConfirmationDialog(newPwd)
+            val user = FirebaseAuth.getInstance().currentUser
+            val email = user?.email
+
+            if (user != null && email != null) {
+                val credential = EmailAuthProvider.getCredential(email, currentPwd)
+
+                user.reauthenticate(credential)
+                    .addOnCompleteListener { authTask ->
+                        if (authTask.isSuccessful) {
+                            showConfirmationDialog(newPwd)
+                        } else {
+                            Toast.makeText(this, "Current password is incorrect.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+            } else {
+                Toast.makeText(this, "User not authenticated.", Toast.LENGTH_SHORT).show()
+            }
         }
+
 
     }
 
