@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.android.huckster.utils.UserData
+import com.android.huckster.utils.refreshNotificationBadge
 import com.android.huckster.utils.startAboutHucksterActivity
 import com.android.huckster.utils.startDeveloperPageActivity
 import com.android.huckster.utils.startProfileActivity
@@ -36,6 +37,7 @@ class SettingsFragment : Fragment() {
         fetchAndDisplayUserInfo() // Fetch fresh data in the background
         setupMenuItems(view)
         setupLogoutButton(view)
+        refreshNotificationBadge()
     }
 
     private fun setupViews(view: View) {

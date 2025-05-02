@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import com.android.huckster.utils.NotificationHelper
 import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.refreshNotificationBadge
 import com.android.huckster.utils.shortToast
@@ -36,6 +37,9 @@ class NewProductActivity : Activity() {
         val stockInput = findViewById<EditText>(R.id.stock_count)
         val addProductButton = findViewById<Button>(R.id.button_login)
         val buttonBack = findViewById<ImageView>(R.id.back_settings)
+
+        val sharedPref = getSharedPreferences("StockPrefs", android.content.Context.MODE_PRIVATE)
+        val lowStockThreshold = sharedPref.getInt("low_stock_threshold", 5) // default is 5
 
         categorySpinner = findViewById(R.id.category_spinner)
 
@@ -112,6 +116,9 @@ class NewProductActivity : Activity() {
                     val resultIntent = Intent()
                     setResult(Activity.RESULT_OK, resultIntent)
                     refreshNotificationBadge()
+                    if(stock<= lowStockThreshold){
+                        NotificationHelper.showNotification(this,"Low Stock Alert ","$productName is below the threshold ")
+                    }
                     finish() // Go back to product list
                 } else {
                     shortToast("Product already exists!")
@@ -219,4 +226,5 @@ class NewProductActivity : Activity() {
 
         dialog.show()
     }
+
 }

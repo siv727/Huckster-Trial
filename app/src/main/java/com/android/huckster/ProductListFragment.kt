@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.android.huckster.utils.Product
 import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.ProductListView
+import com.android.huckster.utils.refreshNotificationBadge
 
 class ProductListFragment : Fragment() {
 
@@ -41,11 +42,13 @@ class ProductListFragment : Fragment() {
             val selectedProduct = productList[position]
             val editDialog = EditProductActivity(requireContext(), selectedProduct) {
                 // Refresh the product list after editing
-//                ProductData.getProducts { products ->
-//                    productList = products
-//                    adapter = ProductListView(requireContext(), productList)
-//                    listView.adapter = adapter
-//                }
+                val sharedPref = requireContext().getSharedPreferences("StockPrefs", android.content.Context.MODE_PRIVATE)
+                val lowStockThreshold = sharedPref.getInt("low_stock_threshold", 5)
+                ProductData.getProducts { products ->
+                    productList = products
+                    adapter = ProductListView(requireContext(), productList, lowStockThreshold)
+                    listView.adapter = adapter
+                }
                 fetchAndDisplayProducts()
             }
             editDialog.showDialog()
@@ -56,6 +59,7 @@ class ProductListFragment : Fragment() {
         super.onResume()
         // Refresh the product list when the fragment resumes
         fetchAndDisplayProducts()
+        refreshNotificationBadge()
     }
 
     private fun fetchAndDisplayProducts() {

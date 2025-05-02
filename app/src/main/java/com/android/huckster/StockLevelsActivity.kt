@@ -1,6 +1,8 @@
 package com.android.huckster
 
 import android.app.Activity
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -9,9 +11,14 @@ import android.widget.ListView
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.android.huckster.utils.NotificationHelper
 import com.android.huckster.utils.NotificationListView
 import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.refreshNotificationBadge
+import android.Manifest
+
 
 class StockLevelsActivity : Activity() {
 
@@ -46,7 +53,7 @@ class StockLevelsActivity : Activity() {
 
         // Back button to exit
         settingsButton.setOnClickListener {
-
+            refreshNotificationBadge()
             finish()
         }
 
@@ -64,6 +71,7 @@ class StockLevelsActivity : Activity() {
 
             saveThresholdToPreferences(lowStockThreshold)
             refreshNotificationBadge()
+            fetchLowStockNotificationCount() // Fetch and show the low stock notification
             updateThresholdDisplay()
             fetchAndDisplayLowStockProducts()
         }
@@ -114,4 +122,21 @@ class StockLevelsActivity : Activity() {
             apply()
         }
     }
+
+    // Fetch low stock notification count and show notification
+    private fun fetchLowStockNotificationCount() {
+        ProductData.getLowStockNotificationCount(lowStockThreshold) { count ->
+            if (count > 0) {
+                val title = "$count Low Stock Alert"
+                val message = "Check your stock levels!"
+
+                // Show notification with low stock alert
+                NotificationHelper.showNotification(this, title, message)
+            } else {
+                // No low stock, optionally hide the notification
+                NotificationHelper.hideNotification(this)
+            }
+        }
+    }
 }
+

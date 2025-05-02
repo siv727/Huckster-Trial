@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.UserData
+import com.android.huckster.utils.refreshNotificationBadge
 
 class HomeFragment : Fragment() {
 
@@ -47,6 +48,7 @@ class HomeFragment : Fragment() {
         topSellingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         restockingTrendsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        refreshNotificationBadge()
         loadInventoryValue()
         loadTopSellingProducts()
         loadRestockingTrends()
@@ -60,6 +62,12 @@ class HomeFragment : Fragment() {
         removeButton.setOnClickListener{
             startActivityForResult(Intent(requireContext(), RemoveProductActivity::class.java), REMOVE_PRODUCT_REQUEST_CODE)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Refresh the product list when the fragment resume
+        refreshNotificationBadge()
     }
 
     // Handle result from NewProductActivity or RemoveProductActivity

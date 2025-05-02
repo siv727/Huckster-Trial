@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.android.huckster.utils.NotificationListView
 import com.android.huckster.utils.Product
 import com.android.huckster.utils.ProductData
+import com.android.huckster.utils.refreshNotificationBadge
 
 class NotificationsFragment : Fragment() {
 
@@ -37,8 +38,9 @@ class NotificationsFragment : Fragment() {
         adapter = NotificationListView(requireContext(), notifList)
         listNotifs.adapter = adapter
 
+        refreshNotificationBadge()
         fetchAndDisplayLowStockProducts()
-
+        clearText.visibility = View.GONE
         clearText.setOnClickListener {
             notifList.clear()
             adapter.notifyDataSetChanged()

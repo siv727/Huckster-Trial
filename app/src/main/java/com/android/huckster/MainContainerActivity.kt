@@ -1,17 +1,24 @@
 package com.android.huckster
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.android.huckster.utils.NotificationHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.android.huckster.utils.ProductData
 import com.android.huckster.utils.UserData
+import com.android.huckster.utils.refreshNotificationBadge
 
 class MainContainerActivity : AppCompatActivity() {
     private lateinit var navController: NavController
@@ -21,6 +28,24 @@ class MainContainerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_container)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
+            }
+        }
+
+        // Create notification channel
+        NotificationHelper.createNotificationChannel(this)
+
+
         UserData.preloadUserData(this)
         ProductData.preloadProducts { success ->
             if (!success) {
@@ -28,6 +53,8 @@ class MainContainerActivity : AppCompatActivity() {
             }
 
         }
+
+        refreshNotificationBadge()
 
         // Retrieve NavController from NavHostFragment
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -85,6 +112,13 @@ class MainContainerActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Refresh the product list when the fragment resumes
+
+        updateNotificationBadge()
     }
     fun updateNotificationBadge() {
         val sharedPref = getSharedPreferences("StockPrefs", MODE_PRIVATE)
