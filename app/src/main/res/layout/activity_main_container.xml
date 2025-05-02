@@ -38,7 +38,7 @@
         android:layout_marginBottom="36dp"
         android:layout_marginEnd="142dp"
         android:src="@drawable/notif_1"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/nav_view"
         app:layout_constraintEnd_toEndOf="@id/nav_view" />
 

@@ -31,12 +31,15 @@ class RemovableProductAdapter(
         val nameText = view.findViewById<TextView>(R.id.product_name_checkbox)
         val priceText = view.findViewById<TextView>(R.id.product_price_checkbox)
         val stockText = view.findViewById<TextView>(R.id.product_stock_checkbox)
+        val productPhoto = view.findViewById<ImageView>(R.id.product_photo)
+
 
         val product = products[position]
         nameText.text = product.productName
         priceText.text = "₱${product.price}"
         stockText.text = "${product.quantity} ${product.unit}/(s)"
         checkBox.isChecked = selectedPositions.contains(position)
+        productPhoto.setImageResource(R.drawable.products_icon)
 
         // Set listener to toggle checkbox on click
         checkBox.setOnCheckedChangeListener { _, isChecked ->
